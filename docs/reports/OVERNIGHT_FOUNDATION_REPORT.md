@@ -74,7 +74,7 @@
 
 | ID | 내용 | 현재 중립 구현 | 필요한 결정 |
 |---|---|---|---|
-| BD-01 | 전투 패배 페널티 | 패주 장수 병력 1로 복귀, 금/경험치 손실 없음, 적은 필드 유지 | 체크포인트 귀환 여부, 금 손실, 병력 회복 규칙 |
+| BD-01 | 전투 패배 페널티 | **RESOLVED / APPROVED** — 최근 안전 체크포인트/아군 안전거점 귀환, 출전 장수 최대 병력의 30% 회복(최소 1), 금·XP 손실 없음, 적은 필드 유지 | `docs/decisions/DEC-002-DEFEAT-RECOVERY.md`; 코드 구현은 후속 검증 필요 |
 | BD-02 | 레벨업 곡선 | XP 누적만, 레벨 변화 없음 | XP 테이블, 레벨당 병력/책략 해금 규칙 (CHARACTER spec "고정 개성형" 범위 내) |
 | BD-03 | 후퇴 성공률 | 비보스 전투 100% 성공, 보스 불가 | 확률·페널티 여부 |
 
@@ -96,7 +96,8 @@
 - PR #2(`implementation/foundation-nightly` → `implementation/bootstrap`) 검토·병합: **REQUIRED**
 - PR #1(`implementation/bootstrap` → `main`) 병합: **REQUIRED**
 - Production deploy / Release / Tag: **REQUIRED** (이번 실행에서 미수행)
-- BD-01~03 제품 결정: **REQUIRED**
+- BD-02~03 제품 결정: **REQUIRED**
+- BD-01 구현 검증: **REQUIRED NEXT WORK** (결정은 승인 완료)
 
 ## 7. 재현 명령
 ```bash
