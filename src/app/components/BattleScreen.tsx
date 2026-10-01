@@ -121,7 +121,7 @@ export function BattleScreen({ session: initial, registry, bridge, t, onFinish }
   const plannedTp = useMemo(() => session.plan.reduce((sum, c) => sum + (c.type === 'TACTIC' ? session.rules.tactics[c.tacticId]?.tpCost ?? 0 : 0), 0), [session]);
 
   return (
-    <section className="battle-panel" aria-label="전투 명령" data-turn={shown.state.turn} data-result={finished ? session.result : 'ONGOING'} data-busy={busy}>
+    <section className="battle-panel" aria-label="전투 명령" data-turn={shown.state.turn} data-result={finished ? session.result : 'ONGOING'} data-busy={busy} data-formation={session.state.formations.PLAYER?.id ?? ''}>
       <div className="battle-status">
         <span>턴 {shown.state.turn}</span>
         <span aria-label={`책략 포인트 ${tp.current} / ${tp.max}`}>TP {tp.current}/{tp.max}{plannedTp > 0 ? ` (예정 -${plannedTp})` : ''}</span>
