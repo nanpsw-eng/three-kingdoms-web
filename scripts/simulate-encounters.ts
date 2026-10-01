@@ -33,7 +33,7 @@ const plan: Array<[string, PartyMemberInput[], string | null]> = [
 ];
 const SEEDS = 50;
 
-type Strategy = 'SMART' | 'DEFEND_TELEGRAPH' | 'INTERRUPT_COMMANDER';
+type Strategy = 'SMART' | 'DEFEND_TELEGRAPH' | 'INTERRUPT_COMMANDER' | 'CONTROL_COMMANDER';
 
 interface ProbeResult {
   results: Record<string, number>;
@@ -64,6 +64,20 @@ function applyStrategy(session: BattleSession, strategy: Strategy): BattleSessio
       next = setCommand(next, { type: 'ATTACK', actorId: actor.id, targetId: liveTelegraph.actorId });
     }
     return next;
+  }
+
+  if (strategy === 'CONTROL_COMMANDER' && session.state.turn === liveTelegraph.announceTurn) {
+    const controller = session.state.combatants.find(
+      (c) => c.side === 'PLAYER' && c.troops > 0 && c.tacticIds.includes('TAC_CONFUSE'),
+    );
+    if (controller) {
+      return setCommand(session, {
+        type: 'TACTIC',
+        actorId: controller.id,
+        tacticId: 'TAC_CONFUSE',
+        targetId: liveTelegraph.actorId,
+      });
+    }
   }
 
   return session;
@@ -113,11 +127,13 @@ for (const [encounterId, party, formation] of plan) {
 const bossSmart = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'SMART');
 const bossDefend = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'DEFEND_TELEGRAPH');
 const bossInterrupt = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'INTERRUPT_COMMANDER');
+const bossControl = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'CONTROL_COMMANDER');
 
 console.log(
   `BOSS_STRATEGY_RESPONSE          smartLoss=${bossSmart.avgTroopLoss.toFixed(0)}% defendLoss=${bossDefend.avgTroopLoss.toFixed(0)}% ` +
-  `interruptLoss=${bossInterrupt.avgTroopLoss.toFixed(0)}% smartTurns=${bossSmart.avgTurns.toFixed(1)} ` +
-  `defendTurns=${bossDefend.avgTurns.toFixed(1)} interruptTurns=${bossInterrupt.avgTurns.toFixed(1)}`,
+  `interruptLoss=${bossInterrupt.avgTroopLoss.toFixed(0)}% controlLoss=${bossControl.avgTroopLoss.toFixed(0)}% ` +
+  `smartTurns=${bossSmart.avgTurns.toFixed(1)} defendTurns=${bossDefend.avgTurns.toFixed(1)} ` +
+  `interruptTurns=${bossInterrupt.avgTurns.toFixed(1)} controlTurns=${bossControl.avgTurns.toFixed(1)}`,
 );
 
 for (const formation of ['FORM_WEDGE', 'FORM_CIRCLE', 'FORM_CRANE']) {
