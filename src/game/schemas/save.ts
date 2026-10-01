@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { SaveGameV1 } from '../domain/save/index';
-import { EncounterIdSchema, FlagIdSchema, FormationIdSchema, GeneralIdSchema, LocationIdSchema, QuestIdSchema, RegionIdSchema, TacticIdSchema } from './ids';
+import { EncounterIdSchema, EventIdSchema, FlagIdSchema, FormationIdSchema, GeneralIdSchema, LocationIdSchema, QuestIdSchema, RegionIdSchema, TacticIdSchema } from './ids';
 
 const StatusSchema = z.object({ code: z.enum(['CONFUSED', 'INSPIRED', 'TAUNTING']), remainingTurns: z.number().int().min(1) }).strict();
 
@@ -54,8 +54,12 @@ export const SaveGameV1Schema = z.object({
   defeatedEncounterIds: z.array(EncounterIdSchema),
   quests: z.record(QuestIdSchema, z.object({ status: z.enum(['ACTIVE', 'COMPLETED', 'FAILED']), stepIndex: z.number().int().min(0) }).strict()),
   flags: z.record(FlagIdSchema, z.union([z.boolean(), z.number(), z.string()])),
+  completedEventIds: z.array(EventIdSchema),
+  unlockedFormationIds: z.array(FormationIdSchema),
+  unlockedRegionIds: z.array(RegionIdSchema),
   battleCheckpoint: BattleCheckpointSchema.nullable(),
 }).strict().superRefine((save, ctx) => {
+  if (save.party.formationId && !save.unlockedFormationIds.includes(save.party.formationId)) ctx.addIssue({ code: 'custom', path: ['party', 'formationId'], message: 'formation is not unlocked' });
   const party = [...save.party.activeGeneralIds, ...save.party.reserveGeneralIds];
   if (new Set(party).size !== party.length) ctx.addIssue({ code: 'custom', path: ['party'], message: 'a general appears more than once in the party' });
   for (const id of party) if (!save.generals[id]) ctx.addIssue({ code: 'custom', path: ['generals', id], message: `missing progress for party member ${id}` });

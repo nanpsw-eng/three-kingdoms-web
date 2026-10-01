@@ -132,3 +132,22 @@ describe('encounter validation', () => {
     expect(messages).toContain('duplicate enemy slot 1');
   });
 });
+
+describe('world/progress reference validation', () => {
+  it('rejects non-reciprocal connections, unknown flags and broken effect refs', () => {
+    const files = [
+      ...fixture(),
+      { path: 'src/content/regions/r.json', data: { id: 'REG_A', nameKey: 'general.test.name', unlockFlag: 'FLAG_NOPE' } },
+      { path: 'src/content/locations/l.json', data: [
+        { id: 'LOC_A', regionId: 'REG_A', nameKey: 'general.test.name', type: 'FIELD', initialOwner: 'NEUTRAL', connections: ['LOC_B'], encounters: [] },
+        { id: 'LOC_B', regionId: 'REG_A', nameKey: 'general.test.name', type: 'FIELD', initialOwner: 'NEUTRAL', connections: [], encounters: [] },
+      ] },
+      { path: 'src/content/events/e.json', data: { id: 'EVT_A', trigger: { type: 'TALK_NPC', npcId: 'NPC_GHOST' }, effects: [{ type: 'RECRUIT_GENERAL', generalId: 'GEN_GHOST', level: 1 }] } },
+    ];
+    const text = validateContent(files).issues.map((i) => i.message).join('\n');
+    expect(text).toContain('FLAG_NOPE');
+    expect(text).toContain('not reciprocated');
+    expect(text).toContain('NPC_GHOST');
+    expect(text).toContain('GEN_GHOST');
+  });
+});

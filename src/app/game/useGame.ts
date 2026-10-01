@@ -6,6 +6,8 @@ import { DexieSaveRepository } from '../../game/persistence/dexieRepository';
 import { MemorySaveRepository } from '../../game/persistence/memoryRepository';
 import type { SaveRepository } from '../../game/persistence/repository';
 import { createNewGame } from '../../game/save/newGame';
+import { dispatchTrigger } from '../../game/domain/progress/index';
+import { buildProgressContext } from '../../game/progress/fromContent';
 
 let registryCache: ContentRegistry | null = null;
 export function getRegistry(): ContentRegistry {
@@ -55,7 +57,7 @@ export function useGame(): GameApi {
         setError(`저장 데이터를 읽을 수 없어 새 슬롯으로 시작합니다: ${String(e)}`);
         slot.current = 'recovery';
       }
-      const next = loaded ?? createNewGame(registry, new Date().toISOString(), slot.current);
+      const next = loaded ?? dispatchTrigger(createNewGame(registry, new Date().toISOString(), slot.current), buildProgressContext(registry), { type: 'GAME_START' }).save;
       if (!loaded) await r.save(next).catch((e: unknown) => setError(String(e)));
       if (!cancelled) {
         setSave(next);

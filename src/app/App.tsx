@@ -3,6 +3,8 @@ import { maxTroopsAt } from '../game/battle/fromContent';
 import { createSession, type BattleSession } from '../game/battle/session';
 import type { AggroState, GameBridge, SceneKey } from '../game/runtime/bridge';
 import { applyBattleResult } from '../game/save/applyBattle';
+import { dispatchTrigger } from '../game/domain/progress/index';
+import { buildProgressContext } from '../game/progress/fromContent';
 import { BattleScreen, nameOf } from './components/BattleScreen';
 import { GameCanvas } from './components/GameCanvas';
 import { VirtualDpad } from './components/VirtualDpad';
@@ -68,7 +70,12 @@ export function App() {
   };
 
   const finishBattle = (finished: BattleSession) => {
-    game.commit((s) => applyBattleResult(s, finished, registry, new Date().toISOString()));
+    game.commit((s) => {
+      const after = applyBattleResult(s, finished, registry, new Date().toISOString());
+      return finished.result === 'VICTORY'
+        ? dispatchTrigger(after, buildProgressContext(registry), { type: 'ENCOUNTER_VICTORY', encounterId: finished.encounterId }).save
+        : after;
+    });
     bridge?.ui.emit('end-battle-view', {});
     bridge?.ui.emit('resume-world', { defeatedEnemyId: finished.result === 'VICTORY' ? encounter?.enemyId ?? null : null });
     setBattle(null);
@@ -77,6 +84,9 @@ export function App() {
   };
 
   const mode = battle ? 'battle' : 'world';
+  const quest = registry.quests.get('QST_MAIN_ZHUO_YELLOW_TURBAN');
+  const progress = save?.quests['QST_MAIN_ZHUO_YELLOW_TURBAN'];
+  const objective = !quest || !progress ? '…' : progress.status === 'COMPLETED' ? '탁군의 황건적을 몰아냈다. (다음 지역 준비 중)' : t(quest.steps[progress.stepIndex]?.objectiveKey ?? '');
 
   return (
     <main className={`app-shell mode-${mode}`} data-scene={scene ?? 'loading'} data-encounter={encounter?.encounterId ?? ''} data-save={game.status}>
@@ -119,7 +129,7 @@ export function App() {
         <>
           <section className="quest-card">
             <p className="eyebrow">현재 목표</p>
-            <strong>탁현 남쪽의 황건군 움직임을 확인하십시오.</strong>
+            <strong data-testid="quest-objective">{objective}</strong>
           </section>
 
           <section className="party-card" aria-label="현재 부대">

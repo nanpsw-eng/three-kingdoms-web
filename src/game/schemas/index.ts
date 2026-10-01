@@ -6,3 +6,5 @@ export * from './tactic';
 export * from './formation';
 export * from './localization';
 export * from './encounter';
+export * from './world';
+export * from './progress';

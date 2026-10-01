@@ -73,6 +73,10 @@ export interface SaveGameV1 {
   defeatedEncounterIds: string[];
   quests: Record<string, QuestProgress>;
   flags: Record<string, FlagValue>;
+  /** One-shot story events already fired. */
+  completedEventIds: string[];
+  unlockedFormationIds: string[];
+  unlockedRegionIds: string[];
   battleCheckpoint: BattleCheckpoint | null;
 }
 

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "TRT_FOREST_RECLUSE_FIRE_LORE",
+    "nameKey": "trait.forest_recluse_fire_lore.name",
+    "descriptionKey": "trait.forest_recluse_fire_lore.desc",
+    "effects": [{ "type": "TACTIC_DAMAGE_MULTIPLIER", "value": 1.12 }]
+  }
+]

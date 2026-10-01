@@ -31,12 +31,15 @@ export function createNewGame(registry: ContentRegistry, nowIso: string, slotId 
     party: { activeGeneralIds: [...STARTING_PARTY], reserveGeneralIds: [], formationId: null },
     generals,
     inventory: {},
-    world: { regionId: 'REG_ZHUO', locationId: 'LOC_ZHUO_TOWN', position: { x: 0, y: 0 }, checkpointId: 'LOC_ZHUO_TOWN' },
+    world: { regionId: 'REG_ZHUO_SOUTH', locationId: 'LOC_ZHUO_TOWN', position: { x: 0, y: 0 }, checkpointId: 'LOC_ZHUO_TOWN' },
     locationOwnership: {},
     discoveredLocationIds: ['LOC_ZHUO_TOWN'],
     defeatedEncounterIds: [],
     quests: {},
     flags: {},
+    completedEventIds: [],
+    unlockedFormationIds: [],
+    unlockedRegionIds: ['REG_ZHUO_SOUTH'],
     battleCheckpoint: null,
   };
 }

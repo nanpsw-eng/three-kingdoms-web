@@ -50,10 +50,13 @@ test('Smart Command battle: one-tap turn, override, target select, speed, auto, 
   await expect(page.locator('main.app-shell')).toHaveAttribute('data-scene', 'World');
   await expect.poll(async () => (await worldState(page)).enemies[0]?.mode).toBe('DEFEATED');
   await expect(page.locator('main.app-shell')).toHaveAttribute('data-save', 'ready');
+  // Victory advanced the main quest (pure progression engine via ENCOUNTER_VICTORY).
+  await expect(page.getByTestId('quest-objective')).toContainText('백수촌');
 
   // Reload: autosaved IndexedDB state keeps the scout defeated and troops reduced.
   await page.reload();
   await expect(page.locator('main.app-shell')).toHaveAttribute('data-scene', 'World', { timeout: 15_000 });
   await expect.poll(async () => (await worldState(page)).enemies[0]?.mode, { timeout: 5_000 }).toBe('DEFEATED');
+  await expect(page.getByTestId('quest-objective')).toContainText('백수촌');
   expect(errors).toEqual([]);
 });
