@@ -1,0 +1,47 @@
+[
+  {
+    "id": "TAC_FIRE_ATTACK",
+    "nameKey": "tactic.fire_attack.name",
+    "descriptionKey": "tactic.fire_attack.desc",
+    "family": "ATTACK",
+    "tpCost": 6,
+    "target": "SINGLE_ENEMY",
+    "effect": { "kind": "DAMAGE", "power": 1.0 }
+  },
+  {
+    "id": "TAC_HEAL_MINOR",
+    "nameKey": "tactic.heal_minor.name",
+    "descriptionKey": "tactic.heal_minor.desc",
+    "family": "HEAL",
+    "tpCost": 4,
+    "target": "SINGLE_ALLY",
+    "effect": { "kind": "HEAL", "power": 1.0 }
+  },
+  {
+    "id": "TAC_CONFUSE",
+    "nameKey": "tactic.confuse.name",
+    "descriptionKey": "tactic.confuse.desc",
+    "family": "CONTROL",
+    "tpCost": 6,
+    "target": "SINGLE_ENEMY",
+    "effect": { "kind": "STATUS", "status": "CONFUSED", "durationTurns": 2, "baseChance": 0.55 }
+  },
+  {
+    "id": "TAC_INSPIRE",
+    "nameKey": "tactic.inspire.name",
+    "descriptionKey": "tactic.inspire.desc",
+    "family": "SUPPORT",
+    "tpCost": 8,
+    "target": "ALL_ALLIES",
+    "effect": { "kind": "STATUS", "status": "INSPIRED", "durationTurns": 2 }
+  },
+  {
+    "id": "TAC_TAUNT",
+    "nameKey": "tactic.taunt.name",
+    "descriptionKey": "tactic.taunt.desc",
+    "family": "CONTROL",
+    "tpCost": 3,
+    "target": "SELF",
+    "effect": { "kind": "STATUS", "status": "TAUNTING", "durationTurns": 2 }
+  }
+]

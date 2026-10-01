@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ENC_SOUTH_PLAIN_RIDERS",
+    "nameKey": "encounter.south_plain_riders.name",
+    "enemies": [
+      {
+        "generalId": "GEN_YT_RIDERS",
+        "level": 3,
+        "slot": 0,
+        "combatId": "YT_RIDERS_A",
+        "weaponAttack": 5,
+        "armorDefense": 3
+      },
+      {
+        "generalId": "GEN_YT_RIDERS",
+        "level": 3,
+        "slot": 1,
+        "combatId": "YT_RIDERS_B",
+        "weaponAttack": 5,
+        "armorDefense": 3
+      }
+    ],
+    "rewards": {
+      "xp": 50,
+      "gold": 35
+    }
+  },
+  {
+    "id": "ENC_BAISHUI_FOREST_AMBUSH",
+    "nameKey": "encounter.baishui_forest_ambush.name",
+    "enemies": [
+      {
+        "generalId": "GEN_YT_ARCHERS",
+        "level": 3,
+        "slot": 0,
+        "combatId": "YT_ARCHERS_A",
+        "weaponAttack": 5,
+        "armorDefense": 2
+      },
+      {
+        "generalId": "GEN_YT_ARCHERS",
+        "level": 3,
+        "slot": 1,
+        "combatId": "YT_ARCHERS_B",
+        "weaponAttack": 5,
+        "armorDefense": 2
+      },
+      {
+        "generalId": "GEN_YT_SORCERER",
+        "level": 3,
+        "slot": 2,
+        "weaponAttack": 3,
+        "armorDefense": 2
+      }
+    ],
+    "rewards": {
+      "xp": 70,
+      "gold": 45
+    }
+  },
+  {
+    "id": "ENC_YT_OUTPOST_GARRISON",
+    "nameKey": "encounter.yt_outpost_garrison.name",
+    "enemies": [
+      {
+        "generalId": "GEN_YT_SCOUT_LEADER",
+        "level": 7,
+        "slot": 0,
+        "weaponAttack": 12,
+        "armorDefense": 8
+      },
+      {
+        "generalId": "GEN_YT_SPEARMEN",
+        "level": 7,
+        "slot": 1,
+        "combatId": "YT_SPEARMEN_A",
+        "weaponAttack": 10,
+        "armorDefense": 8
+      },
+      {
+        "generalId": "GEN_YT_SPEARMEN",
+        "level": 7,
+        "slot": 2,
+        "combatId": "YT_SPEARMEN_B",
+        "weaponAttack": 10,
+        "armorDefense": 8
+      },
+      {
+        "generalId": "GEN_YT_SORCERER",
+        "level": 7,
+        "slot": 3,
+        "weaponAttack": 7,
+        "armorDefense": 5
+      }
+    ],
+    "enemyFormationId": "FORM_CIRCLE",
+    "canRetreat": true,
+    "rewards": {
+      "xp": 120,
+      "gold": 80
+    }
+  },
+  {
+    "id": "ENC_NORTH_GATE_BOSS",
+    "nameKey": "encounter.north_gate_boss.name",
+    "enemies": [
+      {
+        "generalId": "GEN_YT_GATE_COMMANDER",
+        "level": 14,
+        "slot": 0,
+        "weaponAttack": 18,
+        "armorDefense": 14
+      },
+      {
+        "generalId": "GEN_YT_GATE_CHAMPION",
+        "level": 14,
+        "slot": 1,
+        "weaponAttack": 22,
+        "armorDefense": 12
+      },
+      {
+        "generalId": "GEN_YT_SPEARMEN",
+        "level": 10,
+        "slot": 2,
+        "weaponAttack": 10,
+        "armorDefense": 8
+      },
+      {
+        "generalId": "GEN_YT_ARCHERS",
+        "level": 10,
+        "slot": 3,
+        "weaponAttack": 10,
+        "armorDefense": 6
+      },
+      {
+        "generalId": "GEN_YT_RIDERS",
+        "level": 10,
+        "slot": 4,
+        "weaponAttack": 10,
+        "armorDefense": 6
+      }
+    ],
+    "enemyFormationId": "FORM_WEDGE",
+    "isBoss": true,
+    "canRetreat": false,
+    "rewards": {
+      "xp": 250,
+      "gold": 200
+    },
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "id": "GEN_FOREST_RECLUSE",
+  "nameKey": "general.forest_recluse.name",
+  "role": "TACTIC",
+  "baseStats": { "strength": 45, "intelligence": 84, "command": 58, "speed": 70 },
+  "troopGrowth": { "baseTroop": 850, "perLevel": 58, "category": "LOW" },
+  "unitType": "ARCHER",
+  "weaponAptitudes": { "BOW": "A", "SWORD": "C" },
+  "traitIds": ["TRT_FOREST_RECLUSE_FIRE_LORE"],
+  "initialTacticIds": ["TAC_FIRE_ATTACK"],
+  "tags": ["OPTIONAL_RECRUIT", "ORIGINAL", "PROVISIONAL"],
+  "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+}

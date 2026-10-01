@@ -1,0 +1,62 @@
+[
+  {
+    "id": "GEN_YT_SCOUT_LEADER",
+    "nameKey": "general.yt_scout_leader.name",
+    "role": "COMMANDER",
+    "baseStats": { "strength": 62, "intelligence": 40, "command": 58, "speed": 64 },
+    "troopGrowth": { "baseTroop": 600, "perLevel": 50, "category": "NORMAL" },
+    "unitType": "CAVALRY",
+    "weaponAptitudes": { "DAO": "B" },
+    "traitIds": [],
+    "initialTacticIds": [],
+    "tags": ["YELLOW_TURBAN", "ENEMY", "GENERIC"]
+  },
+  {
+    "id": "GEN_YT_SPEARMEN",
+    "nameKey": "general.yt_spearmen.name",
+    "role": "PHYSICAL",
+    "baseStats": { "strength": 55, "intelligence": 25, "command": 50, "speed": 50 },
+    "troopGrowth": { "baseTroop": 500, "perLevel": 45, "category": "NORMAL" },
+    "unitType": "SPEAR",
+    "weaponAptitudes": { "SPEAR": "B" },
+    "traitIds": [],
+    "initialTacticIds": [],
+    "tags": ["YELLOW_TURBAN", "ENEMY", "GENERIC"]
+  },
+  {
+    "id": "GEN_YT_ARCHERS",
+    "nameKey": "general.yt_archers.name",
+    "role": "PHYSICAL",
+    "baseStats": { "strength": 52, "intelligence": 30, "command": 45, "speed": 56 },
+    "troopGrowth": { "baseTroop": 450, "perLevel": 40, "category": "LOW" },
+    "unitType": "ARCHER",
+    "weaponAptitudes": { "BOW": "B" },
+    "traitIds": [],
+    "initialTacticIds": [],
+    "tags": ["YELLOW_TURBAN", "ENEMY", "GENERIC"]
+  },
+  {
+    "id": "GEN_YT_RIDERS",
+    "nameKey": "general.yt_riders.name",
+    "role": "PHYSICAL",
+    "baseStats": { "strength": 60, "intelligence": 25, "command": 48, "speed": 66 },
+    "troopGrowth": { "baseTroop": 480, "perLevel": 42, "category": "NORMAL" },
+    "unitType": "CAVALRY",
+    "weaponAptitudes": { "SPEAR": "B" },
+    "traitIds": [],
+    "initialTacticIds": [],
+    "tags": ["YELLOW_TURBAN", "ENEMY", "GENERIC"]
+  },
+  {
+    "id": "GEN_YT_SORCERER",
+    "nameKey": "general.yt_sorcerer.name",
+    "role": "TACTIC",
+    "baseStats": { "strength": 35, "intelligence": 68, "command": 45, "speed": 58 },
+    "troopGrowth": { "baseTroop": 420, "perLevel": 38, "category": "LOW" },
+    "unitType": "ARCHER",
+    "weaponAptitudes": { "SWORD": "C" },
+    "traitIds": [],
+    "initialTacticIds": ["TAC_FIRE_ATTACK"],
+    "tags": ["YELLOW_TURBAN", "ENEMY", "GENERIC"]
+  }
+]

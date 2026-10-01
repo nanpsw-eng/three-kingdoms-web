@@ -38,3 +38,13 @@ Bosses require telegraphed high-impact actions and strategic response. Vertical 
 
 ## Determinism
 Domain logic should resolve from battle state + commands + RNG state. Rendering speed x1/x2/x3 must not change results.
+
+## Defeat recovery
+Approved by DEC-002:
+- on player defeat, return to the most recent safe checkpoint / allied safe location represented by the save model;
+- restore active-party generals to 30% of maximum troops (minimum 1);
+- no gold loss;
+- no XP loss;
+- the encounter remains active unless story/event logic explicitly changes it.
+
+Implementation verification remains separate from this specification.

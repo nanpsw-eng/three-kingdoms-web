@@ -1,0 +1,26 @@
+[
+  {
+    "id": "TRT_LIU_BEI_BENEVOLENCE",
+    "nameKey": "trait.liu_bei_benevolence.name",
+    "descriptionKey": "trait.liu_bei_benevolence.desc",
+    "effects": [{ "type": "HEAL_POWER_MULTIPLIER", "value": 1.2 }]
+  },
+  {
+    "id": "TRT_GUAN_YU_WAR_GOD",
+    "nameKey": "trait.guan_yu_war_god.name",
+    "descriptionKey": "trait.guan_yu_war_god.desc",
+    "effects": [{ "type": "PHYSICAL_DAMAGE_MULTIPLIER", "value": 1.1 }]
+  },
+  {
+    "id": "TRT_ZHANG_FEI_HEROIC",
+    "nameKey": "trait.zhang_fei_heroic.name",
+    "descriptionKey": "trait.zhang_fei_heroic.desc",
+    "effects": [{ "type": "PHYSICAL_DAMAGE_MULTIPLIER", "value": 1.15, "condition": { "selfTroopRatioAtLeast": 0.7 } }]
+  },
+  {
+    "id": "TRT_JIAN_YONG_ELOQUENCE",
+    "nameKey": "trait.jian_yong_eloquence.name",
+    "descriptionKey": "trait.jian_yong_eloquence.desc",
+    "effects": [{ "type": "CONTROL_SUCCESS_BONUS", "value": 0.1 }]
+  }
+]

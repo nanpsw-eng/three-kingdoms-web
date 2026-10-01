@@ -1,0 +1,13 @@
+{
+  "id": "QST_MAIN_ZHUO_YELLOW_TURBAN",
+  "nameKey": "quest.main_zhuo.name",
+  "kind": "MAIN",
+  "steps": [
+    { "objectiveKey": "quest.main_zhuo.step0", "guideLocationId": "LOC_SOUTH_PLAIN", "completeWhen": { "type": "ENCOUNTER_DEFEATED", "encounterId": "ENC_SOUTH_PLAIN_SCOUTS" } },
+    { "objectiveKey": "quest.main_zhuo.step1", "guideLocationId": "LOC_BAISHUI_VILLAGE", "completeWhen": { "type": "FLAG_EQUALS", "flag": "FLAG_VISITED_BAISHUI", "value": true } },
+    { "objectiveKey": "quest.main_zhuo.step2", "guideLocationId": "LOC_BAISHUI_VILLAGE", "completeWhen": { "type": "HAS_GENERAL", "generalId": "GEN_JIAN_YONG" } },
+    { "objectiveKey": "quest.main_zhuo.step3", "guideLocationId": "LOC_YT_OUTPOST", "completeWhen": { "type": "LOCATION_OWNED", "locationId": "LOC_YT_OUTPOST" } },
+    { "objectiveKey": "quest.main_zhuo.step4", "guideLocationId": "LOC_NORTH_GATE", "completeWhen": { "type": "LOCATION_OWNED", "locationId": "LOC_NORTH_GATE" } }
+  ],
+  "onComplete": [{ "type": "GIVE_GOLD", "amount": 200 }]
+}

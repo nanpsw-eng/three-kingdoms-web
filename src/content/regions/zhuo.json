@@ -1,0 +1,4 @@
+[
+  { "id": "REG_ZHUO_SOUTH", "nameKey": "region.zhuo_south.name", "unlockFlag": null },
+  { "id": "REG_ZHUO_NORTH", "nameKey": "region.zhuo_north.name", "unlockFlag": "FLAG_NORTH_GATE_CAPTURED", "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED" }
+]
