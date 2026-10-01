@@ -22,5 +22,16 @@ Still open:
 - `BD-02` level-up curve / XP table / tactic unlock schedule.
 - `BD-03` retreat success/penalty rule.
 
-## Implementation note
-The current code still contains the pre-decision neutral seam until a verified implementation commit changes it. Do not treat this Decision record as evidence that code has already been updated.
+## Implementation status
+**IMPLEMENTED_AND_VERIFIED on feature branch `feature/battle-strategy-v1`.**
+
+Implementation: `src/game/save/applyBattle.ts`.
+
+Validation evidence at code HEAD `06a75b4c1df35cb14ee84ccf1f35b3b4ef50f6be`:
+- defeat returns to the valid save checkpoint location;
+- active party recovers to 30% maximum troops (minimum 1);
+- gold and XP are preserved;
+- defeated encounter remains active;
+- resulting save passes serialization validation.
+
+Integration into `implementation/bootstrap` remains subject to the feature PR Human Merge Gate.
