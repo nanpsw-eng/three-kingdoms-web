@@ -78,3 +78,42 @@ h1 { margin: 0; font-size: 26px; }
 .encounter-actions button { flex: 1; min-height: 48px; border-radius: 12px; border: 1px solid #454538; background: #20231b; color: #e9e0cf; }
 .encounter-actions .primary { background: #7c6236; border-color: #a48750; color: #fff; }
 .encounter-actions button:disabled { opacity: .55; }
+
+/* N7 battle */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.app-shell.mode-battle { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+.mode-battle .world-card { min-height: 0; height: 36dvh; max-height: 330px; }
+.battle-panel { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.battle-status { display: flex; justify-content: space-between; font-size: 13px; color: #d8ceb8; }
+.enemy-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 4px; }
+.unit-chip { min-height: 48px; padding: 4px 6px; border-radius: 10px; border: 1px solid #5a3a2c; background: #2a1d17; color: #f3ead8; text-align: left; }
+.unit-chip strong { display: block; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.unit-chip:disabled { opacity: 1; }
+.unit-chip.targetable:not(:disabled) { border-color: #ffd45e; box-shadow: 0 0 0 2px rgba(255,212,94,.45); }
+.unit-chip.routed, .ally-row.routed { opacity: .4; }
+.troop { display: flex; align-items: center; gap: 4px; }
+.troop-bar { flex: 1; height: 6px; border-radius: 3px; background: rgba(0,0,0,.5); overflow: hidden; }
+.troop-bar > span { display: block; height: 100%; background: #e6b35a; }
+.troop-num { font-size: 11px; font-variant-numeric: tabular-nums; color: #d8ceb8; }
+.pick-hint { margin: 0; font-size: 13px; color: #ffd45e; }
+.link { min-height: 44px; padding: 0 10px; border: 0; background: none; color: #bfa97d; text-decoration: underline; }
+.ally-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ally-row { width: 100%; min-height: 48px; display: grid; grid-template-columns: 52px 1fr 1.4fr; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 10px; border: 1px solid #3d3b2c; background: #1b1e17; color: #f3ead8; text-align: left; }
+.ally-name { font-weight: 700; font-size: 13px; }
+.ally-cmd { font-size: 11px; color: #bdb49f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ally-cmd.changed { color: #ffd45e; }
+.battle-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.battle-actions button { min-height: 48px; border-radius: 10px; border: 1px solid #454538; background: #20231b; color: #e9e0cf; font-size: 13px; }
+.battle-actions button.on { background: #4b3c22; border-color: #a48750; }
+.battle-actions .start { grid-column: span 2; font-size: 16px; font-weight: 700; }
+.battle-actions .primary { background: #7c6236; border-color: #a48750; color: #fff; }
+.battle-actions button:disabled { opacity: .5; }
+.bottom-sheet, .result-sheet { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100%, 430px); z-index: 20; padding: 16px 16px max(16px, env(safe-area-inset-bottom)); border-radius: 18px 18px 0 0; border: 1px solid #a48750; background: #14170f; box-shadow: 0 -12px 30px rgba(0,0,0,.5); }
+.sheet-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 4px; }
+.sheet-options button, .result-sheet button { min-height: 48px; border-radius: 12px; border: 1px solid #454538; background: #20231b; color: #e9e0cf; }
+.sheet-options button:disabled { opacity: .45; }
+.sheet-options small { color: #bfa97d; }
+.result-sheet strong { font-size: 22px; }
+.result-sheet button { width: 100%; margin-top: 12px; }
+.result-sheet .primary { background: #7c6236; border-color: #a48750; color: #fff; }
+.save-error { margin: 8px 0 0; color: #ffb4a0; font-size: 12px; }

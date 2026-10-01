@@ -1,11 +1,13 @@
 import type { z } from 'zod';
 import {
+  EncounterSchema,
   FormationSchema,
   GeneralSchema,
   LocaleTableSchema,
   TacticSchema,
   TraitSchema,
   UnitTypeSchema,
+  type EncounterDefinition,
   type FormationDefinition,
   type GeneralDefinition,
   type LocaleTable,
@@ -39,6 +41,7 @@ export interface ContentRegistry {
   tactics: ReadonlyMap<string, TacticDefinition>;
   formations: ReadonlyMap<string, FormationDefinition>;
   unitTypes: ReadonlyMap<string, UnitTypeDefinition>;
+  encounters: ReadonlyMap<string, EncounterDefinition>;
   locales: Readonly<Record<string, LocaleTable>>;
 }
 
@@ -53,6 +56,7 @@ export const COLLECTION_DIRS = {
   tactics: 'tactics',
   formations: 'formations',
   'unit-types': 'unitTypes',
+  encounters: 'encounters',
   locales: 'locales',
 } as const;
 
@@ -64,6 +68,7 @@ const RECORD_SCHEMAS: { [K in RecordCollection]: z.ZodType<ContentRegistry[K] ex
   tactics: TacticSchema,
   formations: FormationSchema,
   unitTypes: UnitTypeSchema,
+  encounters: EncounterSchema,
 };
 
 export function collectionOf(path: string): string | null {
@@ -96,6 +101,7 @@ export function validateContent(files: readonly RawContentFile[]): ContentValida
     tactics: new Map<string, TacticDefinition>(),
     formations: new Map<string, FormationDefinition>(),
     unitTypes: new Map<string, UnitTypeDefinition>(),
+    encounters: new Map<string, EncounterDefinition>(),
   };
   const recordPaths = new Map<string, string>();
   const locales: Record<string, LocaleTable> = {};
@@ -161,6 +167,20 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
     ref(general.id, 'unitType', general.unitType, unitCodes.has(general.unitType));
   }
 
+  for (const enc of registry.encounters.values()) {
+    const slots = new Set<number>();
+    const combatIds = new Set<string>();
+    for (const e of enc.enemies) {
+      ref(enc.id, 'enemies.generalId', e.generalId, registry.generals.has(e.generalId));
+      const cid = e.combatId ?? e.generalId;
+      if (slots.has(e.slot)) issues.push({ code: 'INVARIANT', path: paths.get(enc.id) ?? enc.id, message: `${enc.id}: duplicate enemy slot ${e.slot}` });
+      if (combatIds.has(cid)) issues.push({ code: 'INVARIANT', path: paths.get(enc.id) ?? enc.id, message: `${enc.id}: duplicate combat id ${cid} (set combatId)` });
+      slots.add(e.slot);
+      combatIds.add(cid);
+    }
+    if (enc.enemyFormationId) ref(enc.id, 'enemyFormationId', enc.enemyFormationId, registry.formations.has(enc.enemyFormationId));
+  }
+
   const seenCodes = new Map<string, string>();
   for (const unit of registry.unitTypes.values()) {
     const prior = seenCodes.get(unit.code);
@@ -174,7 +194,7 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
   if (!ko) {
     issues.push({ code: 'MISSING_LOCALIZATION', path: 'src/content/locales/ko.json', message: 'default locale "ko" not found' });
   } else {
-    const collections: ReadonlyMap<string, unknown>[] = [registry.generals, registry.traits, registry.tactics, registry.formations, registry.unitTypes];
+    const collections: ReadonlyMap<string, unknown>[] = [registry.generals, registry.traits, registry.tactics, registry.formations, registry.unitTypes, registry.encounters];
     for (const map of collections) {
       for (const [id, record] of map) {
         for (const key of localizationKeysOf(record)) {

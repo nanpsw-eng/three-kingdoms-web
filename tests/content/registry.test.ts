@@ -114,3 +114,21 @@ describe('content registry validation', () => {
     expect(validateContent(files).issues.map((i) => i.code)).toContain('SCHEMA');
   });
 });
+
+describe('encounter validation', () => {
+  const enc = (enemies: unknown[]) => ({
+    path: 'src/content/encounters/e.json',
+    data: { id: 'ENC_T', nameKey: 'general.test.name', enemies, rewards: { xp: 1, gold: 1 } },
+  });
+
+  it('rejects unknown enemy general and duplicate combat ids/slots', () => {
+    const result = validateContent([
+      ...fixture(),
+      enc([{ generalId: 'GEN_MISSING', level: 1, slot: 0 }, { generalId: 'GEN_TEST', level: 1, slot: 1 }, { generalId: 'GEN_TEST', level: 1, slot: 1 }]),
+    ]);
+    const messages = result.issues.map((i) => i.message).join('\n');
+    expect(messages).toContain('GEN_MISSING');
+    expect(messages).toContain('duplicate combat id GEN_TEST');
+    expect(messages).toContain('duplicate enemy slot 1');
+  });
+});

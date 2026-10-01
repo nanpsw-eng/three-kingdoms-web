@@ -2,6 +2,8 @@
  * Typed React <-> Phaser bridge. No React or Phaser import: both sides talk
  * through these events, so either side can be replaced or tested in isolation.
  */
+import type { BattleEvent, Side, UnitType } from '../domain/battle/types';
+
 export type SceneKey = 'Boot' | 'Preload' | 'World' | 'Battle';
 export type AggroState = 'GUARD' | 'PATROL' | 'CHASE' | 'RETURN' | 'ENGAGED';
 
@@ -15,13 +17,25 @@ export interface RuntimeEvents {
   'runtime-error': { message: string };
 }
 
+export interface BattleUnitView {
+  id: string;
+  side: Side;
+  slot: number;
+  /** Short display label (procedural token text). */
+  label: string;
+  troops: number;
+  maxTroops: number;
+  unitType: UnitType;
+}
+
 /** UI (React) -> Runtime (Phaser). */
 export interface UiCommands {
   'set-paused': { paused: boolean };
   'move-direction': { dx: number; dy: number } | null;
   'resume-world': { defeatedEnemyId: string | null };
-  'start-battle-view': { battleId: string };
-  'play-battle-events': { turn: number; events: readonly unknown[]; speed: 1 | 2 | 3 };
+  'sync-world': { defeatedEncounterIds: readonly string[] };
+  'start-battle-view': { battleId: string; units: readonly BattleUnitView[] };
+  'play-battle-events': { turn: number; events: readonly BattleEvent[]; speed: 1 | 2 | 3 };
   'end-battle-view': Record<string, never>;
 }
 

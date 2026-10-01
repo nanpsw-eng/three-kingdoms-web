@@ -97,6 +97,11 @@ export class WorldScene extends Phaser.Scene {
         this.world = resolveEncounter(this.world, engaged.id, defeatedEnemyId === engaged.id ? 'DEFEATED' : 'FLED');
         this.syncEnemy(engaged.id, this.world.enemies.find((e) => e.id === engaged.id)!.mode);
       }),
+      this.bridge.ui.on('sync-world', ({ defeatedEncounterIds }) => {
+        const defeated = new Set(defeatedEncounterIds);
+        this.world = { ...this.world, enemies: this.world.enemies.map((e) => (defeated.has(e.encounterId) ? { ...e, mode: 'DEFEATED' as const } : e)) };
+        for (const e of this.world.enemies) if (e.mode === 'DEFEATED') this.syncEnemy(e.id, 'DEFEATED');
+      }),
       this.bridge.ui.on('set-paused', ({ paused }) => {
         this.world = { ...this.world, paused };
       }),

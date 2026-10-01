@@ -7,14 +7,12 @@
   "general.zhang_fei.courtesy_name": "익덕",
   "general.jian_yong.name": "간옹",
   "general.jian_yong.courtesy_name": "헌화",
-
   "unit.spear.name": "창병",
   "unit.spear.desc": "기병의 돌격을 받아내는 데 능하다. 궁병에게 약하다.",
   "unit.cavalry.name": "기병",
   "unit.cavalry.desc": "빠른 돌격으로 궁병을 무너뜨린다. 창병에게 약하다.",
   "unit.archer.name": "궁병",
   "unit.archer.desc": "거리를 두고 창병을 압박한다. 기병에게 약하다.",
-
   "trait.liu_bei_benevolence.name": "인덕",
   "trait.liu_bei_benevolence.desc": "아군을 돌보는 마음이 깊어 회복 책략의 효과가 커진다.",
   "trait.guan_yu_war_god.name": "무신의 위엄",
@@ -23,7 +21,6 @@
   "trait.zhang_fei_heroic.desc": "병력이 충분할 때 기세가 올라 일반 공격 피해가 크게 증가한다.",
   "trait.jian_yong_eloquence.name": "언변",
   "trait.jian_yong_eloquence.desc": "말솜씨로 적을 흔들어 제어 책략의 성공률이 오른다.",
-
   "tactic.fire_attack.name": "화공",
   "tactic.fire_attack.desc": "불길로 적 부대 하나에 지력 기반 피해를 준다.",
   "tactic.heal_minor.name": "응급 치료",
@@ -34,11 +31,16 @@
   "tactic.inspire.desc": "아군 전체의 사기를 높여 일반 공격 피해를 늘린다.",
   "tactic.taunt.name": "도발",
   "tactic.taunt.desc": "적의 공격을 자신에게 끌어들인다.",
-
   "formation.wedge.name": "추행진",
   "formation.wedge.desc": "선두에 힘을 모아 돌파하는 공격형 진형. 방어가 약간 낮아진다.",
   "formation.circle.name": "방원진",
   "formation.circle.desc": "둥글게 서로를 감싸는 방어형 진형. 공격과 속도가 약간 낮아진다.",
   "formation.crane.name": "학익진",
-  "formation.crane.desc": "양 날개를 펼쳐 책략과 측면 공격을 강화하는 진형."
+  "formation.crane.desc": "양 날개를 펼쳐 책략과 측면 공격을 강화하는 진형.",
+  "general.yt_scout_leader.name": "황건 정찰대장",
+  "general.yt_spearmen.name": "황건 창병대",
+  "general.yt_archers.name": "황건 궁병대",
+  "general.yt_riders.name": "황건 기병대",
+  "general.yt_sorcerer.name": "황건 술사",
+  "encounter.south_plain_scouts.name": "남부 평야의 황건 정찰대"
 }
