@@ -72,7 +72,7 @@
     "target": "ALL_ENEMIES",
     "effect": {
       "kind": "DAMAGE",
-      "power": 0.72
+      "power": 1.5
     }
   }
 ]
