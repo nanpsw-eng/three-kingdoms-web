@@ -223,6 +223,16 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
       combatIds.add(cid);
     }
     if (enc.enemyFormationId) ref(enc.id, 'enemyFormationId', enc.enemyFormationId, registry.formations.has(enc.enemyFormationId));
+    for (const telegraph of enc.telegraphs) {
+      ref(enc.id, 'telegraphs.actorGeneralId', telegraph.actorGeneralId, registry.generals.has(telegraph.actorGeneralId));
+      ref(enc.id, 'telegraphs.tacticId', telegraph.tacticId, registry.tactics.has(telegraph.tacticId));
+      const matching = enc.enemies.filter((e) => e.generalId === telegraph.actorGeneralId);
+      if (matching.length !== 1) invariant(enc.id, `telegraph actor ${telegraph.actorGeneralId} must appear exactly once in encounter enemies`);
+      const general = registry.generals.get(telegraph.actorGeneralId);
+      if (general && !general.initialTacticIds.includes(telegraph.tacticId)) {
+        invariant(enc.id, `telegraph tactic ${telegraph.tacticId} is not learned by ${telegraph.actorGeneralId}`);
+      }
+    }
   }
 
   const flag = (fromId: string, field: string, id: string | null | undefined) => {
