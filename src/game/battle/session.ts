@@ -146,10 +146,13 @@ function tacticalCommand(
   }
 
   if (session.state.turn === 1) {
-    const support = affordable.find(
-      (t) => t.effect.kind === 'STATUS' && t.target === 'ALL_ALLIES' &&
-        !session.state.combatants.some((c) => c.side === actor.side && c.statuses.some((s) => s.code === t.effect.status)),
-    );
+    const support = affordable.find((t) => {
+      if (t.effect.kind !== 'STATUS' || t.target !== 'ALL_ALLIES') return false;
+      const status = t.effect.status;
+      return !session.state.combatants.some(
+        (c) => c.side === actor.side && c.statuses.some((s) => s.code === status),
+      );
+    });
     if (support) return { type: 'TACTIC', actorId: actor.id, tacticId: support.id };
   }
 
