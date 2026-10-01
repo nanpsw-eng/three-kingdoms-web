@@ -1,13 +1,14 @@
-# SESSION HANDOFF — Bootstrap + Battle Core
+# SESSION HANDOFF — Bootstrap + Battle Core + App Shell
 
 ## Current State
 - Repository: `nanpsw-eng/three-kingdoms-web`
 - Visibility: `PUBLIC`
 - Default Branch: `main`
 - Working Branch: `implementation/bootstrap`
+- Draft PR: `#1 Bootstrap project and add deterministic battle core`
 - Main initialization commit: `28f16840203ac7c8e5d0f5d650c0dfa0279716dc`
-- Current branch head after battle-core upload: `e100eab6d5806d85ee669b19eda2fcdeb6217204`
-- Current Gate: `BATTLE_CORE_IMPLEMENTED / APP_SCAFFOLD_PENDING`
+- Current branch head: `8814526cfa042dbd615aec16d53e73f7e76f1717`
+- Current Gate: `BOOTSTRAP_IMPLEMENTED / DEPENDENCY_INSTALL_AND_FULL_BUILD_PENDING`
 
 ## AI-OS Execution Snapshot
 - AI-OS: `v0.4.4@64b5115a698cc6a94cd8df80abb2ee7109010764`
@@ -19,53 +20,62 @@
 - Actual Surface: `CHAT + connected GitHub + local runtime`
 
 ## Completed
-- GitHub repository discovered as public and empty; main initialized.
-- `implementation/bootstrap` branch created.
-- AI-OS Binding, AGENTS, approved PRD, ADRs and game specs persisted.
-- Package versions pinned using current stable releases as of 2026-10-01.
+- Public GitHub repository initialized.
+- `implementation/bootstrap` branch and Draft PR #1 created.
+- AI-OS Binding, AGENTS, approved PRD, ADRs and core game specs persisted.
+- Current stable package versions pinned for React/Vite/Phaser/Zod/Dexie/Vitest/Playwright.
 - Pure TypeScript deterministic physical battle core implemented.
 - Seeded RNG implemented; domain code does not use `Math.random()`.
 - Initial spear/cavalry/archer matchup implemented.
 - Smart Command attack recommendation implemented.
-- Turn resolution supports attack and defend commands without mutating input state.
+- Turn resolution supports attack and defend without mutating input state.
+- Zod General schema added.
+- Initial JSON content added for Liu Bei, Guan Yu, Zhang Fei and Jian Yong.
+- Vite/React/PWA mobile application shell scaffold added.
+- Initial portrait mobile shell includes quest, party summary and bottom navigation with >=48px primary touch targets.
 
 ## Verification
 ### PASS
-Command executed locally:
-`npm run test:domain`
-
-Observed result:
-- TypeScript domain compilation: PASS using available local TypeScript 5.8.3
-- Node smoke tests: 4 PASS / 0 FAIL
-- Tested: unit triangle, deterministic seed result, Smart Command generation, immutable turn resolution
+1. `npm run test:domain`
+   - TypeScript domain compilation: PASS using locally available TypeScript 5.8.3
+   - Node smoke tests: 4 PASS / 0 FAIL
+   - Coverage target: unit triangle, deterministic RNG/damage, Smart Command generation, immutable turn resolution
+2. JSON syntax/basic invariants for initial general content
+   - 4 files parsed successfully
+   - stable IDs unique
+   - core stats within 1..100
 
 ### NOT_RUN
-- `npm install`
+- `npm install` — current working container has no external package network access
+- Project TypeScript 7.0.2 full typecheck
 - React/Vite application build
-- Zod content validation
+- Zod runtime parse of JSON content
 - Vitest suite
 - Playwright E2E
 - Phaser runtime
-- Mobile device validation
-- PWA validation
+- Real mobile device validation
+- PWA install/cache validation
 - GitHub Actions: DISABLED BY ADR-004
 
 ## Package Baseline
-- React 19.3.0
+- React / React DOM 19.3.0
 - Vite 8.3.2
 - Phaser 4.2.1
 - Zod 4.6.5
 - Dexie 4.4.6
 - Vitest 5.0.3
 - Playwright 1.63.0
-- TypeScript 7.0.2 declared for project install
+- TypeScript 7.0.2
+- @types/react / @types/react-dom 19.3.0
+- @types/node 22.20.2
 
 ## Next Task
-1. Add Vite/React application scaffold and TypeScript project configs.
-2. Add Zod content schemas and content/reference validator.
-3. Add initial JSON content for Liu Bei, Guan Yu, Zhang Fei, Jian Yong and Yellow Turban archetypes.
-4. Convert domain smoke coverage into Vitest after dependencies are installed.
-5. Add React↔Phaser bridge only after schema/battle baseline remains green.
+1. Run `npm install` in a network-enabled development/Codex runtime.
+2. Run full `npm run typecheck`, `npm test`, `npm run build`.
+3. Resolve any TypeScript 7 / dependency integration issues.
+4. Implement Zod content registry/reference validation and traits/tactics referenced by the first four generals.
+5. Add Phaser boot/world placeholder and typed React↔Phaser bridge after baseline remains green.
+6. Begin Tap-to-Move Vertical Slice world prototype.
 
 ## REQUIRED_CONTEXT
 - `AGENTS.md`
@@ -77,8 +87,8 @@ Observed result:
 - this Handoff
 
 ## ON_DEMAND_CONTEXT
-- Character, World, Mobile Battle UX and Vertical Slice specs.
+- Character, World, Mobile Battle UX, Game Data Schema and Vertical Slice specs.
 
 ## Human Gate
-- Merge to `main`: REQUIRED
+- Merge Draft PR #1 to `main`: REQUIRED
 - Production deploy/public release: REQUIRED
