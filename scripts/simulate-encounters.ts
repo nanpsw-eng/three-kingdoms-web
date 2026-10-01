@@ -32,7 +32,7 @@ interface ProbeResult {
   avgTroopLoss: number;
 }
 
-function measure(encounterId: string, party: PartyMemberInput[], formation: string | null, reactToTelegraph = false): ProbeResult {
+function measure(encounterId: string, party: PartyMemberInput[], formation: string | null, response: 'NONE' | 'DEFEND' | 'FOCUS' = 'NONE'): ProbeResult {
   const results: Record<string, number> = {};
   let turns = 0;
   let lostTroops = 0;
@@ -42,11 +42,18 @@ function measure(encounterId: string, party: PartyMemberInput[], formation: stri
     const start = s.state.combatants.filter((c) => c.side === 'PLAYER').reduce((n, c) => n + c.troops, 0);
 
     while (s.result === 'ONGOING') {
-      if (reactToTelegraph) {
-        const executionTurn = s.telegraphs.some((t) => t.executeTurn === s.state.turn && (s.state.combatants.find((c) => c.id === t.actorId)?.troops ?? 0) > 0);
-        if (executionTurn) {
+      if (response !== 'NONE') {
+        const liveTelegraph = s.telegraphs.find(
+          (t) => (t.announceTurn === s.state.turn || t.executeTurn === s.state.turn) &&
+            (s.state.combatants.find((c) => c.id === t.actorId)?.troops ?? 0) > 0,
+        );
+        if (liveTelegraph && response === 'DEFEND' && liveTelegraph.executeTurn === s.state.turn) {
           for (const actor of s.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
             s = setCommand(s, { type: 'DEFEND', actorId: actor.id });
+          }
+        } else if (liveTelegraph && response === 'FOCUS') {
+          for (const actor of s.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
+            s = setCommand(s, { type: 'ATTACK', actorId: actor.id, targetId: liveTelegraph.actorId });
           }
         }
       }
@@ -71,8 +78,9 @@ for (const [encounterId, party, formation] of plan) {
 }
 
 const bossSmart = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE');
-const bossDefend = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', true);
+const bossDefend = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'DEFEND');
+const bossFocus = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'FOCUS');
 console.log(
-  `BOSS_TELEGRAPH_RESPONSE       smartLoss=${bossSmart.avgTroopLoss.toFixed(0)}% defendLoss=${bossDefend.avgTroopLoss.toFixed(0)}% ` +
-  `smartTurns=${bossSmart.avgTurns.toFixed(1)} defendTurns=${bossDefend.avgTurns.toFixed(1)}`,
+  `BOSS_TELEGRAPH_RESPONSE       smartLoss=${bossSmart.avgTroopLoss.toFixed(0)}% defendLoss=${bossDefend.avgTroopLoss.toFixed(0)}% focusLoss=${bossFocus.avgTroopLoss.toFixed(0)}% ` +
+  `smartTurns=${bossSmart.avgTurns.toFixed(1)} defendTurns=${bossDefend.avgTurns.toFixed(1)} focusTurns=${bossFocus.avgTurns.toFixed(1)}`,
 );
