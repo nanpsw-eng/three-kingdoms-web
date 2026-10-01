@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && tsx scripts/validate-content.ts && vite build",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:domain": "rm -rf .tmp/domain && tsc -p tsconfig.domain.json && node --test tests/domain-smoke.mjs",
     "test:e2e": "playwright test",
-    "check": "npm run typecheck && npm run validate:content && npm run test && npm run build",
+    "check": "node scripts/verify-foundation.mjs --skip-e2e",
     "validate:content": "tsx scripts/validate-content.ts",
-    "sim:encounters": "tsx scripts/simulate-encounters.ts"
+    "sim:encounters": "tsx scripts/simulate-encounters.ts",
+    "verify:foundation": "node scripts/verify-foundation.mjs"
   },
   "dependencies": {
     "dexie": "4.4.6",
