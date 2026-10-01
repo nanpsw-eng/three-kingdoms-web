@@ -15,7 +15,7 @@
 ## AI-OS / execution
 - AI-OS: `v0.4.4@64b5115a698cc6a94cd8df80abb2ee7109010764`
 - Risk: `RISK_MEDIUM`
-- CI: ADR-004 scoped validation-only GitHub Actions is active.
+- CI: ADR-004 scoped validation-only GitHub Actions is active; automatic runs are PR-only, with manual `workflow_dispatch` available to avoid duplicate push + PR runs.
 - No deploy/release/publish automation is authorized.
 
 ## Integrated baseline already present

@@ -14,14 +14,14 @@ The current Chat execution surface can write GitHub content but cannot run the r
 Keep **local-first repository scripts** as the portable validation contract, but allow a narrowly scoped **GitHub Actions validation gate**.
 
 Allowed workflow scope:
-- same-repository feature pushes and pull requests targeting `implementation/bootstrap`;
+- pull requests targeting `implementation/bootstrap`, plus explicit `workflow_dispatch` when pre-PR/manual validation is needed;
 - standard public GitHub-hosted runner only;
 - `npm ci`, typecheck/content/unit/golden/build checks, and Chromium E2E;
 - read-only repository permissions;
 - no repository secrets;
 - no deploy, release, tag, publish, external write, scheduled polling, paid runner, or self-hosted runner.
 
-The workflow is validation evidence only. It does not authorize merge or release.
+The workflow is validation evidence only. It does not authorize merge or release. Automatic feature-branch `push` triggering is intentionally disabled to avoid duplicate push + pull-request runs for the same SHA.
 
 ## Repository validation contract
 Repository scripts remain authoritative and runnable outside Actions:

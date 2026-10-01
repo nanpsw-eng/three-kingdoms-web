@@ -1,18 +1,16 @@
 name: validation
 
 on:
-  push:
-    branches:
-      - 'feature/**'
   pull_request:
     branches:
       - 'implementation/bootstrap'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: validation-${{ github.ref }}
+  group: validation-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:

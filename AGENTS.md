@@ -60,7 +60,7 @@ Prefer the smallest safe change. Do not perform unrelated refactors. For substan
 ### CI / validation policy
 Current policy is `LOCAL_FIRST + VALIDATION_ONLY_ACTIONS_ALLOWED` under ADR-004.
 - Repository scripts remain the portable validation contract.
-- `.github/workflows/validation.yml` is authorized for same-repository feature pushes and pull requests targeting `implementation/bootstrap`.
+- `.github/workflows/validation.yml` is authorized for pull requests targeting `implementation/bootstrap` and explicit manual `workflow_dispatch`; automatic feature-push validation is disabled to prevent duplicate runs.
 - Allowed CI: npm install/ci, typecheck, content/schema/reference validation, unit/golden tests, build, informational balance probes, Chromium E2E.
 - Forbidden without a new explicit approval: deploy, release/tag, package publish, secrets, external writes, scheduled polling, paid/self-hosted runners.
 - A check may be recorded as `PASS` only when actual execution evidence is available. `NOT_RUN != PASS`.
