@@ -48,6 +48,10 @@ export function App() {
     if (bridge && save && scene === 'World') bridge.ui.emit('sync-world', { defeatedEncounterIds: save.defeatedEncounterIds });
   }, [bridge, save, scene]);
 
+  const selectFormation = (formationId: string) => {
+    game.commit((s) => ({ ...s, party: { ...s.party, formationId } }));
+  };
+
   const retreatFromField = () => {
     bridge?.ui.emit('resume-world', { defeatedEnemyId: null });
     setEncounter(null);
@@ -84,6 +88,9 @@ export function App() {
   };
 
   const mode = battle ? 'battle' : 'world';
+  const availableFormations = (save?.unlockedFormationIds ?? [])
+    .map((id) => registry.formations.get(id))
+    .filter((f): f is NonNullable<typeof f> => Boolean(f));
   const quest = registry.quests.get('QST_MAIN_ZHUO_YELLOW_TURBAN');
   const progress = save?.quests['QST_MAIN_ZHUO_YELLOW_TURBAN'];
   const objective = !quest || !progress ? '…' : progress.status === 'COMPLETED' ? '탁군의 황건적을 몰아냈다. (다음 지역 준비 중)' : t(quest.steps[progress.stepIndex]?.objectiveKey ?? '');
@@ -113,6 +120,24 @@ export function App() {
             {encounter && (
               <div className="encounter-sheet" role="dialog" aria-label="적과 조우">
                 <strong>{t(registry.encounters.get(encounter.encounterId)?.nameKey ?? '')}와 마주쳤다!</strong>
+                {save && availableFormations.length > 0 && (
+                  <div className="formation-picker" role="group" aria-label="전투 진형 선택">
+                    <span>진형</span>
+                    <div>
+                      {availableFormations.map((formation) => (
+                        <button
+                          key={formation.id}
+                          type="button"
+                          aria-pressed={save.party.formationId === formation.id}
+                          className={save.party.formationId === formation.id ? 'selected' : ''}
+                          onClick={() => selectFormation(formation.id)}
+                        >
+                          {t(formation.nameKey)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="encounter-actions">
                   <button type="button" className="primary" onClick={startBattle} disabled={!save}>전투</button>
                   <button type="button" onClick={retreatFromField}>후퇴</button>
