@@ -1,9 +1,16 @@
 /**
  * Informational balance probe (NOT a pass/fail gate).
- * - Smart-only: auto-battles each Vertical Slice encounter across 50 seeds.
- * - Telegraph-response probe: on the North Gate boss's declared execution turn,
- *   every living player general defends once. This measures whether reacting to
- *   the warning creates a material survival benefit without changing engine rules.
+ *
+ * Baseline:
+ * - Smart-only auto-battle across each Vertical Slice encounter, 50 deterministic seeds.
+ *
+ * Boss strategy probes:
+ * - defend-on-telegraph: all living allies defend on the declared execution turn.
+ * - interrupt-commander: from announcement until execution, living allies focus the
+ *   telegraphed actor with basic attacks. If the actor routes, the declared tactic
+ *   cannot execute.
+ * - formation comparison: Smart-only using each unlocked foundation formation.
+ *
  * Usage: npm run sim:encounters
  */
 import { createSession, executeTurn, setCommand, type BattleSession, type PartyMemberInput } from '../src/game/battle/session';
@@ -26,13 +33,48 @@ const plan: Array<[string, PartyMemberInput[], string | null]> = [
 ];
 const SEEDS = 50;
 
+type Strategy = 'SMART' | 'DEFEND_TELEGRAPH' | 'INTERRUPT_COMMANDER';
+
 interface ProbeResult {
   results: Record<string, number>;
   avgTurns: number;
   avgTroopLoss: number;
 }
 
-function measure(encounterId: string, party: PartyMemberInput[], formation: string | null, response: 'NONE' | 'DEFEND' | 'FOCUS' = 'NONE'): ProbeResult {
+function applyStrategy(session: BattleSession, strategy: Strategy): BattleSession {
+  if (strategy === 'SMART') return session;
+
+  const liveTelegraph = session.telegraphs.find((t) => {
+    const actorAlive = (session.state.combatants.find((c) => c.id === t.actorId)?.troops ?? 0) > 0;
+    return actorAlive && session.state.turn >= t.announceTurn && session.state.turn <= t.executeTurn;
+  });
+  if (!liveTelegraph) return session;
+
+  if (strategy === 'DEFEND_TELEGRAPH' && session.state.turn === liveTelegraph.executeTurn) {
+    let next = session;
+    for (const actor of session.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
+      next = setCommand(next, { type: 'DEFEND', actorId: actor.id });
+    }
+    return next;
+  }
+
+  if (strategy === 'INTERRUPT_COMMANDER') {
+    let next = session;
+    for (const actor of session.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
+      next = setCommand(next, { type: 'ATTACK', actorId: actor.id, targetId: liveTelegraph.actorId });
+    }
+    return next;
+  }
+
+  return session;
+}
+
+function measure(
+  encounterId: string,
+  party: PartyMemberInput[],
+  formation: string | null,
+  strategy: Strategy = 'SMART',
+): ProbeResult {
   const results: Record<string, number> = {};
   let turns = 0;
   let lostTroops = 0;
@@ -42,21 +84,7 @@ function measure(encounterId: string, party: PartyMemberInput[], formation: stri
     const start = s.state.combatants.filter((c) => c.side === 'PLAYER').reduce((n, c) => n + c.troops, 0);
 
     while (s.result === 'ONGOING') {
-      if (response !== 'NONE') {
-        const liveTelegraph = s.telegraphs.find(
-          (t) => (t.announceTurn === s.state.turn || t.executeTurn === s.state.turn) &&
-            (s.state.combatants.find((c) => c.id === t.actorId)?.troops ?? 0) > 0,
-        );
-        if (liveTelegraph && response === 'DEFEND' && liveTelegraph.executeTurn === s.state.turn) {
-          for (const actor of s.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
-            s = setCommand(s, { type: 'DEFEND', actorId: actor.id });
-          }
-        } else if (liveTelegraph && response === 'FOCUS') {
-          for (const actor of s.state.combatants.filter((c) => c.side === 'PLAYER' && c.troops > 0)) {
-            s = setCommand(s, { type: 'ATTACK', actorId: actor.id, targetId: liveTelegraph.actorId });
-          }
-        }
-      }
+      s = applyStrategy(s, strategy);
       s = executeTurn(s).session;
     }
 
@@ -72,15 +100,26 @@ function measure(encounterId: string, party: PartyMemberInput[], formation: stri
   };
 }
 
-for (const [encounterId, party, formation] of plan) {
-  const m = measure(encounterId, party, formation);
-  console.log(`${encounterId.padEnd(28)} ${JSON.stringify(m.results).padEnd(20)} avgTurns=${m.avgTurns.toFixed(1)} avgTroopLoss=${m.avgTroopLoss.toFixed(0)}%`);
+function print(label: string, m: ProbeResult): void {
+  console.log(
+    `${label.padEnd(31)} ${JSON.stringify(m.results).padEnd(20)} avgTurns=${m.avgTurns.toFixed(1)} avgTroopLoss=${m.avgTroopLoss.toFixed(0)}%`,
+  );
 }
 
-const bossSmart = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE');
-const bossDefend = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'DEFEND');
-const bossFocus = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'FOCUS');
+for (const [encounterId, party, formation] of plan) {
+  print(encounterId, measure(encounterId, party, formation));
+}
+
+const bossSmart = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'SMART');
+const bossDefend = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'DEFEND_TELEGRAPH');
+const bossInterrupt = measure('ENC_NORTH_GATE_BOSS', full, 'FORM_CRANE', 'INTERRUPT_COMMANDER');
+
 console.log(
-  `BOSS_TELEGRAPH_RESPONSE       smartLoss=${bossSmart.avgTroopLoss.toFixed(0)}% defendLoss=${bossDefend.avgTroopLoss.toFixed(0)}% focusLoss=${bossFocus.avgTroopLoss.toFixed(0)}% ` +
-  `smartTurns=${bossSmart.avgTurns.toFixed(1)} defendTurns=${bossDefend.avgTurns.toFixed(1)} focusTurns=${bossFocus.avgTurns.toFixed(1)}`,
+  `BOSS_STRATEGY_RESPONSE          smartLoss=${bossSmart.avgTroopLoss.toFixed(0)}% defendLoss=${bossDefend.avgTroopLoss.toFixed(0)}% ` +
+  `interruptLoss=${bossInterrupt.avgTroopLoss.toFixed(0)}% smartTurns=${bossSmart.avgTurns.toFixed(1)} ` +
+  `defendTurns=${bossDefend.avgTurns.toFixed(1)} interruptTurns=${bossInterrupt.avgTurns.toFixed(1)}`,
 );
+
+for (const formation of ['FORM_WEDGE', 'FORM_CIRCLE', 'FORM_CRANE']) {
+  print(`BOSS_FORMATION_${formation.replace('FORM_', '')}`, measure('ENC_NORTH_GATE_BOSS', full, formation, 'SMART'));
+}
