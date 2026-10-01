@@ -69,20 +69,24 @@ export function useGame(): GameApi {
     };
   }, [registry]);
 
+  // Latest committed save, so commit() can stay outside React's (pure, possibly re-run) state updaters.
+  const saveRef = useRef<SaveGame | null>(null);
+  saveRef.current = save;
+
   const commit = useCallback((update: (s: SaveGame) => SaveGame) => {
-    setSave((current) => {
-      if (!current) return current;
-      const next = { ...update(current), updatedAt: new Date().toISOString() };
-      setStatus('saving');
-      repo.current
-        ?.save(next)
-        .then(() => setStatus('ready'))
-        .catch((e: unknown) => {
-          setStatus('error');
-          setError(String(e));
-        });
-      return next;
-    });
+    const current = saveRef.current;
+    if (!current) return;
+    const next = { ...update(current), updatedAt: new Date().toISOString() };
+    saveRef.current = next;
+    setSave(next);
+    setStatus('saving');
+    repo.current
+      ?.save(next)
+      .then(() => setStatus('ready'))
+      .catch((e: unknown) => {
+        setStatus('error');
+        setError(String(e));
+      });
   }, []);
 
   const t = useCallback((key: string) => registry.locales.ko?.[key] ?? key, [registry]);
