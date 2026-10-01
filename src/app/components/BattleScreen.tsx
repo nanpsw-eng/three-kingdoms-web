@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { executeTurn, resetPlan, retreat, setCommand, type BattleSession, type PlaybackSpeed } from '../../game/battle/session';
+import { activeTelegraph, executeTurn, resetPlan, retreat, setCommand, type BattleSession, type PlaybackSpeed } from '../../game/battle/session';
 import type { ContentRegistry } from '../../game/content/registry';
 import type { BattleCommand, Combatant, TurnResult } from '../../game/domain/battle/index';
 import type { GameBridge } from '../../game/runtime/bridge';
@@ -83,6 +83,7 @@ export function BattleScreen({ session: initial, registry, bridge, t, onFinish }
   const allies = shown.state.combatants.filter((c) => c.side === 'PLAYER');
   const enemies = shown.state.combatants.filter((c) => c.side === 'ENEMY');
   const finished = !busy && session.result !== 'ONGOING';
+  const telegraph = !busy ? activeTelegraph(session) : null;
 
   const describe = (cmd: BattleCommand | undefined): string => {
     if (!cmd) return '대기';
@@ -126,6 +127,13 @@ export function BattleScreen({ session: initial, registry, bridge, t, onFinish }
         <span aria-label={`책략 포인트 ${tp.current} / ${tp.max}`}>TP {tp.current}/{tp.max}{plannedTp > 0 ? ` (예정 -${plannedTp})` : ''}</span>
         {lastTurn && <span className="sr-only" role="status">{lastTurn.events.length}개 행동 처리</span>}
       </div>
+
+      {telegraph && (
+        <div className="telegraph-banner" role="status" aria-live="polite">
+          <strong>⚠ 공격 예고</strong>
+          <span>{t(telegraph.messageKey)}</span>
+        </div>
+      )}
 
       <div className="enemy-row" role="group" aria-label="적 부대">
         {enemies.map((e) => (
