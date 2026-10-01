@@ -1,12 +1,26 @@
+import { useCallback, useEffect, useState } from 'react';
+import type { GameBridge, SceneKey } from '../game/runtime/bridge';
+import { GameCanvas } from './components/GameCanvas';
+
 const party = [
-  ['유비', '2,120'],
-  ['관우', '3,128'],
-  ['장비', '3,180'],
+  ['유비', '1,100'],
+  ['관우', '1,200'],
+  ['장비', '1,250'],
 ];
 
 export function App() {
+  const [bridge, setBridge] = useState<GameBridge | null>(null);
+  const [scene, setScene] = useState<SceneKey | null>(null);
+
+  const onBridge = useCallback((b: GameBridge | null) => setBridge(b), []);
+
+  useEffect(() => {
+    if (!bridge) return;
+    return bridge.runtime.on('scene-ready', ({ scene: s }) => setScene(s));
+  }, [bridge]);
+
   return (
-    <main className="app-shell">
+    <main className="app-shell" data-scene={scene ?? 'loading'}>
       <header className="topbar">
         <div>
           <p className="eyebrow">황건적의 난</p>
@@ -15,12 +29,10 @@ export function App() {
         <button className="icon-button" type="button" aria-label="설정">☰</button>
       </header>
 
-      <section className="world-card" aria-label="게임 월드 미리보기">
+      <section className="world-card" aria-label="게임 월드">
+        <GameCanvas className="game-host" label="필드 지도" onBridge={onBridge} />
         <div className="map-label">탁현 남부 평야</div>
-        <div className="map-road" />
-        <div className="player-marker" aria-label="유비군">劉</div>
-        <div className="enemy-marker" aria-label="황건군">黃</div>
-        <p className="hint">필드를 터치하여 이동</p>
+        {scene !== 'World' && <p className="hint">불러오는 중…</p>}
       </section>
 
       <section className="quest-card">
@@ -31,7 +43,7 @@ export function App() {
       <section className="party-card" aria-label="현재 부대">
         {party.map(([name, troops]) => (
           <article className="general" key={name}>
-            <div className="portrait-placeholder" aria-hidden="true">{name[0]}</div>
+            <div className="portrait-placeholder" aria-hidden="true">{name![0]}</div>
             <div>
               <strong>{name}</strong>
               <span>병력 {troops}</span>

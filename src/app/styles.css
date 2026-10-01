@@ -32,12 +32,14 @@ h1 { margin: 0; font-size: 26px; }
   background: radial-gradient(circle at 72% 25%, #4e5635, transparent 22%), linear-gradient(150deg, #313a24, #1e2a1c 55%, #273321);
   box-shadow: inset 0 0 70px rgba(0,0,0,.25);
 }
-.map-label { position: absolute; top: 16px; left: 16px; padding: 7px 10px; border-radius: 999px; background: rgba(10,12,9,.68); font-size: 13px; }
+.game-host { position: absolute; inset: 0; touch-action: none; }
+.game-host canvas { display: block; }
+.map-label { pointer-events: none; z-index: 1; position: absolute; top: 16px; left: 16px; padding: 7px 10px; border-radius: 999px; background: rgba(10,12,9,.68); font-size: 13px; }
 .map-road { position: absolute; left: 18%; top: 0; width: 42%; height: 120%; transform: rotate(24deg); background: rgba(157,128,78,.22); }
 .player-marker, .enemy-marker { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,.4); font-weight: 800; box-shadow: 0 8px 22px rgba(0,0,0,.35); }
 .player-marker { left: 36%; bottom: 26%; background: #496b85; }
 .enemy-marker { right: 17%; top: 27%; background: #9a4c33; }
-.hint { position: absolute; bottom: 12px; left: 0; right: 0; margin: 0; text-align: center; color: #d8ceb8; font-size: 13px; }
+.hint { pointer-events: none; z-index: 1; position: absolute; bottom: 12px; left: 0; right: 0; margin: 0; text-align: center; color: #d8ceb8; font-size: 13px; }
 
 .quest-card, .party-card { margin-top: 12px; border: 1px solid #3d3b2c; border-radius: 16px; background: #1b1e17; }
 .quest-card { padding: 14px; }
