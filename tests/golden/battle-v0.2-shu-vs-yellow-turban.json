@@ -1,0 +1,507 @@
+[
+  {
+    "seed": 20261001,
+    "outcome": "PLAYER_VICTORY",
+    "turns": 9,
+    "finalRngState": 1516546378,
+    "finalTroops": {
+      "GEN_GUAN_YU": 1360,
+      "GEN_ZHANG_FEI": 1053,
+      "GEN_LIU_BEI": 1244,
+      "GEN_JIAN_YONG": 1024,
+      "YT_CAPTAIN": 0,
+      "YT_BRUTE": 0,
+      "YT_ARCHER_A": 0,
+      "YT_ARCHER_B": 0,
+      "YT_SPEAR": 0
+    },
+    "finalTp": {
+      "PLAYER": {
+        "max": 31,
+        "current": 17
+      },
+      "ENEMY": {
+        "max": 24,
+        "current": 24
+      }
+    },
+    "eventTypeCounts": {
+      "TACTIC_CAST": 9,
+      "STATUS_APPLIED": 6,
+      "DAMAGE": 46,
+      "ACTION_SKIPPED": 2,
+      "TARGET_REDIRECTED": 5,
+      "HEAL": 6,
+      "STATUS_EXPIRED": 6,
+      "ROUT": 5,
+      "BATTLE_END": 1
+    },
+    "turn1Events": [
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_JIAN_YONG",
+        "tacticId": "TAC_CONFUSE",
+        "tpCost": 6
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_JIAN_YONG",
+        "targetId": "YT_CAPTAIN",
+        "status": "CONFUSED",
+        "turns": 2
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_GUAN_YU",
+        "tacticId": "TAC_INSPIRE",
+        "tpCost": 8
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_GUAN_YU",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_LIU_BEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_JIAN_YONG",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "GEN_LIU_BEI",
+        "targetId": "YT_CAPTAIN",
+        "amount": 330
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_ZHANG_FEI",
+        "tacticId": "TAC_TAUNT",
+        "tpCost": 3
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_ZHANG_FEI",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "TAUNTING",
+        "turns": 2
+      },
+      {
+        "type": "ACTION_SKIPPED",
+        "actorId": "YT_CAPTAIN",
+        "reason": "CONFUSED"
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_A",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_A",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 200
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_B",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_B",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 202
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_BRUTE",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_BRUTE",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 261
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_SPEAR",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_SPEAR",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 186
+      }
+    ]
+  },
+  {
+    "seed": 7,
+    "outcome": "PLAYER_VICTORY",
+    "turns": 11,
+    "finalRngState": 2153611484,
+    "finalTroops": {
+      "GEN_GUAN_YU": 882,
+      "GEN_ZHANG_FEI": 0,
+      "GEN_LIU_BEI": 870,
+      "GEN_JIAN_YONG": 1024,
+      "YT_CAPTAIN": 0,
+      "YT_BRUTE": 0,
+      "YT_ARCHER_A": 0,
+      "YT_ARCHER_B": 0,
+      "YT_SPEAR": 0
+    },
+    "finalTp": {
+      "PLAYER": {
+        "max": 31,
+        "current": 23
+      },
+      "ENEMY": {
+        "max": 24,
+        "current": 24
+      }
+    },
+    "eventTypeCounts": {
+      "TACTIC_CAST": 9,
+      "STATUS_RESISTED": 1,
+      "STATUS_APPLIED": 5,
+      "DAMAGE": 55,
+      "TARGET_REDIRECTED": 10,
+      "HEAL": 6,
+      "ROUT": 6,
+      "STATUS_EXPIRED": 3,
+      "BATTLE_END": 1
+    },
+    "turn1Events": [
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_JIAN_YONG",
+        "tacticId": "TAC_CONFUSE",
+        "tpCost": 6
+      },
+      {
+        "type": "STATUS_RESISTED",
+        "actorId": "GEN_JIAN_YONG",
+        "targetId": "YT_CAPTAIN",
+        "status": "CONFUSED",
+        "chance": 0.89
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_GUAN_YU",
+        "tacticId": "TAC_INSPIRE",
+        "tpCost": 8
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_GUAN_YU",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_LIU_BEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_JIAN_YONG",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "GEN_LIU_BEI",
+        "targetId": "YT_CAPTAIN",
+        "amount": 337
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_ZHANG_FEI",
+        "tacticId": "TAC_TAUNT",
+        "tpCost": 3
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_ZHANG_FEI",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "TAUNTING",
+        "turns": 2
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_CAPTAIN",
+        "fromId": "GEN_JIAN_YONG",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_CAPTAIN",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 224
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_A",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_A",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 194
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_B",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_B",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 208
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_BRUTE",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_BRUTE",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 256
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_SPEAR",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_SPEAR",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 187
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "outcome": "PLAYER_VICTORY",
+    "turns": 11,
+    "finalRngState": 136617578,
+    "finalTroops": {
+      "GEN_GUAN_YU": 1327,
+      "GEN_ZHANG_FEI": 0,
+      "GEN_LIU_BEI": 761,
+      "GEN_JIAN_YONG": 1024,
+      "YT_CAPTAIN": 0,
+      "YT_BRUTE": 0,
+      "YT_ARCHER_A": 0,
+      "YT_ARCHER_B": 0,
+      "YT_SPEAR": 0
+    },
+    "finalTp": {
+      "PLAYER": {
+        "max": 31,
+        "current": 23
+      },
+      "ENEMY": {
+        "max": 24,
+        "current": 24
+      }
+    },
+    "eventTypeCounts": {
+      "TACTIC_CAST": 9,
+      "STATUS_RESISTED": 1,
+      "STATUS_APPLIED": 5,
+      "DAMAGE": 55,
+      "TARGET_REDIRECTED": 9,
+      "HEAL": 6,
+      "STATUS_EXPIRED": 5,
+      "ROUT": 6,
+      "BATTLE_END": 1
+    },
+    "turn1Events": [
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_JIAN_YONG",
+        "tacticId": "TAC_CONFUSE",
+        "tpCost": 6
+      },
+      {
+        "type": "STATUS_RESISTED",
+        "actorId": "GEN_JIAN_YONG",
+        "targetId": "YT_CAPTAIN",
+        "status": "CONFUSED",
+        "chance": 0.89
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_GUAN_YU",
+        "tacticId": "TAC_INSPIRE",
+        "tpCost": 8
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_GUAN_YU",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_LIU_BEI",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_GUAN_YU",
+        "targetId": "GEN_JIAN_YONG",
+        "status": "INSPIRED",
+        "turns": 2
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "GEN_LIU_BEI",
+        "targetId": "YT_CAPTAIN",
+        "amount": 332
+      },
+      {
+        "type": "TACTIC_CAST",
+        "actorId": "GEN_ZHANG_FEI",
+        "tacticId": "TAC_TAUNT",
+        "tpCost": 3
+      },
+      {
+        "type": "STATUS_APPLIED",
+        "actorId": "GEN_ZHANG_FEI",
+        "targetId": "GEN_ZHANG_FEI",
+        "status": "TAUNTING",
+        "turns": 2
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_CAPTAIN",
+        "fromId": "GEN_JIAN_YONG",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_CAPTAIN",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 217
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_A",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_A",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 204
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_ARCHER_B",
+        "fromId": "GEN_LIU_BEI",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_ARCHER_B",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 206
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_BRUTE",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_BRUTE",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 263
+      },
+      {
+        "type": "TARGET_REDIRECTED",
+        "actorId": "YT_SPEAR",
+        "fromId": "GEN_GUAN_YU",
+        "toId": "GEN_ZHANG_FEI",
+        "reason": "TAUNT"
+      },
+      {
+        "type": "DAMAGE",
+        "actorId": "YT_SPEAR",
+        "targetId": "GEN_ZHANG_FEI",
+        "amount": 182
+      }
+    ]
+  }
+]
