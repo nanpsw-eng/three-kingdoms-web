@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EncounterIdSchema, FormationIdSchema, GeneralIdSchema, LocalizationKeySchema } from './ids';
+import { EncounterIdSchema, FormationIdSchema, GeneralIdSchema, LocalizationKeySchema, TacticIdSchema } from './ids';
 
 export const EncounterEnemySchema = z.object({
   generalId: GeneralIdSchema,
@@ -13,6 +13,19 @@ export const EncounterEnemySchema = z.object({
   troops: z.number().int().positive().optional(),
 }).strict();
 
+export const EncounterTelegraphSchema = z.object({
+  /** Turn on which the warning is shown before commands are committed. */
+  announceTurn: z.number().int().min(1).max(99),
+  /** Later turn on which the enemy is forced to attempt the declared tactic. */
+  executeTurn: z.number().int().min(2).max(99),
+  actorGeneralId: GeneralIdSchema,
+  tacticId: TacticIdSchema,
+  messageKey: LocalizationKeySchema,
+}).strict().refine((v) => v.executeTurn > v.announceTurn, {
+  message: 'executeTurn must be later than announceTurn',
+  path: ['executeTurn'],
+});
+
 export const EncounterSchema = z.object({
   id: EncounterIdSchema,
   nameKey: LocalizationKeySchema,
@@ -20,8 +33,10 @@ export const EncounterSchema = z.object({
   enemyFormationId: FormationIdSchema.nullable().default(null),
   isBoss: z.boolean().default(false),
   canRetreat: z.boolean().default(true),
+  telegraphs: z.array(EncounterTelegraphSchema).default([]),
   rewards: z.object({ xp: z.number().int().min(0), gold: z.number().int().min(0) }).strict(),
   contentStatus: z.enum(['APPROVED', 'PROVISIONAL_CONTENT_REVIEW_REQUIRED']).optional(),
 }).strict();
 
 export type EncounterDefinition = z.infer<typeof EncounterSchema>;
+export type EncounterTelegraphDefinition = z.infer<typeof EncounterTelegraphSchema>;
