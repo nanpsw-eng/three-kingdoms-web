@@ -40,5 +40,8 @@ jobs:
       - name: Type, content, unit, golden and build checks
         run: npm run check
 
+      - name: Balance probe (informational)
+        run: npm run sim:encounters
+
       - name: Chromium responsive E2E
         run: npm run test:e2e
