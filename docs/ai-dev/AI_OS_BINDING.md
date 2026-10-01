@@ -18,7 +18,7 @@
 - GitHub repository: `nanpsw-eng/three-kingdoms-web`
 - Visibility: `PUBLIC`
 - Default branch: `main`
-- Current implementation branch: `implementation/bootstrap`
+- Current implementation branch: `implementation/bootstrap` (integration); foundation work on `implementation/foundation-nightly` (Draft PR #2)
 
 ## Loading Rule
 AI-OS가 필요한 작업에서만 위 exact commit 기준으로 필요한 Core Policy와 Domain Pack을 선택적으로 읽는다. 승인된 결정을 우선 재사용하고 현재 변경 위험을 통제하는 최소 Context·Agent·Test·Cost를 사용한다.

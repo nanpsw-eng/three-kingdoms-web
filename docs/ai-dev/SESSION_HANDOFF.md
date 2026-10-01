@@ -1,109 +1,80 @@
-# SESSION HANDOFF — Bootstrap + Battle Core + App Shell
+# SESSION HANDOFF — Foundation Nightly (N0–N11 complete)
 
 ## Current State
-- Repository: `nanpsw-eng/three-kingdoms-web`
-- Visibility: `PUBLIC`
-- Default Branch: `main`
-- Working Branch: `implementation/bootstrap`
-- Draft PR: `#1 Bootstrap project and add deterministic battle core`
-- Main initialization commit: `28f16840203ac7c8e5d0f5d650c0dfa0279716dc`
-- Current branch head: `8814526cfa042dbd615aec16d53e73f7e76f1717`
-- Current Gate: `BOOTSTRAP_IMPLEMENTED / DEPENDENCY_INSTALL_AND_FULL_BUILD_PENDING`
+- Repository: `nanpsw-eng/three-kingdoms-web` (`PUBLIC`, default branch `main`)
+- Integration branch: `implementation/bootstrap` @ `75b4122` — Draft PR #1 → `main` (unchanged)
+- Working branch: `implementation/foundation-nightly` (from `implementation/bootstrap` @ `75b4122`)
+- Draft PR: #2 `implementation/foundation-nightly` → `implementation/bootstrap` (**do not merge without human approval**)
+- Verified code HEAD: `4268d94` (later commits on this branch are docs-only unless stated in git log)
+- Current Gate: `FOUNDATION_IMPLEMENTED / LOCAL_GATE_GREEN / REAL_DEVICE_NOT_RUN`
+- Full evidence: `docs/reports/OVERNIGHT_FOUNDATION_REPORT.md`
 
 ## AI-OS Execution Snapshot
 - AI-OS: `v0.4.4@64b5115a698cc6a94cd8df80abb2ee7109010764`
 - Risk Tier: `RISK_MEDIUM`
-- Context Budget: `FOCUSED`
-- Agent Budget: `1 writer / 0 reviewer`
-- Test Budget: `T1 TARGETED`
-- CI Policy: `LOCAL_FIRST / GITHUB_ACTIONS_DISABLED`
-- Actual Surface: `CHAT + connected GitHub + local runtime`
+- Agent Budget used: `1 writer / 0 reviewer` (SEQUENTIAL)
+- CI Policy: `LOCAL_FIRST / GITHUB_ACTIONS_DISABLED` — **unchanged**; no `.github/workflows/*` added (local runtime covered all checks, so the conditional preapproval's condition 1 was not met)
 
-## Completed
-- Public GitHub repository initialized.
-- `implementation/bootstrap` branch and Draft PR #1 created.
-- AI-OS Binding, AGENTS, approved PRD, ADRs and core game specs persisted.
-- Current stable package versions pinned for React/Vite/Phaser/Zod/Dexie/Vitest/Playwright.
-- Pure TypeScript deterministic physical battle core implemented.
-- Seeded RNG implemented; domain code does not use `Math.random()`.
-- Initial spear/cavalry/archer matchup implemented.
-- Smart Command attack recommendation implemented.
-- Turn resolution supports attack and defend without mutating input state.
-- Zod General schema added.
-- Initial JSON content added for Liu Bei, Guan Yu, Zhang Fei and Jian Yong.
-- Vite/React/PWA mobile application shell scaffold added.
-- Initial portrait mobile shell includes quest, party summary and bottom navigation with >=48px primary touch targets.
+## Recovery checklist for the next session
+1. `git fetch origin && git checkout implementation/foundation-nightly`
+2. `npm ci`
+3. `npm run verify:foundation` (expects 8/8 PASS; E2E needs a Chromium — set `PW_CHROMIUM_PATH` if not at `/opt/pw-browsers/chromium`)
+4. Read this file, then `docs/reports/OVERNIGHT_FOUNDATION_REPORT.md` §4–5 for open decisions and risks.
+5. Repository state overrides this document if they disagree.
 
-## Verification
+## Implemented (by layer)
+| Layer | Path | Notes |
+|---|---|---|
+| Pure domain — battle | `src/game/domain/battle/` | v0.2: config, outcome, defend, party TP, tactics (damage/heal/confuse/inspire/taunt), formations, traits, Smart/Repeat/All-Attack, auto battle. v0.1 numbers preserved by golden tests |
+| Pure domain — world | `src/game/domain/world/` | grid collision, budgeted A*, tap-to-move, guard/patrol/chase/return, encounter + grace |
+| Pure domain — save | `src/game/domain/save/` | SaveGame v1 types, migration chain, battle checkpoint snapshot/restore |
+| Pure domain — progress | `src/game/domain/progress/` | conditions/effects/triggers, quest cascade, one-shot events |
+| Schemas / content | `src/game/schemas/`, `src/game/content/registry.ts`, `src/content/**` | Zod schemas + reference validation for 12 collections + ko locale |
+| Adapters | `src/game/battle/`, `src/game/progress/`, `src/game/save/` | content→domain, BattleSession, applyBattleResult, createNewGame |
+| Persistence | `src/game/persistence/` | `SaveRepository` port, Dexie (IndexedDB) + Memory adapters, validated encode/decode |
+| Runtime bridge | `src/game/runtime/` | typed `GameBridge`, lazy `GameController` |
+| Phaser | `src/game/phaser/` | Boot/Preload/World/Battle scenes, procedural placeholder visuals only |
+| React | `src/app/` | world shell, encounter sheet, virtual d-pad, Smart Command battle UI, `useGame` autosave |
+| PWA | `vite.config.ts`, `public/` | app-shell precache only; saves in IndexedDB |
+
+## Validation commands
+- `npm run verify:foundation` — typecheck, content validation, compiled-domain smoke, vitest, golden subset, architecture boundaries, build, Playwright Chromium 360/390/412
+- `npm run check` — same without E2E
+- `npm run validate:content`, `npm test`, `npm run test:domain`, `npm run test:e2e`, `npm run build`
+- `npm run sim:encounters` — informational balance probe (not a gate)
+- Golden update only when intentional: `UPDATE_GOLDEN=1 npx vitest run tests/domain/battle-golden.test.ts`
+
+## Verification (observed at `4268d94`)
 ### PASS
-1. `npm run test:domain`
-   - TypeScript domain compilation: PASS using locally available TypeScript 5.8.3
-   - Node smoke tests: 4 PASS / 0 FAIL
-   - Coverage target: unit triangle, deterministic RNG/damage, Smart Command generation, immutable turn resolution
-2. JSON syntax/basic invariants for initial general content
-   - 4 files parsed successfully
-   - stable IDs unique
-   - core stats within 1..100
-
+- typecheck; content validation (21 files); domain smoke 4/4; vitest 69/69 (12 files); golden 7/7; architecture boundaries 2/2; build; Playwright Chromium E2E 18/18 (6 specs × 360/390/412)
 ### NOT_RUN
-- `npm install` — current working container has no external package network access
-- Project TypeScript 7.0.2 full typecheck
-- React/Vite application build
-- Zod runtime parse of JSON content
-- Vitest suite
-- Playwright E2E
-- Phaser runtime
-- Real mobile device validation
-- PWA install/cache validation
-- GitHub Actions: DISABLED BY ADR-004
+- Lint (not configured); Playwright WebKit (not installed); real Android Chrome / iPhone Safari; PWA install on device; 60 FPS measurement; GitHub Actions (disabled by ADR-004)
 
-## Package Baseline
-- React / React DOM 19.3.0
-- Vite 8.3.2
-- Phaser 4.2.1
-- Zod 4.6.5
-- Dexie 4.4.6
-- Vitest 5.0.3
-- Playwright 1.63.0
-- TypeScript 7.0.2
-- @types/react / @types/react-dom 19.3.0
-- @types/node 22.20.2
+## BLOCKED_DECISION (neutral seams in place; see report §4)
+- BD-01 defeat penalty — `src/game/save/applyBattle.ts`
+- BD-02 level-up curve — xp accumulates only
+- BD-03 retreat rule — `src/game/battle/session.ts#retreat`
 
-## Next Task
-1. Run `npm install` in a network-enabled development/Codex runtime.
-2. Run full `npm run typecheck`, `npm test`, `npm run build`.
-3. Resolve any TypeScript 7 / dependency integration issues.
-4. Implement Zod content registry/reference validation and traits/tactics referenced by the first four generals.
-5. Add Phaser boot/world placeholder and typed React↔Phaser bridge after baseline remains green.
-6. Begin Tap-to-Move Vertical Slice world prototype.
+## Next Task (recommended order)
+1. Human review of PR #2; decide BD-01..03.
+2. Location travel + NPC interaction UI: wire `ENTER_LOCATION` / `TALK_NPC` triggers (engine and data already exist), per-location field maps.
+3. Rest/recovery UI for `services` / `servicesWhenOwned` (`REST_PARTY` effect exists).
+4. Formation selection UI (unlocked formations already persisted; `save.party.formationId` validated).
+5. Boss telegraph + enemy tactic AI (battle core v0.3), then re-run `npm run sim:encounters`.
+6. Real-device QA (Android Chrome, iPhone Safari, installed PWA) — required by PRD §16.
+
+## Content review queue (`PROVISIONAL_CONTENT_REVIEW_REQUIRED`)
+`EVT_20_RECRUIT_JIAN_YONG`, `NPC_JIAN_YONG`, `GEN_FOREST_RECLUSE` (original fictional optional recruit), `EVT_31_OPTIONAL_RECRUIT`, `NPC_FOREST_RECLUSE`, `LOC_FOREST_SIDE_PATH`, `ENC_NORTH_GATE_BOSS`, `GEN_YT_GATE_COMMANDER`, `GEN_YT_GATE_CHAMPION`, `REG_ZHUO_NORTH`, `LOC_NORTH_ROAD`.
 
 ## REQUIRED_CONTEXT
-- `AGENTS.md`
-- `docs/ai-dev/AI_OS_BINDING.md`
-- `docs/product/PRD.md`
-- `docs/decisions/DECISION_INDEX.md`
-- `docs/specs/TECHNICAL_ARCHITECTURE.md`
-- `docs/specs/COMBAT.md`
-- this Handoff
+- `AGENTS.md`, `docs/ai-dev/AI_OS_BINDING.md`, `docs/product/PRD.md`, `docs/decisions/DECISION_INDEX.md`, `docs/specs/TECHNICAL_ARCHITECTURE.md`, this Handoff, `docs/reports/OVERNIGHT_FOUNDATION_REPORT.md`
 
 ## ON_DEMAND_CONTEXT
-- Character, World, Mobile Battle UX, Game Data Schema and Vertical Slice specs.
+- `docs/specs/COMBAT.md`, `CHARACTER.md`, `WORLD.md`, `MOBILE_BATTLE_UX.md`, `GAME_DATA_SCHEMA.md`, `VERTICAL_SLICE.md`
+- `docs/ai-dev/OVERNIGHT_TASK_GRAPH.md` (completed graph; historical)
 
 ## Human Gate
-- Merge Draft PR #1 to `main`: REQUIRED
-- Production deploy/public release: REQUIRED
-
-
-## Overnight Autonomous Continuation
-- Prepared on: `2026-10-01`
-- Execution target: `Claude Code`
-- Execution mode: `SEQUENTIAL / single writer`
-- Task graph: `docs/ai-dev/OVERNIGHT_TASK_GRAPH.md`
-- Master command: `docs/ai-dev/CLAUDE_CODE_OVERNIGHT_HANDOFF.md`
-- Recommended continuation branch: `implementation/foundation-nightly` from current `origin/implementation/bootstrap`
-- Draft PR target: `implementation/bootstrap`
-- Human-free scope: foundation implementation, tests, documentation, commits, pushes, Draft PR creation/update
-- Human gates retained: merge, release/tag, production deploy, destructive migration, paid resources/accounts, history rewrite
-- Actions policy: OFF by default; user conditionally preapproved a validation-only override if the exact safeguards in the overnight Task Graph are met.
-- Retry rule: default max 2 attempts per same technical failure; then mark BLOCKED and continue independent tasks.
-- Completion rule: do not stop on one blocked task; continue until independent READY tasks are exhausted or a hard environment limitation blocks all remaining work.
+- Merge PR #2 → `implementation/bootstrap`: REQUIRED
+- Merge PR #1 → `main`: REQUIRED
+- Production deploy / public release / tag: REQUIRED
+- Product decisions BD-01..03: REQUIRED
