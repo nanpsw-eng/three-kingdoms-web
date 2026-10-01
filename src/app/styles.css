@@ -60,3 +60,21 @@ h1 { margin: 0; font-size: 26px; }
   .general { gap: 5px; }
   .portrait-placeholder { flex-basis: 32px; height: 32px; }
 }
+
+/* N6 world overlays */
+.aggro-banner { position: absolute; top: 16px; right: 72px; z-index: 2; padding: 7px 10px; border-radius: 999px; background: rgba(120,30,20,.85); color: #ffe7a8; font-size: 13px; font-weight: 700; pointer-events: none; }
+.dpad-toggle { position: absolute; top: 10px; right: 10px; z-index: 2; width: 48px; height: 48px; border-radius: 14px; border: 1px solid #5d563f; background: rgba(20,22,16,.8); color: #f3ead8; font-size: 20px; }
+.dpad-toggle.on { background: #7c6236; }
+.dpad { position: absolute; left: 12px; bottom: 44px; z-index: 2; display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); gap: 2px; touch-action: none; user-select: none; -webkit-user-select: none; }
+.dpad button { width: 48px; height: 48px; border-radius: 12px; border: 1px solid #5d563f; background: rgba(20,22,16,.78); color: #f3ead8; font-size: 18px; touch-action: none; }
+.dpad button:active { background: #7c6236; }
+.dpad-up { grid-column: 2; grid-row: 1; }
+.dpad-left { grid-column: 1; grid-row: 2; }
+.dpad-right { grid-column: 3; grid-row: 2; }
+.dpad-down { grid-column: 2; grid-row: 3; }
+.encounter-sheet { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 3; padding: 14px; border-radius: 16px; border: 1px solid #a48750; background: rgba(17,19,15,.94); }
+.encounter-sheet strong { display: block; margin-bottom: 10px; }
+.encounter-actions { display: flex; gap: 8px; }
+.encounter-actions button { flex: 1; min-height: 48px; border-radius: 12px; border: 1px solid #454538; background: #20231b; color: #e9e0cf; }
+.encounter-actions .primary { background: #7c6236; border-color: #a48750; color: #fff; }
+.encounter-actions button:disabled { opacity: .55; }
