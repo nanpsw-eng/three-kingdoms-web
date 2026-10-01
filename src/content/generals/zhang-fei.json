@@ -1,0 +1,13 @@
+{
+  "id": "GEN_ZHANG_FEI",
+  "nameKey": "general.zhang_fei.name",
+  "courtesyNameKey": "general.zhang_fei.courtesy_name",
+  "role": "HEAVY_PHYSICAL",
+  "baseStats": { "strength": 98, "intelligence": 35, "command": 84, "speed": 68 },
+  "troopGrowth": { "baseTroop": 1250, "perLevel": 82, "category": "HIGH" },
+  "unitType": "SPEAR",
+  "weaponAptitudes": { "SPEAR": "S", "AXE": "A", "DAO": "B" },
+  "traitIds": ["TRT_ZHANG_FEI_HEROIC"],
+  "initialTacticIds": ["TAC_TAUNT"],
+  "tags": ["SHU", "STARTER", "PHYSICAL"]
+}
