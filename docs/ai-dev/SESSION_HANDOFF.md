@@ -92,3 +92,18 @@
 ## Human Gate
 - Merge Draft PR #1 to `main`: REQUIRED
 - Production deploy/public release: REQUIRED
+
+
+## Overnight Autonomous Continuation
+- Prepared on: `2026-10-01`
+- Execution target: `Claude Code`
+- Execution mode: `SEQUENTIAL / single writer`
+- Task graph: `docs/ai-dev/OVERNIGHT_TASK_GRAPH.md`
+- Master command: `docs/ai-dev/CLAUDE_CODE_OVERNIGHT_HANDOFF.md`
+- Recommended continuation branch: `implementation/foundation-nightly` from current `origin/implementation/bootstrap`
+- Draft PR target: `implementation/bootstrap`
+- Human-free scope: foundation implementation, tests, documentation, commits, pushes, Draft PR creation/update
+- Human gates retained: merge, release/tag, production deploy, destructive migration, paid resources/accounts, history rewrite
+- Actions policy: OFF by default; user conditionally preapproved a validation-only override if the exact safeguards in the overnight Task Graph are met.
+- Retry rule: default max 2 attempts per same technical failure; then mark BLOCKED and continue independent tasks.
+- Completion rule: do not stop on one blocked task; continue until independent READY tasks are exhausted or a hard environment limitation blocks all remaining work.
