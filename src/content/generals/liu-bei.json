@@ -1,0 +1,13 @@
+{
+  "id": "GEN_LIU_BEI",
+  "nameKey": "general.liu_bei.name",
+  "courtesyNameKey": "general.liu_bei.courtesy_name",
+  "role": "BALANCED",
+  "baseStats": { "strength": 72, "intelligence": 82, "command": 86, "speed": 72 },
+  "troopGrowth": { "baseTroop": 1100, "perLevel": 72, "category": "NORMAL" },
+  "unitType": "SPEAR",
+  "weaponAptitudes": { "SWORD": "S", "DAO": "B", "SPEAR": "B" },
+  "traitIds": ["TRT_LIU_BEI_BENEVOLENCE"],
+  "initialTacticIds": ["TAC_HEAL_MINOR"],
+  "tags": ["SHU", "STARTER", "LEADER"]
+}
