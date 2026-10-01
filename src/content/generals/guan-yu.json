@@ -1,0 +1,13 @@
+{
+  "id": "GEN_GUAN_YU",
+  "nameKey": "general.guan_yu.name",
+  "courtesyNameKey": "general.guan_yu.courtesy_name",
+  "role": "COMMANDER",
+  "baseStats": { "strength": 95, "intelligence": 74, "command": 94, "speed": 72 },
+  "troopGrowth": { "baseTroop": 1200, "perLevel": 80, "category": "HIGH" },
+  "unitType": "CAVALRY",
+  "weaponAptitudes": { "DAO": "S", "SPEAR": "B", "SWORD": "A" },
+  "traitIds": ["TRT_GUAN_YU_WAR_GOD"],
+  "initialTacticIds": ["TAC_INSPIRE"],
+  "tags": ["SHU", "STARTER", "PHYSICAL"]
+}
