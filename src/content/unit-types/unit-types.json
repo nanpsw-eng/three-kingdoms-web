@@ -1,0 +1,5 @@
+[
+  { "id": "UNIT_SPEAR", "code": "SPEAR", "nameKey": "unit.spear.name", "descriptionKey": "unit.spear.desc", "advantageOver": "CAVALRY" },
+  { "id": "UNIT_CAVALRY", "code": "CAVALRY", "nameKey": "unit.cavalry.name", "descriptionKey": "unit.cavalry.desc", "advantageOver": "ARCHER" },
+  { "id": "UNIT_ARCHER", "code": "ARCHER", "nameKey": "unit.archer.name", "descriptionKey": "unit.archer.desc", "advantageOver": "SPEAR" }
+]

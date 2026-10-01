@@ -1,0 +1,41 @@
+[
+  {
+    "id": "FORM_WEDGE",
+    "nameKey": "formation.wedge.name",
+    "descriptionKey": "formation.wedge.desc",
+    "party": { "physicalAttack": 1.08, "physicalDefense": 0.95, "tacticPower": 1, "speed": 1.03 },
+    "slots": [
+      { "physicalAttack": 1.1, "physicalDefense": 0.95, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1.03, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1.03, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 }
+    ]
+  },
+  {
+    "id": "FORM_CIRCLE",
+    "nameKey": "formation.circle.name",
+    "descriptionKey": "formation.circle.desc",
+    "party": { "physicalAttack": 0.95, "physicalDefense": 1.12, "tacticPower": 1, "speed": 0.97 },
+    "slots": [
+      { "physicalAttack": 1, "physicalDefense": 1.05, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1.05, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1.05, "tacticPower": 1, "speed": 1 }
+    ]
+  },
+  {
+    "id": "FORM_CRANE",
+    "nameKey": "formation.crane.name",
+    "descriptionKey": "formation.crane.desc",
+    "party": { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1.08, "speed": 1 },
+    "slots": [
+      { "physicalAttack": 1.06, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 0.97, "tacticPower": 1.05, "speed": 1 },
+      { "physicalAttack": 1, "physicalDefense": 1, "tacticPower": 1, "speed": 1 },
+      { "physicalAttack": 1.06, "physicalDefense": 1, "tacticPower": 1, "speed": 1 }
+    ]
+  }
+]
