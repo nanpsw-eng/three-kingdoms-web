@@ -7,3 +7,4 @@
 | ADR-002 | Phaser rendering with Pure TypeScript domain boundary | APPROVED | `ADR-002-GAME-ARCHITECTURE.md` |
 | ADR-003 | Zod/JSON content + IndexedDB/Dexie persistence | APPROVED | `ADR-003-DATA-PERSISTENCE.md` |
 | ADR-004 | Local-first validation; GitHub Actions disabled during initial development | APPROVED | `ADR-004-CI-EXECUTION-POLICY.md` |
+| DEC-002 | Defeat recovery: safe checkpoint + 30% troops, no gold/XP loss | APPROVED | `DEC-002-DEFEAT-RECOVERY.md` |
