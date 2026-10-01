@@ -50,8 +50,10 @@
 ### NOT_RUN
 - Lint (not configured); Playwright WebKit (not installed); real Android Chrome / iPhone Safari; PWA install on device; 60 FPS measurement; GitHub Actions (disabled by ADR-004)
 
-## BLOCKED_DECISION (neutral seams in place; see report §4)
-- BD-01 defeat penalty — `src/game/save/applyBattle.ts`
+## Product Decisions
+- BD-01 defeat penalty: **RESOLVED / APPROVED** by `docs/decisions/DEC-002-DEFEAT-RECOVERY.md`. Required implementation: return to most recent safe checkpoint, restore active-party generals to 30% max troops, no gold/XP loss, encounter remains active unless story logic changes it.
+
+## BLOCKED_DECISION (neutral seams remain)
 - BD-02 level-up curve — xp accumulates only
 - BD-03 retreat rule — `src/game/battle/session.ts#retreat`
 
@@ -77,4 +79,5 @@
 - Merge PR #2 → `implementation/bootstrap`: REQUIRED
 - Merge PR #1 → `main`: REQUIRED
 - Production deploy / public release / tag: REQUIRED
-- Product decisions BD-01..03: REQUIRED
+- Product decisions BD-02..03: REQUIRED
+- BD-01 code implementation/verification: REQUIRED NEXT WORK (decision already approved)
