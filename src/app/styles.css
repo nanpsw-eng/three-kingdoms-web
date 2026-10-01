@@ -10,6 +10,8 @@ body { margin: 0; min-width: 320px; min-height: 100vh; background: #0d0f0c; }
 button { font: inherit; }
 
 .app-shell {
+  display: flex;
+  flex-direction: column;
   width: min(100%, 430px);
   min-height: 100dvh;
   margin: 0 auto;
@@ -25,7 +27,8 @@ h1 { margin: 0; font-size: 26px; }
 
 .world-card {
   position: relative;
-  min-height: 390px;
+  flex: 1 1 auto;
+  min-height: 300px;
   overflow: hidden;
   border: 1px solid #494832;
   border-radius: 20px;
@@ -44,7 +47,7 @@ h1 { margin: 0; font-size: 26px; }
 .quest-card, .party-card { margin-top: 12px; border: 1px solid #3d3b2c; border-radius: 16px; background: #1b1e17; }
 .quest-card { padding: 14px; }
 .quest-card strong { font-size: 14px; line-height: 1.45; }
-.party-card { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+.party-card { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 10px; }
 .general { min-width: 0; gap: 7px; }
 .general strong, .general span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .general strong { font-size: 13px; }
@@ -117,3 +120,17 @@ h1 { margin: 0; font-size: 26px; }
 .result-sheet button { width: 100%; margin-top: 12px; }
 .result-sheet .primary { background: #7c6236; border-color: #a48750; color: #fff; }
 .save-error { margin: 8px 0 0; color: #ffb4a0; font-size: 12px; }
+
+/* N9 responsive: the field fills the space between header and party summary on tall phones,
+   and keeps a usable 300px floor on short ones. Battle mode caps the canvas so commands fit. */
+.mode-battle .world-card { flex: 0 0 auto; }
+@media (max-height: 700px) {
+  .mode-battle .world-card { height: 30dvh; }
+  .ally-row, .unit-chip, .battle-actions button { min-height: 44px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .world-card { min-height: 220px; }
+}
+.general-info { min-width: 0; flex: 1; }
+.mini-bar { display: block; height: 4px; margin-top: 3px; border-radius: 2px; background: rgba(0,0,0,.5); overflow: hidden; }
+.mini-bar > span { display: block; height: 100%; background: #e6b35a; }

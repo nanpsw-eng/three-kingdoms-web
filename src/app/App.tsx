@@ -136,12 +136,14 @@ export function App() {
             {save?.party.activeGeneralIds.map((id) => {
               const g = save.generals[id]!;
               const n = nameOf(registry, t, id);
+              const max = maxTroopsAt(registry, id, g.level);
               return (
-                <article className="general" key={id}>
+                <article className="general" key={id} aria-label={`${n} 병력 ${g.currentTroops} / ${max}`}>
                   <div className="portrait-placeholder" aria-hidden="true">{n[0]}</div>
-                  <div>
+                  <div className="general-info" aria-hidden="true">
                     <strong>{n}</strong>
-                    <span>병력 {g.currentTroops.toLocaleString('ko-KR')}/{maxTroopsAt(registry, id, g.level).toLocaleString('ko-KR')}</span>
+                    <span>{g.currentTroops.toLocaleString('ko-KR')}</span>
+                    <span className="mini-bar"><span style={{ width: `${Math.round((g.currentTroops / max) * 100)}%` }} /></span>
                   </div>
                 </article>
               );
