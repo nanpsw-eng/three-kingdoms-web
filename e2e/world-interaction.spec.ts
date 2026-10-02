@@ -81,8 +81,10 @@ test('secret-area discovery: recruit Jian Yong, search Baishui Forest, find side
   await page.getByRole('dialog', { name: '대화' }).getByRole('button', { name: '확인' }).tap();
   await expect(page.getByRole('region', { name: '현재 부대' })).toContainText('간옹');
 
-  await page.getByRole('button', { name: '지도' }).tap();
-  await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 백수림' }).tap();
+  // Closing NPC dialogue returns to the already-open Baishui location sheet.
+  const villageSheet = page.getByRole('dialog', { name: '지역 정보' });
+  await expect(villageSheet).toBeVisible();
+  await villageSheet.getByRole('button', { name: '이동: 백수림' }).tap();
   await page.getByRole('button', { name: '장소 살펴보기' }).tap();
   const sheet = page.getByRole('dialog', { name: '지역 정보' });
   await expect(sheet.getByRole('button', { name: '이동: 숲속 샛길' })).toHaveCount(0);
@@ -96,5 +98,6 @@ test('secret-area discovery: recruit Jian Yong, search Baishui Forest, find side
   await page.getByRole('button', { name: '장소 살펴보기' }).tap();
   await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '숲의 은자' }).tap();
   await page.getByRole('dialog', { name: '대화' }).getByRole('button', { name: '확인' }).tap();
+  await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '지역 정보 닫기' }).tap();
   await expect(page.getByRole('region', { name: '현재 부대' })).toContainText('숲의 은자');
 });
