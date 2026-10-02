@@ -28,6 +28,21 @@ export interface XpAwardResult {
   unlockedTacticIds: string[];
 }
 
+export function learnedTacticsAtLevel(
+  registry: ContentRegistry,
+  generalId: string,
+  level: number,
+): string[] {
+  const general = registry.generals.get(generalId);
+  if (!general) throw new Error(`unknown general ${generalId}`);
+  const learned = new Set(general.initialTacticIds);
+  for (const milestone of [...general.levelMilestones].sort((a, b) => a.level - b.level)) {
+    if (milestone.level > level) continue;
+    for (const tacticId of milestone.tacticIds) learned.add(tacticId);
+  }
+  return [...learned];
+}
+
 /**
  * Applies XP without duplicating static stats in Save.
  * Level-up expands current troops by exactly the max-troop capacity gained,
@@ -46,7 +61,7 @@ export function awardGeneralXp(
   let level = Math.min(progress.level, MAX_GENERAL_LEVEL);
   let xp = level >= MAX_GENERAL_LEVEL ? 0 : progress.xp + amount;
   let currentTroops = progress.currentTroops;
-  const learned = new Set(progress.learnedTacticIds);
+  const learned = new Set([...learnedTacticsAtLevel(registry, generalId, level), ...progress.learnedTacticIds]);
   const unlocked: string[] = [];
   let levelsGained = 0;
 
