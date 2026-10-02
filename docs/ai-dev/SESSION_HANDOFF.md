@@ -6,8 +6,8 @@
 - Integration branch: `implementation/bootstrap@5ad07befde0747ee6641688a795b42c70ddbe565`
 - Working branch: `feature/progression-retreat-v1`
 - Draft PR: **#8** → `implementation/bootstrap`
-- Verified code HEAD: `6dab77d03cf4ff946d0b2b75bbf2ac7cfc740fc7`
-- Verification: Actions `36994297632` — **SUCCESS**
+- Verified code HEAD: `f837a5bc031e0187af585d7fbaff9dee6cb850f5`
+- Verification: Actions `36996258786` — **SUCCESS**
 - Current Gate: `PROGRESSION_RETREAT_V1_GREEN / MERGE_HUMAN_GATE`
 - Detailed evidence: `docs/reports/PROGRESSION_RETREAT_V1_REPORT.md`
 
@@ -37,11 +37,11 @@
 16. Recruits starting above a tactic milestone receive all tactics earned up to their recruitment level.
 
 ## Verification
-Actions `36994297632`:
+Actions `36996258786`:
 - typecheck PASS
 - content validation PASS
 - domain smoke 4/4
-- Vitest **89/89**
+- Vitest **90/90**
 - battle golden **7/7**
 - architecture boundaries **2/2**
 - build/PWA PASS
@@ -63,10 +63,9 @@ Main-route starter ends near Lv5; with optional South Plain Riders near Lv6. Thi
 - SHOP/equipment loop remains unimplemented.
 
 ## Next Task after merge
-1. merge PR #8 after Human Gate approval.
-2. consolidated Vertical Slice E2E through North Gate capture.
-3. validate resulting level/tactic progression.
-4. real-device QA.
+1. consolidated Vertical Slice E2E through North Gate capture.
+2. validate resulting level/tactic progression and pacing.
+3. real-device QA.
 
 ## REQUIRED_CONTEXT
 - `AGENTS.md`

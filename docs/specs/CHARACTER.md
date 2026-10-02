@@ -12,7 +12,7 @@ A general's value is the combination of stats, troops, unit type, weapon aptitud
 ## Growth
 Approved direction: fixed-identity growth. Core stats change only slightly through milestones. Level primarily increases troop capacity and unlocks tactics.
 
-Current BD-02 implementation proposal:
+Approved BD-02 implementation:
 - Lv.1–30;
 - Save XP is current-level progress;
 - next-level cost = `40 + 20 × currentLevel`;
@@ -23,7 +23,7 @@ Current BD-02 implementation proposal:
 - sparse stat/tactic milestones are static content and are derived from level;
 - Lv.30 discards further XP.
 
-Exact XP costs and milestone placements are balance-tunable; the fixed-identity model is the stable product rule.
+The fixed-identity model and Lv.30 cap are approved product rules. Exact XP costs and milestone placements remain `BALANCE_PROPOSED` and may be retuned after playtest.
 
 ## Units
 Vertical Slice uses spear/cavalry/archer.

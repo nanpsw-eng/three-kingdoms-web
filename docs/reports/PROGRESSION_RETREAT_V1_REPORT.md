@@ -7,9 +7,9 @@
 | Repository | `nanpsw-eng/three-kingdoms-web` |
 | Base | `implementation/bootstrap@5ad07befde0747ee6641688a795b42c70ddbe565` |
 | Feature branch | `feature/progression-retreat-v1` |
-| Verified code HEAD | `6dab77d03cf4ff946d0b2b75bbf2ac7cfc740fc7` |
+| Verified code HEAD | `f837a5bc031e0187af585d7fbaff9dee6cb850f5` |
 | Draft PR | #8 → `implementation/bootstrap` |
-| GitHub Actions | `36994297632` — **SUCCESS** |
+| GitHub Actions | `36996258786` — **SUCCESS** |
 | Merge | **NOT_PERFORMED — Human Gate** |
 
 This feature implements the first complete fixed-identity progression loop and replaces the remaining retreat prototype seam with an explicit deterministic policy.
@@ -129,12 +129,12 @@ The state updater remains pure: progression is calculated outside the React upda
 
 ## 6. Verification
 
-GitHub Actions `36994297632` on `6dab77d03cf4ff946d0b2b75bbf2ac7cfc740fc7`:
+GitHub Actions `36996258786` on `f837a5bc031e0187af585d7fbaff9dee6cb850f5`:
 
 - typecheck: PASS
 - content validation: PASS
 - domain smoke: PASS 4/4
-- Vitest: **89/89 PASS**
+- Vitest: **90/90 PASS**
 - battle golden: **7/7 PASS**
 - architecture boundaries: **2/2 PASS**
 - build/PWA: PASS
@@ -156,26 +156,25 @@ Existing Lv1 deterministic Battle Golden values remain unchanged.
 ## 7. Decision status
 
 ### DEC-003
-`PROPOSED / IMPLEMENTED FOR REVIEW`
+`APPROVED / IMPLEMENTED ON FEATURE`
 
 Fixed-identity structure is aligned with the approved Character direction. Exact XP costs/milestone placement remain balance-tunable.
 
 ### DEC-004
-`PROPOSED / IMPLEMENTED FOR REVIEW`
+`APPROVED / IMPLEMENTED ON FEATURE`
 
 The deterministic retreat policy is implemented and validated.
 
-**Human merge approval for PR #8 should be treated as approval to establish both as the current integration baseline.**
+**DEC-003 and DEC-004 are approved product policies. PR #8 merge remains the Human Gate that establishes the implementation as the current integration baseline.**
 
 ## 8. Remaining work
 
 After merge:
-1. mark DEC-003 / DEC-004 APPROVED / IMPLEMENTED;
-2. add consolidated full Vertical Slice browser E2E:
+1. add consolidated full Vertical Slice browser E2E:
    `start → scout → Jian Yong → Forest/secret → Outpost victory → North Gate → capture`;
-3. verify level progression across that complete journey;
-4. then real Android/iPhone/PWA QA;
-5. SHOP/equipment remains separate.
+2. verify level progression across that complete journey;
+3. then real Android/iPhone/PWA QA;
+4. SHOP/equipment remains separate.
 
 ## 9. Gate
 
