@@ -200,6 +200,14 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
   for (const general of registry.generals.values()) {
     for (const id of general.traitIds) ref(general.id, 'traitIds', id, registry.traits.has(id));
     for (const id of general.initialTacticIds) ref(general.id, 'initialTacticIds', id, registry.tactics.has(id));
+    const tacticUnlocks = new Set(general.initialTacticIds);
+    for (const milestone of general.levelMilestones) {
+      for (const id of milestone.tacticIds) {
+        ref(general.id, 'levelMilestones.tacticIds', id, registry.tactics.has(id));
+        if (tacticUnlocks.has(id)) invariant(general.id, `tactic ${id} is unlocked more than once`);
+        tacticUnlocks.add(id);
+      }
+    }
     ref(general.id, 'unitType', general.unitType, unitCodes.has(general.unitType));
   }
 
