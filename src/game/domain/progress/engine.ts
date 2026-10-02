@@ -97,6 +97,7 @@ function triggerMatches(a: ProgressTrigger, b: ProgressTrigger): boolean {
     case 'ENTER_LOCATION': return a.locationId === (b as typeof a).locationId;
     case 'ENCOUNTER_VICTORY': return a.encounterId === (b as typeof a).encounterId;
     case 'TALK_NPC': return a.npcId === (b as typeof a).npcId;
+    case 'SEARCH_LOCATION': return a.locationId === (b as typeof a).locationId;
   }
 }
 
