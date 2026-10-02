@@ -370,7 +370,7 @@ export function App() {
                   type="button"
                   key={location.id}
                   onClick={() => travelTo(location.id)}
-                  aria-label={t(location.nameKey) + '로 이동'}
+                  aria-label={'이동: ' + t(location.nameKey)}
                 >
                   {t(location.nameKey)}
                 </button>
