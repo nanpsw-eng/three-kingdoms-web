@@ -34,6 +34,33 @@ function randomSeed(): number {
   return buf[0]!;
 }
 
+function battleProgressionNotice(
+  before: NonNullable<ReturnType<typeof useGame>['save']>,
+  after: NonNullable<ReturnType<typeof useGame>['save']>,
+  registry: ReturnType<typeof useGame>['registry'],
+  t: ReturnType<typeof useGame>['t'],
+): string | null {
+  const levelUps: string[] = [];
+  const tactics: string[] = [];
+  for (const [id, next] of Object.entries(after.generals)) {
+    const previous = before.generals[id];
+    if (!previous) continue;
+    if (next.level > previous.level) {
+      levelUps.push(nameOf(registry, t, id) + ' Lv.' + next.level);
+    }
+    for (const tacticId of next.learnedTacticIds) {
+      if (!previous.learnedTacticIds.includes(tacticId)) {
+        tactics.push(t(registry.tactics.get(tacticId)?.nameKey ?? tacticId));
+      }
+    }
+  }
+  if (levelUps.length === 0 && tactics.length === 0) return null;
+  const parts: string[] = [];
+  if (levelUps.length > 0) parts.push('레벨 상승: ' + levelUps.join(', '));
+  if (tactics.length > 0) parts.push('새 책략: ' + tactics.join(', '));
+  return parts.join(' · ');
+}
+
 export function App() {
   const game = useGame();
   const { registry, save, t } = game;
@@ -127,12 +154,15 @@ export function App() {
   };
 
   const finishBattle = (finished: BattleSession) => {
-    game.commit((s) => {
-      const after = applyBattleResult(s, finished, registry, new Date().toISOString());
-      return finished.result === 'VICTORY'
-        ? dispatchTrigger(after, buildProgressContext(registry), { type: 'ENCOUNTER_VICTORY', encounterId: finished.encounterId }).save
-        : after;
-    });
+    if (save) {
+      const afterBattle = applyBattleResult(save, finished, registry, new Date().toISOString());
+      const finalSave = finished.result === 'VICTORY'
+        ? dispatchTrigger(afterBattle, buildProgressContext(registry), { type: 'ENCOUNTER_VICTORY', encounterId: finished.encounterId }).save
+        : afterBattle;
+      const notice = battleProgressionNotice(save, finalSave, registry, t);
+      game.commit(() => finalSave);
+      if (notice) setInteractionNotice(notice);
+    }
     bridge?.ui.emit('end-battle-view', {});
     bridge?.ui.emit('resume-world', { defeatedEnemyId: finished.result === 'VICTORY' ? encounter?.enemyId ?? null : null });
     setBattle(null);
