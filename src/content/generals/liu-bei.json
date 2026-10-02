@@ -3,11 +3,64 @@
   "nameKey": "general.liu_bei.name",
   "courtesyNameKey": "general.liu_bei.courtesy_name",
   "role": "BALANCED",
-  "baseStats": { "strength": 72, "intelligence": 82, "command": 86, "speed": 72 },
-  "troopGrowth": { "baseTroop": 1100, "perLevel": 72, "category": "NORMAL" },
+  "baseStats": {
+    "strength": 72,
+    "intelligence": 82,
+    "command": 86,
+    "speed": 72
+  },
+  "troopGrowth": {
+    "baseTroop": 1100,
+    "perLevel": 72,
+    "category": "NORMAL"
+  },
   "unitType": "SPEAR",
-  "weaponAptitudes": { "SWORD": "S", "DAO": "B", "SPEAR": "B" },
-  "traitIds": ["TRT_LIU_BEI_BENEVOLENCE"],
-  "initialTacticIds": ["TAC_HEAL_MINOR"],
-  "tags": ["SHU", "STARTER", "LEADER"]
+  "weaponAptitudes": {
+    "SWORD": "S",
+    "DAO": "B",
+    "SPEAR": "B"
+  },
+  "traitIds": [
+    "TRT_LIU_BEI_BENEVOLENCE"
+  ],
+  "initialTacticIds": [
+    "TAC_HEAL_MINOR"
+  ],
+  "tags": [
+    "SHU",
+    "STARTER",
+    "LEADER"
+  ],
+  "levelMilestones": [
+    {
+      "level": 4,
+      "statBonuses": {},
+      "tacticIds": [
+        "TAC_INSPIRE"
+      ]
+    },
+    {
+      "level": 10,
+      "statBonuses": {
+        "intelligence": 1,
+        "command": 1
+      },
+      "tacticIds": []
+    },
+    {
+      "level": 20,
+      "statBonuses": {
+        "command": 1
+      },
+      "tacticIds": []
+    },
+    {
+      "level": 30,
+      "statBonuses": {
+        "intelligence": 1,
+        "command": 1
+      },
+      "tacticIds": []
+    }
+  ]
 }
