@@ -266,3 +266,21 @@ h1 { margin: 0; font-size: 26px; }
   font-size: 12px;
 }
 
+/* Field Presentation v2 */
+.field-hotspot-action {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  min-width: 156px;
+  min-height: 48px;
+  padding: 8px 16px;
+  border: 1px solid #bdd58a;
+  border-radius: 999px;
+  background: rgba(31, 49, 26, .94);
+  color: #f0f8d7;
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  font-weight: 700;
+}
+

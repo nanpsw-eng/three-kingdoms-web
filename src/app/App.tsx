@@ -42,6 +42,7 @@ export function App() {
   const [encounter, setEncounter] = useState<Encounter | null>(null);
   const [battle, setBattle] = useState<BattleSession | null>(null);
   const [alert, setAlert] = useState<AggroState | null>(null);
+  const [fieldDestinationId, setFieldDestinationId] = useState<string | null>(null);
   const [dpad, setDpad] = useState(false);
   const [locationSheet, setLocationSheet] = useState(false);
   const [dialogNpcId, setDialogNpcId] = useState<string | null>(null);
@@ -56,6 +57,9 @@ export function App() {
       bridge.runtime.on('scene-ready', ({ scene: s }) => setScene(s)),
       bridge.runtime.on('encounter', (e) => setEncounter(e)),
       bridge.runtime.on('aggro-changed', ({ state }) => setAlert(state)),
+      bridge.runtime.on('field-hotspot-changed', ({ destinationLocationId }) => {
+        setFieldDestinationId(destinationLocationId);
+      }),
     ];
     return () => offs.forEach((off) => off());
   }, [bridge]);
@@ -68,6 +72,7 @@ export function App() {
           locationId: save.world.locationId!,
           discoveredLocationIds: save.discoveredLocationIds,
           defeatedEncounterIds: save.defeatedEncounterIds,
+          availableDestinationIds: availableConnections(save, registry).map((location) => location.id),
         });
       }
     }
@@ -78,8 +83,10 @@ export function App() {
 
   useEffect(() => {
     if (!bridge || scene !== 'World' || battle) return;
-    bridge.ui.emit('set-paused', { paused: !isFieldLocation || Boolean(encounter) });
-  }, [bridge, scene, battle, encounter, isFieldLocation]);
+    bridge.ui.emit('set-paused', {
+      paused: !isFieldLocation || Boolean(encounter) || locationSheet || Boolean(dialogNpcId),
+    });
+  }, [bridge, scene, battle, encounter, isFieldLocation, locationSheet, dialogNpcId]);
 
   const selectFormation = (formationId: string) => {
     game.commit((s) => ({ ...s, party: { ...s.party, formationId } }));
@@ -143,6 +150,7 @@ export function App() {
       setDialogNpcId(null);
       setEncounter(null);
       setAlert(null);
+      setFieldDestinationId(null);
       setInteractionError(null);
       setInteractionNotice(destination ? t(destination.nameKey) + '에 도착했습니다.' : null);
     } catch (error) {
@@ -268,6 +276,17 @@ export function App() {
                   장소 살펴보기
                 </button>
               </div>
+            )}
+
+            {isFieldLocation && fieldDestinationId && !encounter && (
+              <button
+                type="button"
+                className="field-hotspot-action"
+                onClick={() => travelTo(fieldDestinationId)}
+                aria-label={'필드 이동: ' + t(registry.locations.get(fieldDestinationId)?.nameKey ?? fieldDestinationId)}
+              >
+                {'이동 · ' + t(registry.locations.get(fieldDestinationId)?.nameKey ?? fieldDestinationId)}
+              </button>
             )}
 
             {encounter && (

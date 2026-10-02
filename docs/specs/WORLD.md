@@ -91,3 +91,29 @@ Deferred:
 - in-field exit/interact hotspots;
 - shop flow.
 
+## Field Presentation v2
+
+Combat-critical Vertical Slice locations now have Phaser fields:
+- South Plain
+- Baishui Forest
+- Yellow Turban Outpost
+- North Gate
+
+Field exits use:
+
+`FieldHotspot proximity → Phaser runtime event → accessible React action → enterLocation()`
+
+Travel legality remains owned by `availableConnections()`.
+
+Therefore:
+- locked/undiscovered destinations do not become active field exits;
+- the Outpost does not expose North Gate before the Outpost-victory progression event;
+- field presentation does not own Save mutation or story gating.
+
+World simulation pauses while Location/NPC sheets are open.
+
+Deferred:
+- consolidated Outpost-victory → North-Gate browser journey;
+- direct canvas hotspot activation;
+- Town/Village/Side Path/North Road dedicated field presentation.
+

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { walkIntoScout } from './helpers';
+import { tapWorld, walkIntoScout, worldState } from './helpers';
 
 test('location UI travels, updates checkpoints, talks to NPCs and exposes services', async ({ page }) => {
   await page.goto('/?debug=1');
@@ -115,4 +115,67 @@ test('secret-area discovery: recruit Jian Yong, search Baishui Forest, find side
   await page.getByRole('dialog', { name: '대화' }).getByRole('button', { name: '확인' }).tap();
   await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '지역 정보 닫기' }).tap();
   await expect(page.getByRole('region', { name: '현재 부대' })).toContainText('숲의 은자');
+});
+
+
+test('field hotspots move from Baishui Forest to Outpost and hide the locked North Gate exit', async ({ page }) => {
+  await page.goto('/?debug=1');
+  const shell = page.locator('main.app-shell');
+  await expect(shell).toHaveAttribute('data-location', 'LOC_ZHUO_TOWN', { timeout: 15_000 });
+  await expect(shell).toHaveAttribute('data-save', 'ready', { timeout: 15_000 });
+
+  await page.getByRole('button', { name: '장소 살펴보기' }).tap();
+  await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 남부 평야' }).tap();
+  await page.getByRole('button', { name: '지도' }).tap();
+  await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 백수촌' }).tap();
+  await page.getByRole('button', { name: '장소 살펴보기' }).tap();
+  await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 백수림' }).tap();
+
+  await expect.poll(async () => page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { map: { id: string } } };
+  }).__tkWorld.state().map.id)).toBe('FIELD_BAISHUI_FOREST_PROTO');
+
+  const hotspot = await page.evaluate(() => {
+    const state = (window as unknown as {
+      __tkWorld: { state(): { hotspots: Array<{ destinationLocationId: string; position: { x: number; y: number }; visible: boolean }> } };
+    }).__tkWorld.state();
+    return state.hotspots.find((entry) => entry.destinationLocationId === 'LOC_YT_OUTPOST');
+  });
+  expect(hotspot?.visible).toBe(true);
+
+  // Walk through camera-safe waypoints that avoid the ambush patrol, then enter hotspot range.
+  for (const point of [
+    { x: 5.5 * 32, y: 16.5 * 32 },
+    { x: 3.5 * 32, y: 12.5 * 32 },
+    { x: 3.5 * 32, y: 7.5 * 32 },
+    { x: 6.5 * 32, y: 4.5 * 32 },
+    { x: 10.5 * 32, y: 3.5 * 32 },
+    hotspot!.position,
+  ]) {
+    if (await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).isVisible()) break;
+    await tapWorld(page, point);
+    await expect.poll(async () => {
+      const state = await worldState(page);
+      return state.player.path.length === 0 || (await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).isVisible());
+    }, { timeout: 8_000 }).toBe(true);
+  }
+  await expect(page.getByRole('button', { name: '필드 이동: 황건 전초기지' })).toBeVisible({ timeout: 8_000 });
+  await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).tap();
+
+  await expect(shell).toHaveAttribute('data-location', 'LOC_YT_OUTPOST');
+  await expect.poll(async () => page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { map: { id: string } } };
+  }).__tkWorld.state().map.id)).toBe('FIELD_YT_OUTPOST_PROTO');
+
+  const outpost = await page.evaluate(() => (window as unknown as {
+    __tkWorld: {
+      state(): {
+        enemies: Array<{ encounterId: string; mode: string }>;
+        hotspots: Array<{ destinationLocationId: string; visible: boolean }>;
+      };
+    };
+  }).__tkWorld.state());
+  expect(outpost.enemies.some((enemy) => enemy.encounterId === 'ENC_YT_OUTPOST_GARRISON')).toBe(true);
+  expect(outpost.hotspots.find((entry) => entry.destinationLocationId === 'LOC_BAISHUI_FOREST')?.visible).toBe(true);
+  expect(outpost.hotspots.find((entry) => entry.destinationLocationId === 'LOC_NORTH_GATE')?.visible).toBe(false);
 });

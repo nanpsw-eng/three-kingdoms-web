@@ -8,6 +8,13 @@ export interface DebugWorldState {
   paused: boolean;
   enemies: Array<{ id: string; encounterId: string; mode: string }>;
   secretMarkers: Array<{ locationId: string; visible: boolean }>;
+  hotspots: Array<{
+    id: string;
+    destinationLocationId: string;
+    position: Vec;
+    visible: boolean;
+    active: boolean;
+  }>;
 }
 
 export interface DebugWorld {
