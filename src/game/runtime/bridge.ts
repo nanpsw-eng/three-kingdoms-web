@@ -12,6 +12,7 @@ export interface RuntimeEvents {
   'scene-ready': { scene: SceneKey };
   'player-moved': { x: number; y: number; moving: boolean };
   'aggro-changed': { enemyId: string; state: AggroState };
+  'field-hotspot-changed': { hotspotId: string | null; destinationLocationId: string | null };
   encounter: { encounterId: string; enemyId: string };
   'battle-playback-done': { turn: number };
   'runtime-error': { message: string };
@@ -38,6 +39,7 @@ export interface UiCommands {
     locationId: string;
     discoveredLocationIds: readonly string[];
     defeatedEncounterIds: readonly string[];
+    availableDestinationIds: readonly string[];
   };
   'start-battle-view': { battleId: string; units: readonly BattleUnitView[] };
   'play-battle-events': { turn: number; events: readonly BattleEvent[]; speed: 1 | 2 | 3 };
