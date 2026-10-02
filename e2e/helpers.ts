@@ -12,11 +12,12 @@ export async function openWorld(page: Page) {
   await page.goto('/?debug=1');
   const shell = page.locator('main.app-shell');
   await expect(shell).toHaveAttribute('data-scene', 'World', { timeout: 15_000 });
+  await expect(shell).toHaveAttribute('data-save', 'ready', { timeout: 15_000 });
   await page.waitForFunction(() => 'state' in ((window as unknown as { __tkWorld?: object }).__tkWorld ?? {}));
 
   if ((await shell.getAttribute('data-location')) !== 'LOC_SOUTH_PLAIN') {
     await page.getByRole('button', { name: '장소 살펴보기' }).tap();
-    await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '남부 평야로 이동' }).tap();
+    await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 남부 평야' }).tap();
     await expect(shell).toHaveAttribute('data-location', 'LOC_SOUTH_PLAIN');
   }
 }
