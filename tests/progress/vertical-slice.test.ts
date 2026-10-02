@@ -44,7 +44,9 @@ describe('Vertical Slice progression skeleton', () => {
     const again = dispatchTrigger(save, ctx, { type: 'TALK_NPC', npcId: 'NPC_JIAN_YONG' }).save;
     expect(again.party.activeGeneralIds.filter((id) => id === 'GEN_JIAN_YONG')).toHaveLength(1);
 
-    // Optional recruit through the hidden side path.
+    // Optional recruit through the hidden side path: discover first, then enter.
+    save = dispatchTrigger(save, ctx, { type: 'SEARCH_LOCATION', locationId: 'LOC_BAISHUI_FOREST' }).save;
+    expect(save.discoveredLocationIds).toContain('LOC_FOREST_SIDE_PATH');
     save = dispatchTrigger(save, ctx, { type: 'ENTER_LOCATION', locationId: 'LOC_FOREST_SIDE_PATH' }).save;
     save = dispatchTrigger(save, ctx, { type: 'TALK_NPC', npcId: 'NPC_FOREST_RECLUSE' }).save;
     expect(save.party.activeGeneralIds).toHaveLength(5);
