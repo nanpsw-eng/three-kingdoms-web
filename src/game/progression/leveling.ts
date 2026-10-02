@@ -58,7 +58,7 @@ export function awardGeneralXp(
     level += 1;
     levelsGained += 1;
     const afterMax = maxTroopsAt(registry, generalId, level);
-    currentTroops = Math.min(afterMax, currentTroops + (afterMax - beforeMax));
+    if (currentTroops > 0) currentTroops = Math.min(afterMax, currentTroops + (afterMax - beforeMax));
 
     for (const milestone of general.levelMilestones) {
       if (milestone.level !== level) continue;
