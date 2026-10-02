@@ -33,7 +33,7 @@ test('location UI travels, updates checkpoints, talks to NPCs and exposes servic
   await expect(page.getByRole('region', { name: '현재 부대' }).getByText('간옹')).toHaveCount(0);
 });
 
-test('non-field locations expose local encounter entry points while undiscovered secrets stay hidden', async ({ page }) => {
+test('Baishui Forest loads its Phaser field while undiscovered secrets stay hidden', async ({ page }) => {
   await page.goto('/?debug=1');
   const shell = page.locator('main.app-shell');
   await expect(shell).toHaveAttribute('data-location', 'LOC_ZHUO_TOWN', { timeout: 15_000 });
@@ -46,9 +46,18 @@ test('non-field locations expose local encounter entry points while undiscovered
   await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 백수림' }).tap();
 
   await expect(shell).toHaveAttribute('data-location', 'LOC_BAISHUI_FOREST');
-  await page.getByRole('button', { name: '장소 살펴보기' }).tap();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { map: { id: string }; locationId: string; enemies: Array<{ encounterId: string }> } };
+  }).__tkWorld.state().map.id)).toBe('FIELD_BAISHUI_FOREST_PROTO');
+  const forestState = await page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { locationId: string; enemies: Array<{ encounterId: string; mode: string }>; secretMarkers: Array<{ locationId: string; visible: boolean }> } };
+  }).__tkWorld.state());
+  expect(forestState.locationId).toBe('LOC_BAISHUI_FOREST');
+  expect(forestState.enemies.some((enemy) => enemy.encounterId === 'ENC_BAISHUI_FOREST_AMBUSH')).toBe(true);
+  expect(forestState.secretMarkers).toContainEqual({ locationId: 'LOC_FOREST_SIDE_PATH', visible: false });
+
+  await page.getByRole('button', { name: '지도' }).tap();
   const sheet = page.getByRole('dialog', { name: '지역 정보' });
-  await expect(sheet.getByRole('button', { name: '전투: 백수림의 매복' })).toBeVisible();
   await expect(sheet.getByRole('button', { name: '이동: 숲속 샛길' })).toHaveCount(0);
 });
 
@@ -85,13 +94,19 @@ test('secret-area discovery: recruit Jian Yong, search Baishui Forest, find side
   const villageSheet = page.getByRole('dialog', { name: '지역 정보' });
   await expect(villageSheet).toBeVisible();
   await villageSheet.getByRole('button', { name: '이동: 백수림' }).tap();
-  await page.getByRole('button', { name: '장소 살펴보기' }).tap();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { map: { id: string } } };
+  }).__tkWorld.state().map.id)).toBe('FIELD_BAISHUI_FOREST_PROTO');
+  await page.getByRole('button', { name: '지도' }).tap();
   const sheet = page.getByRole('dialog', { name: '지역 정보' });
   await expect(sheet.getByRole('button', { name: '이동: 숲속 샛길' })).toHaveCount(0);
 
   await sheet.getByRole('button', { name: '주변 수색' }).tap();
   await expect(page.getByRole('status')).toContainText('숨겨진 샛길');
   await expect(sheet.getByRole('button', { name: '이동: 숲속 샛길' })).toBeVisible();
+  await expect.poll(async () => page.evaluate(() => (window as unknown as {
+    __tkWorld: { state(): { secretMarkers: Array<{ locationId: string; visible: boolean }> } };
+  }).__tkWorld.state().secretMarkers.find((marker) => marker.locationId === 'LOC_FOREST_SIDE_PATH')?.visible)).toBe(true);
 
   await sheet.getByRole('button', { name: '이동: 숲속 샛길' }).tap();
   await expect(shell).toHaveAttribute('data-location', 'LOC_FOREST_SIDE_PATH');

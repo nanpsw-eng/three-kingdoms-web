@@ -34,6 +34,11 @@ export interface UiCommands {
   'move-direction': { dx: number; dy: number } | null;
   'resume-world': { defeatedEnemyId: string | null };
   'sync-world': { defeatedEncounterIds: readonly string[] };
+  'set-field-location': {
+    locationId: string;
+    discoveredLocationIds: readonly string[];
+    defeatedEncounterIds: readonly string[];
+  };
   'start-battle-view': { battleId: string; units: readonly BattleUnitView[] };
   'play-battle-events': { turn: number; events: readonly BattleEvent[]; speed: 1 | 2 | 3 };
   'end-battle-view': Record<string, never>;

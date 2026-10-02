@@ -5,6 +5,7 @@ import { dispatchTrigger } from '../game/domain/progress/index';
 import type { AggroState, GameBridge, SceneKey } from '../game/runtime/bridge';
 import { buildProgressContext } from '../game/progress/fromContent';
 import { applyBattleResult } from '../game/save/applyBattle';
+import { hasFieldPresentation } from '../game/world/fieldPresentations';
 import {
   activeLocationEncounterIds,
   availableConnections,
@@ -26,7 +27,6 @@ interface Encounter {
   enemyId: string;
 }
 
-const FIELD_LOCATION_ID = 'LOC_SOUTH_PLAIN';
 
 function randomSeed(): number {
   const buf = new Uint32Array(1);
@@ -63,11 +63,18 @@ export function App() {
   useEffect(() => {
     if (bridge && save && scene === 'World') {
       bridge.ui.emit('sync-world', { defeatedEncounterIds: save.defeatedEncounterIds });
+      if (hasFieldPresentation(save.world.locationId)) {
+        bridge.ui.emit('set-field-location', {
+          locationId: save.world.locationId!,
+          discoveredLocationIds: save.discoveredLocationIds,
+          defeatedEncounterIds: save.defeatedEncounterIds,
+        });
+      }
     }
   }, [bridge, save, scene]);
 
   const currentLocation = save?.world.locationId ? registry.locations.get(save.world.locationId) : undefined;
-  const isFieldLocation = currentLocation?.id === FIELD_LOCATION_ID;
+  const isFieldLocation = hasFieldPresentation(currentLocation?.id);
 
   useEffect(() => {
     if (!bridge || scene !== 'World' || battle) return;
@@ -198,7 +205,7 @@ export function App() {
   const currentNpcs = save ? npcsAtCurrentLocation(save, registry) : [];
   const currentServices = save && currentLocation ? effectiveLocationServices(save, registry, currentLocation.id) : [];
   const connections = save ? availableConnections(save, registry) : [];
-  const currentThreats = save && currentLocation && currentLocation.id !== FIELD_LOCATION_ID
+  const currentThreats = save && currentLocation && !isFieldLocation
     ? activeLocationEncounterIds(save, registry)
     : [];
   const canSearch = save ? canSearchCurrentLocation(save, registry) : false;

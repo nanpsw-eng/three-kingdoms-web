@@ -68,3 +68,26 @@ Vertical Slice implementation:
 
 This pattern should be reused for future hidden caves, alternate routes, secret NPCs and optional exploration rewards.
 
+## Field Presentation v1
+
+Field rendering is now location-driven.
+
+`Save Location → FieldPresentation → WorldScene`
+
+Implemented full Phaser fields:
+- `LOC_SOUTH_PLAIN`
+- `LOC_BAISHUI_FOREST`
+
+Baishui Forest:
+- uses the same pure Tap-to-Move / visible-enemy world simulation as South Plain;
+- presents `ENC_BAISHUI_FOREST_AMBUSH` as a visible patrol;
+- contains a discovery-controlled visual marker for `LOC_FOREST_SIDE_PATH`;
+- same-location secret discovery updates marker visibility without resetting the player.
+
+Field presentation definitions remain outside Phaser and contain no React dependency.
+
+Deferred:
+- Outpost / North Gate / Side Path dedicated field presentations;
+- in-field exit/interact hotspots;
+- shop flow.
+

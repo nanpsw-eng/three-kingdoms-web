@@ -1,8 +1,17 @@
 import { expect, type Page } from '@playwright/test';
 
 export type Vec = { x: number; y: number };
+export interface DebugWorldState {
+  map: { id: string };
+  locationId: string;
+  player: { pos: Vec; path: Vec[] };
+  paused: boolean;
+  enemies: Array<{ id: string; encounterId: string; mode: string }>;
+  secretMarkers: Array<{ locationId: string; visible: boolean }>;
+}
+
 export interface DebugWorld {
-  state(): { player: { pos: Vec; path: Vec[] }; paused: boolean; enemies: Array<{ id: string; mode: string }> };
+  state(): DebugWorldState;
   worldToClient(p: Vec): Vec;
 }
 
