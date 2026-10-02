@@ -83,8 +83,10 @@ export function App() {
 
   useEffect(() => {
     if (!bridge || scene !== 'World' || battle) return;
-    bridge.ui.emit('set-paused', { paused: !isFieldLocation || Boolean(encounter) });
-  }, [bridge, scene, battle, encounter, isFieldLocation]);
+    bridge.ui.emit('set-paused', {
+      paused: !isFieldLocation || Boolean(encounter) || locationSheet || Boolean(dialogNpcId),
+    });
+  }, [bridge, scene, battle, encounter, isFieldLocation, locationSheet, dialogNpcId]);
 
   const selectFormation = (formationId: string) => {
     game.commit((s) => ({ ...s, party: { ...s.party, formationId } }));
