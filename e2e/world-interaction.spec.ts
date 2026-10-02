@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { walkIntoScout } from './helpers';
 
 test('location UI travels, updates checkpoints, talks to NPCs and exposes services', async ({ page }) => {
   await page.goto('/?debug=1');
@@ -62,20 +63,8 @@ test('secret-area discovery: recruit Jian Yong, search Baishui Forest, find side
   await page.getByRole('button', { name: '장소 살펴보기' }).tap();
   await page.getByRole('dialog', { name: '지역 정보' }).getByRole('button', { name: '이동: 남부 평야' }).tap();
 
-  const world = await page.evaluate(() => (window as unknown as {
-    __tkWorld: { worldToClient(p: { x: number; y: number }): { x: number; y: number } };
-  }).__tkWorld.worldToClient({ x: 8.5 * 32, y: 20.5 * 32 }));
-  await page.touchscreen.tap(world.x, world.y);
-
-  // Use the same deterministic road route as the field E2E until the scout engages.
-  for (const point of [{ x: 9.5 * 32, y: 17.5 * 32 }, { x: 10.5 * 32, y: 14.5 * 32 }]) {
-    if ((await shell.getAttribute('data-encounter')) === 'ENC_SOUTH_PLAIN_SCOUTS') break;
-    const client = await page.evaluate((p) => (window as unknown as {
-      __tkWorld: { worldToClient(p: { x: number; y: number }): { x: number; y: number } };
-    }).__tkWorld.worldToClient(p), point);
-    await page.touchscreen.tap(client.x, client.y);
-    await page.waitForTimeout(900);
-  }
+  // Reuse the camera-safe field helper already proven by the existing world/battle E2E.
+  await walkIntoScout(page);
   await expect(shell).toHaveAttribute('data-encounter', 'ENC_SOUTH_PLAIN_SCOUTS', { timeout: 10_000 });
   await page.getByRole('dialog', { name: '적과 조우' }).getByRole('button', { name: '전투' }).tap();
   const battle = page.getByRole('region', { name: '전투 명령' });
