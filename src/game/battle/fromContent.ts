@@ -8,6 +8,18 @@ export function maxTroopsAt(registry: ContentRegistry, generalId: string, level:
   return general.troopGrowth.baseTroop + general.troopGrowth.perLevel * Math.max(0, level - 1);
 }
 
+export function effectiveStatsAt(registry: ContentRegistry, generalId: string, level: number) {
+  const general = requireRecord(registry.generals, generalId, 'general');
+  const stats = { ...general.baseStats };
+  for (const milestone of general.levelMilestones) {
+    if (milestone.level > level) continue;
+    for (const key of ['strength', 'intelligence', 'command', 'speed'] as const) {
+      stats[key] = Math.min(100, stats[key] + (milestone.statBonuses[key] ?? 0));
+    }
+  }
+  return stats;
+}
+
 export function buildBattleRules(registry: ContentRegistry): BattleRules {
   const tactics: Record<string, TacticSpec> = {};
   for (const t of registry.tactics.values()) {
@@ -47,7 +59,7 @@ export function combatantFromGeneral(registry: ContentRegistry, generalId: strin
   return {
     id: o.combatId ?? g.id,
     side: o.side,
-    stats: { ...g.baseStats },
+    stats: effectiveStatsAt(registry, generalId, o.level),
     unitType: g.unitType,
     level: o.level,
     weaponAttack: o.weaponAttack ?? 0,
