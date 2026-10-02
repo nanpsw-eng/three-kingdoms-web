@@ -88,6 +88,10 @@
         "type": "FLAG_EQUALS",
         "flag": "FLAG_VISITED_BAISHUI",
         "value": true
+      },
+      {
+        "type": "HAS_GENERAL",
+        "generalId": "GEN_JIAN_YONG"
       }
     ],
     "effects": [
