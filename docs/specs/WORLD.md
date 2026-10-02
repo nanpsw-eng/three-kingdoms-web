@@ -40,8 +40,31 @@ Rendering boundary:
 - other locations use mobile React location surfaces over a paused field until their dedicated field presentation is implemented;
 - this is an implementation staging choice, not a change from the approved Semi-open world model.
 
+Secret discovery status:
+- player-facing secret discovery is IMPLEMENTED through the generic `SEARCH_LOCATION` progression trigger;
+- Baishui Forest exposes `주변 수색` only after the content-defined conditions are met;
+- successful search discovers `LOC_FOREST_SIDE_PATH`, after which normal adjacency travel exposes the secret path;
+- secret rules are content-driven and are not hard-coded in Phaser or React.
+
 Deferred:
-- player-facing secret-path discovery action;
-- dedicated maps for Baishui Forest / Outpost / North Gate;
+- dedicated maps for Baishui Forest / side path / Outpost / North Gate;
 - shop flow.
+
+
+
+## Secret Area v1
+
+The exploration layer supports explicit data-driven searches.
+
+Pattern:
+
+`SEARCH_LOCATION trigger → content conditions → DISCOVER_LOCATION effect → normal travel`
+
+Vertical Slice implementation:
+- Baishui Forest secret search requires Baishui visit and Jian Yong membership;
+- `LOC_FOREST_SIDE_PATH` is absent from travel until discovered;
+- entering the discovered side path enables the existing optional NPC/recruit event;
+- the full loop is autosaved and covered by mobile E2E.
+
+This pattern should be reused for future hidden caves, alternate routes, secret NPCs and optional exploration rewards.
 
