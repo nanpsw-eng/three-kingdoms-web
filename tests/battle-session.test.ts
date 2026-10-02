@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createSession, executeTurn, resetPlan, retreat, setCommand, survivingTroops, type BattleSession } from '../src/game/battle/session';
+import { activeTelegraph, createSession, enemyCommands, executeTurn, resetPlan, retreat, setCommand, survivingTroops, type BattleSession } from '../src/game/battle/session';
 import { validateContent } from '../src/game/content/registry';
 import { readContentFiles } from '../scripts/contentFiles';
 
@@ -46,6 +46,41 @@ describe('battle session', () => {
     const s = retreat(createSession(registry, 'ENC_SOUTH_PLAIN_SCOUTS', party, 1));
     expect(s.result).toBe('RETREAT');
     expect(s.history).toEqual([]);
+  });
+
+
+  it('boss telegraph announces before a forced all-enemy tactic', () => {
+    const base = createSession(registry, 'ENC_NORTH_GATE_BOSS', party, 123);
+    const announced = { ...base, state: { ...base.state, turn: 2 } };
+    expect(activeTelegraph(announced)).toMatchObject({
+      announceTurn: 2,
+      executeTurn: 3,
+      actorId: 'GEN_YT_GATE_COMMANDER',
+      tacticId: 'TAC_FIRESTORM',
+    });
+
+    const execution = {
+      ...base,
+      state: {
+        ...base.state,
+        turn: 3,
+        tp: { ...base.state.tp, ENEMY: { ...base.state.tp.ENEMY, current: base.state.tp.ENEMY.max } },
+      },
+    };
+    expect(enemyCommands(execution)).toContainEqual({
+      type: 'TACTIC',
+      actorId: 'GEN_YT_GATE_COMMANDER',
+      tacticId: 'TAC_FIRESTORM',
+    });
+  });
+
+  it('enemy commander uses an affordable support tactic before falling back to attacks', () => {
+    const boss = createSession(registry, 'ENC_NORTH_GATE_BOSS', party, 456);
+    expect(enemyCommands(boss)).toContainEqual({
+      type: 'TACTIC',
+      actorId: 'GEN_YT_GATE_COMMANDER',
+      tacticId: 'TAC_INSPIRE',
+    });
   });
 
   it('same seed + same commands => identical outcome (speed is not an input)', () => {

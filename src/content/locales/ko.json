@@ -73,5 +73,8 @@
   "quest.main_zhuo.step1": "백수촌으로 가서 상황을 알아보십시오.",
   "quest.main_zhuo.step2": "백수촌에서 간옹을 만나 동료로 맞이하십시오.",
   "quest.main_zhuo.step3": "백수림 너머 황건 전초기지를 점령하십시오.",
-  "quest.main_zhuo.step4": "북부 관문을 돌파하십시오."
+  "quest.main_zhuo.step4": "북부 관문을 돌파하십시오.",
+  "tactic.firestorm.name": "화공 총세",
+  "tactic.firestorm.desc": "불길을 넓게 퍼뜨려 적 전체에 지력 기반 피해를 준다.",
+  "battle.telegraph.north_gate_firestorm": "황건 관문장이 화공 총세를 준비합니다. 다음 턴 전체 공격에 대비하십시오."
 }

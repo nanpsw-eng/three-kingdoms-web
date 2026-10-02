@@ -6,9 +6,15 @@ test('Smart Command battle: one-tap turn, override, target select, speed, auto, 
   page.on('pageerror', (e) => errors.push(e.message));
   await openWorld(page);
   await walkIntoScout(page);
-  await page.getByRole('dialog', { name: '적과 조우' }).getByRole('button', { name: '전투' }).tap();
+  const encounter = page.getByRole('dialog', { name: '적과 조우' });
+  const formationGroup = encounter.getByRole('group', { name: '전투 진형 선택' });
+  await expect(formationGroup.getByRole('button', { name: '추행진' })).toBeVisible();
+  await formationGroup.getByRole('button', { name: '추행진' }).tap();
+  await expect(formationGroup.getByRole('button', { name: '추행진' })).toHaveAttribute('aria-pressed', 'true');
+  await encounter.getByRole('button', { name: '전투' }).tap();
 
   const panel = page.getByRole('region', { name: '전투 명령' });
+  await expect(panel).toHaveAttribute('data-formation', 'FORM_WEDGE');
   await expect(page.locator('main.app-shell')).toHaveAttribute('data-scene', 'Battle');
   await expect(panel).toHaveAttribute('data-turn', '1');
 

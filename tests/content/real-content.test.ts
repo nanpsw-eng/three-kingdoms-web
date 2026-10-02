@@ -19,6 +19,15 @@ describe('repository content', () => {
     expect([...registry.unitTypes.values()].map((u) => u.code).sort()).toEqual(['ARCHER', 'CAVALRY', 'SPEAR']);
   });
 
+  it('north gate boss telegraph references a learned all-enemy tactic', () => {
+    const boss = result.registry.encounters.get('ENC_NORTH_GATE_BOSS');
+    expect(boss?.telegraphs).toHaveLength(1);
+    const telegraph = boss!.telegraphs[0]!;
+    expect(telegraph.executeTurn).toBeGreaterThan(telegraph.announceTurn);
+    expect(result.registry.generals.get(telegraph.actorGeneralId)?.initialTacticIds).toContain(telegraph.tacticId);
+    expect(result.registry.tactics.get(telegraph.tacticId)?.target).toBe('ALL_ENEMIES');
+  });
+
   it('unit-type advantage data matches the domain unit triangle', () => {
     for (const unit of result.registry.unitTypes.values()) {
       expect(unitModifier(unit.code, unit.advantageOver)).toBeGreaterThan(1);

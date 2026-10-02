@@ -9,7 +9,7 @@ Read `docs/ai-dev/AI_OS_BINDING.md` before substantive repository work and load 
 2. `docs/product/PRD.md` owns product requirements and acceptance criteria.
 3. `docs/decisions/` owns durable design/architecture decisions.
 4. Repository state owns current implementation state.
-5. Test evidence owns verification state. GitHub Actions is not required for validation; only actually executed local/Codex/CI evidence may support PASS.
+5. Test evidence owns verification state. Only actually executed local/Codex/CI evidence may support PASS.
 6. `docs/ai-dev/SESSION_HANDOFF.md` owns the current recovery index.
 
 Do not treat chat summaries as a replacement for these sources.
@@ -58,10 +58,11 @@ Use classic Three Kingdoms RPG mechanics only as inspiration. Do not copy origin
 Prefer the smallest safe change. Do not perform unrelated refactors. For substantive repository changes, update `docs/ai-dev/SESSION_HANDOFF.md` before ending the session.
 
 ### CI / validation policy
-- Initial development policy is `LOCAL_FIRST / GITHUB_ACTIONS_DISABLED`.
-- Do not add `.github/workflows/*` unless the user explicitly reopens and approves ADR-004.
-- Keep validation commands as repository scripts so the same checks can run in local environments, Codex, or later CI environments.
-- A check may be recorded as `PASS` only when its actual execution evidence is available. `NOT_RUN != PASS`.
-- Recommended validation surface as implementation grows: typecheck, lint, unit tests, content/schema/reference validation, deterministic battle/golden tests, build, and risk-appropriate mobile E2E.
+Current policy is `LOCAL_FIRST + VALIDATION_ONLY_ACTIONS_ALLOWED` under ADR-004.
+- Repository scripts remain the portable validation contract.
+- `.github/workflows/validation.yml` is authorized for pull requests targeting `implementation/bootstrap` and explicit manual `workflow_dispatch`; automatic feature-push validation is disabled to prevent duplicate runs.
+- Allowed CI: npm install/ci, typecheck, content/schema/reference validation, unit/golden tests, build, informational balance probes, Chromium E2E.
+- Forbidden without a new explicit approval: deploy, release/tag, package publish, secrets, external writes, scheduled polling, paid/self-hosted runners.
+- A check may be recorded as `PASS` only when actual execution evidence is available. `NOT_RUN != PASS`.
 
 Production deploy, destructive migration, public release, paid services, or policy-changing actions require explicit human approval.

@@ -147,6 +147,15 @@
       "xp": 250,
       "gold": 200
     },
-    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED",
+    "telegraphs": [
+      {
+        "announceTurn": 2,
+        "executeTurn": 3,
+        "actorGeneralId": "GEN_YT_GATE_COMMANDER",
+        "tacticId": "TAC_FIRESTORM",
+        "messageKey": "battle.telegraph.north_gate_firestorm"
+      }
+    ]
   }
 ]

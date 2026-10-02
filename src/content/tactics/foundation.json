@@ -6,7 +6,10 @@
     "family": "ATTACK",
     "tpCost": 6,
     "target": "SINGLE_ENEMY",
-    "effect": { "kind": "DAMAGE", "power": 1.0 }
+    "effect": {
+      "kind": "DAMAGE",
+      "power": 1
+    }
   },
   {
     "id": "TAC_HEAL_MINOR",
@@ -15,7 +18,10 @@
     "family": "HEAL",
     "tpCost": 4,
     "target": "SINGLE_ALLY",
-    "effect": { "kind": "HEAL", "power": 1.0 }
+    "effect": {
+      "kind": "HEAL",
+      "power": 1
+    }
   },
   {
     "id": "TAC_CONFUSE",
@@ -24,7 +30,12 @@
     "family": "CONTROL",
     "tpCost": 6,
     "target": "SINGLE_ENEMY",
-    "effect": { "kind": "STATUS", "status": "CONFUSED", "durationTurns": 2, "baseChance": 0.55 }
+    "effect": {
+      "kind": "STATUS",
+      "status": "CONFUSED",
+      "durationTurns": 2,
+      "baseChance": 0.55
+    }
   },
   {
     "id": "TAC_INSPIRE",
@@ -33,7 +44,11 @@
     "family": "SUPPORT",
     "tpCost": 8,
     "target": "ALL_ALLIES",
-    "effect": { "kind": "STATUS", "status": "INSPIRED", "durationTurns": 2 }
+    "effect": {
+      "kind": "STATUS",
+      "status": "INSPIRED",
+      "durationTurns": 2
+    }
   },
   {
     "id": "TAC_TAUNT",
@@ -42,6 +57,22 @@
     "family": "CONTROL",
     "tpCost": 3,
     "target": "SELF",
-    "effect": { "kind": "STATUS", "status": "TAUNTING", "durationTurns": 2 }
+    "effect": {
+      "kind": "STATUS",
+      "status": "TAUNTING",
+      "durationTurns": 2
+    }
+  },
+  {
+    "id": "TAC_FIRESTORM",
+    "nameKey": "tactic.firestorm.name",
+    "descriptionKey": "tactic.firestorm.desc",
+    "family": "ATTACK",
+    "tpCost": 10,
+    "target": "ALL_ENEMIES",
+    "effect": {
+      "kind": "DAMAGE",
+      "power": 1.5
+    }
   }
 ]
