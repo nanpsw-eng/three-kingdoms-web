@@ -21,7 +21,7 @@ export const BattleCheckpointSchema = z.object({
 }).strict();
 
 export const GeneralProgressSchema = z.object({
-  level: z.number().int().min(1).max(99),
+  level: z.number().int().min(1).max(30),
   xp: z.number().int().min(0),
   currentTroops: z.number().int().min(0),
   learnedTacticIds: z.array(TacticIdSchema),
