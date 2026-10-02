@@ -23,7 +23,8 @@ export type ProgressTrigger =
   | { type: 'GAME_START' }
   | { type: 'ENTER_LOCATION'; locationId: string }
   | { type: 'ENCOUNTER_VICTORY'; encounterId: string }
-  | { type: 'TALK_NPC'; npcId: string };
+  | { type: 'TALK_NPC'; npcId: string }
+  | { type: 'SEARCH_LOCATION'; locationId: string };
 
 export interface QuestSpec {
   id: string;
