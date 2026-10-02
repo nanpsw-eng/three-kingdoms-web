@@ -86,6 +86,9 @@ describe('world interaction adapter', () => {
     );
     expect(activeLocationEncounterIds(save, registry)).toEqual(['ENC_BAISHUI_FOREST_AMBUSH']);
 
+    const outpostBeforeCapture = { ...save, world: { ...save.world, locationId: 'LOC_YT_OUTPOST', regionId: 'REG_ZHUO_SOUTH' } };
+    expect(availableConnections(outpostBeforeCapture, registry).map((l) => l.id)).toEqual(['LOC_BAISHUI_FOREST']);
+
     const gateSave = { ...save, world: { ...save.world, locationId: 'LOC_NORTH_GATE', regionId: 'REG_ZHUO_SOUTH' } };
     expect(availableConnections(gateSave, registry).map((l) => l.id)).toEqual(['LOC_YT_OUTPOST']);
   });
