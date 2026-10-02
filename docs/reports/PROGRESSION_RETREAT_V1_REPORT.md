@@ -21,7 +21,7 @@ This feature implements the first complete fixed-identity progression loop and r
 - A general's identity remains dominated by base stats, traits, unit type, aptitude and tactics.
 - Level primarily increases troop capacity.
 - Stats increase only at sparse content-defined milestones.
-- Tactics may unlock at content-defined milestones.
+- Tactics may unlock at content-defined milestones; a recruit entering above a milestone starts with all tactics earned up to that level.
 - Static milestone bonuses are derived from Content + level and are **not** copied into Save.
 
 ### Balance proposal
@@ -65,6 +65,10 @@ Vertical Slice examples:
 - core-stat increases are intentionally sparse, primarily Lv10/20/30.
 
 Effective battle stats are derived via `effectiveStatsAt()`.
+
+### Recruitment-level milestone safety
+
+`learnedTacticsAtLevel()` derives initial learned tactics from the general's initial tactics plus every milestone at or below the supplied level. Therefore future content can recruit a general above Lv1 without silently missing already-earned tactics.
 
 ## 2. Vertical Slice pacing check
 
