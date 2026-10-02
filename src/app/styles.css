@@ -162,3 +162,107 @@ h1 { margin: 0; font-size: 26px; }
 .formation-picker button.selected,
 .formation-picker button[aria-pressed="true"] { border-color: #d4ae64; background: #594522; color: #fff3cf; }
 
+/* World interaction v1 */
+.location-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(103, 111, 67, .42), transparent 32%),
+    linear-gradient(180deg, rgba(24, 30, 20, .96), rgba(14, 18, 13, .98));
+}
+.location-surface h2 { margin: 0; font-size: 28px; }
+.location-surface p { margin: 0; color: #d0c6af; font-size: 13px; }
+.service-badge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 3px 9px;
+  border: 1px solid #5d563f;
+  border-radius: 999px;
+  background: #24271e;
+  color: #d9c693;
+  font-size: 11px;
+}
+.location-open {
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 0 18px;
+  border: 1px solid #a48750;
+  border-radius: 13px;
+  background: #7c6236;
+  color: #fff;
+}
+.location-sheet,
+.dialog-sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 30;
+  width: min(100%, 430px);
+  max-height: min(78dvh, 680px);
+  overflow-y: auto;
+  transform: translateX(-50%);
+  padding: 16px 16px max(18px, env(safe-area-inset-bottom));
+  border: 1px solid #a48750;
+  border-radius: 20px 20px 0 0;
+  background: #14170f;
+  box-shadow: 0 -14px 34px rgba(0,0,0,.55);
+}
+.sheet-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sheet-heading strong { font-size: 20px; }
+.sheet-close {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #454538;
+  border-radius: 14px;
+  background: #20231b;
+  color: #e9e0cf;
+  font-size: 24px;
+}
+.location-group { margin-top: 14px; }
+.location-group > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #bfa97d;
+  font-size: 12px;
+}
+.location-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+.location-buttons button,
+.dialog-sheet button {
+  min-height: 48px;
+  padding: 7px 9px;
+  border: 1px solid #454538;
+  border-radius: 12px;
+  background: #20231b;
+  color: #e9e0cf;
+}
+.location-buttons button:disabled { opacity: .55; }
+.location-buttons.danger button { border-color: #744838; background: #2c1e18; }
+.dialog-sheet p { line-height: 1.55; color: #e8dfcf; }
+.dialog-sheet .primary { width: 100%; background: #7c6236; border-color: #a48750; color: #fff; }
+.interaction-notice {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #25301f;
+  color: #d9e6c5;
+  font-size: 12px;
+}
+

@@ -1,70 +1,182 @@
 [
   {
     "id": "EVT_00_PROLOGUE",
-    "trigger": { "type": "GAME_START" },
+    "trigger": {
+      "type": "GAME_START"
+    },
     "effects": [
-      { "type": "SET_FLAG", "flag": "FLAG_PROLOGUE_DONE", "value": true },
-      { "type": "START_QUEST", "questId": "QST_MAIN_ZHUO_YELLOW_TURBAN" },
-      { "type": "UNLOCK_FORMATION", "formationId": "FORM_WEDGE" },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_SOUTH_PLAIN" }
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_PROLOGUE_DONE",
+        "value": true
+      },
+      {
+        "type": "START_QUEST",
+        "questId": "QST_MAIN_ZHUO_YELLOW_TURBAN"
+      },
+      {
+        "type": "UNLOCK_FORMATION",
+        "formationId": "FORM_WEDGE"
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_SOUTH_PLAIN"
+      }
     ]
   },
   {
     "id": "EVT_10_ENTER_BAISHUI",
-    "trigger": { "type": "ENTER_LOCATION", "locationId": "LOC_BAISHUI_VILLAGE" },
+    "trigger": {
+      "type": "ENTER_LOCATION",
+      "locationId": "LOC_BAISHUI_VILLAGE"
+    },
     "effects": [
-      { "type": "SET_FLAG", "flag": "FLAG_VISITED_BAISHUI", "value": true },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_BAISHUI_VILLAGE" }
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_VISITED_BAISHUI",
+        "value": true
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_BAISHUI_VILLAGE"
+      }
     ]
   },
   {
     "id": "EVT_20_RECRUIT_JIAN_YONG",
-    "trigger": { "type": "TALK_NPC", "npcId": "NPC_JIAN_YONG" },
-    "conditions": [{ "type": "FLAG_EQUALS", "flag": "FLAG_VISITED_BAISHUI", "value": true }],
+    "trigger": {
+      "type": "TALK_NPC",
+      "npcId": "NPC_JIAN_YONG"
+    },
+    "conditions": [
+      {
+        "type": "FLAG_EQUALS",
+        "flag": "FLAG_VISITED_BAISHUI",
+        "value": true
+      },
+      {
+        "type": "QUEST_AT_STEP",
+        "questId": "QST_MAIN_ZHUO_YELLOW_TURBAN",
+        "stepIndex": 2
+      }
+    ],
     "effects": [
-      { "type": "RECRUIT_GENERAL", "generalId": "GEN_JIAN_YONG", "level": 2 },
-      { "type": "UNLOCK_FORMATION", "formationId": "FORM_CIRCLE" },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_BAISHUI_FOREST" }
+      {
+        "type": "RECRUIT_GENERAL",
+        "generalId": "GEN_JIAN_YONG",
+        "level": 2
+      },
+      {
+        "type": "UNLOCK_FORMATION",
+        "formationId": "FORM_CIRCLE"
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_BAISHUI_FOREST"
+      }
     ],
     "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
   },
   {
     "id": "EVT_30_FIND_SIDE_PATH",
-    "trigger": { "type": "ENTER_LOCATION", "locationId": "LOC_FOREST_SIDE_PATH" },
+    "trigger": {
+      "type": "ENTER_LOCATION",
+      "locationId": "LOC_FOREST_SIDE_PATH"
+    },
     "effects": [
-      { "type": "SET_FLAG", "flag": "FLAG_FOREST_SIDE_PATH_FOUND", "value": true },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_FOREST_SIDE_PATH" }
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_FOREST_SIDE_PATH_FOUND",
+        "value": true
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_FOREST_SIDE_PATH"
+      }
     ]
   },
   {
     "id": "EVT_31_OPTIONAL_RECRUIT",
-    "trigger": { "type": "TALK_NPC", "npcId": "NPC_FOREST_RECLUSE" },
-    "conditions": [{ "type": "FLAG_EQUALS", "flag": "FLAG_FOREST_SIDE_PATH_FOUND", "value": true }],
+    "trigger": {
+      "type": "TALK_NPC",
+      "npcId": "NPC_FOREST_RECLUSE"
+    },
+    "conditions": [
+      {
+        "type": "FLAG_EQUALS",
+        "flag": "FLAG_FOREST_SIDE_PATH_FOUND",
+        "value": true
+      }
+    ],
     "effects": [
-      { "type": "RECRUIT_GENERAL", "generalId": "GEN_FOREST_RECLUSE", "level": 3 },
-      { "type": "SET_FLAG", "flag": "FLAG_OPTIONAL_RECRUIT_JOINED", "value": true }
+      {
+        "type": "RECRUIT_GENERAL",
+        "generalId": "GEN_FOREST_RECLUSE",
+        "level": 3
+      },
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_OPTIONAL_RECRUIT_JOINED",
+        "value": true
+      }
     ],
     "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
   },
   {
     "id": "EVT_40_CAPTURE_OUTPOST",
-    "trigger": { "type": "ENCOUNTER_VICTORY", "encounterId": "ENC_YT_OUTPOST_GARRISON" },
+    "trigger": {
+      "type": "ENCOUNTER_VICTORY",
+      "encounterId": "ENC_YT_OUTPOST_GARRISON"
+    },
     "effects": [
-      { "type": "SET_LOCATION_OWNER", "locationId": "LOC_YT_OUTPOST", "owner": "PLAYER" },
-      { "type": "SET_FLAG", "flag": "FLAG_OUTPOST_CAPTURED", "value": true },
-      { "type": "UNLOCK_FORMATION", "formationId": "FORM_CRANE" },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_NORTH_GATE" },
-      { "type": "REST_PARTY" }
+      {
+        "type": "SET_LOCATION_OWNER",
+        "locationId": "LOC_YT_OUTPOST",
+        "owner": "PLAYER"
+      },
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_OUTPOST_CAPTURED",
+        "value": true
+      },
+      {
+        "type": "UNLOCK_FORMATION",
+        "formationId": "FORM_CRANE"
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_NORTH_GATE"
+      },
+      {
+        "type": "REST_PARTY"
+      }
     ]
   },
   {
     "id": "EVT_50_CAPTURE_NORTH_GATE",
-    "trigger": { "type": "ENCOUNTER_VICTORY", "encounterId": "ENC_NORTH_GATE_BOSS" },
+    "trigger": {
+      "type": "ENCOUNTER_VICTORY",
+      "encounterId": "ENC_NORTH_GATE_BOSS"
+    },
     "effects": [
-      { "type": "SET_LOCATION_OWNER", "locationId": "LOC_NORTH_GATE", "owner": "PLAYER" },
-      { "type": "SET_FLAG", "flag": "FLAG_NORTH_GATE_CAPTURED", "value": true },
-      { "type": "UNLOCK_REGION", "regionId": "REG_ZHUO_NORTH" },
-      { "type": "DISCOVER_LOCATION", "locationId": "LOC_NORTH_ROAD" }
+      {
+        "type": "SET_LOCATION_OWNER",
+        "locationId": "LOC_NORTH_GATE",
+        "owner": "PLAYER"
+      },
+      {
+        "type": "SET_FLAG",
+        "flag": "FLAG_NORTH_GATE_CAPTURED",
+        "value": true
+      },
+      {
+        "type": "UNLOCK_REGION",
+        "regionId": "REG_ZHUO_NORTH"
+      },
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_NORTH_ROAD"
+      }
     ]
   }
 ]
