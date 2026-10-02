@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { walkIntoScout } from './helpers';
+import { tapWorld, walkIntoScout, worldState } from './helpers';
 
 test('location UI travels, updates checkpoints, talks to NPCs and exposes services', async ({ page }) => {
   await page.goto('/?debug=1');
@@ -143,10 +143,22 @@ test('field hotspots move from Baishui Forest to Outpost and hide the locked Nor
   });
   expect(hotspot?.visible).toBe(true);
 
-  const client = await page.evaluate((position) => (window as unknown as {
-    __tkWorld: { worldToClient(p: { x: number; y: number }): { x: number; y: number } };
-  }).__tkWorld.worldToClient(position!), hotspot!.position);
-  await page.touchscreen.tap(client.x, client.y);
+  // Walk through camera-safe waypoints that avoid the ambush patrol, then enter hotspot range.
+  for (const point of [
+    { x: 5.5 * 32, y: 16.5 * 32 },
+    { x: 3.5 * 32, y: 12.5 * 32 },
+    { x: 3.5 * 32, y: 7.5 * 32 },
+    { x: 6.5 * 32, y: 4.5 * 32 },
+    { x: 10.5 * 32, y: 3.5 * 32 },
+    hotspot!.position,
+  ]) {
+    if (await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).isVisible()) break;
+    await tapWorld(page, point);
+    await expect.poll(async () => {
+      const state = await worldState(page);
+      return state.player.path.length === 0 || (await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).isVisible());
+    }, { timeout: 8_000 }).toBe(true);
+  }
   await expect(page.getByRole('button', { name: '필드 이동: 황건 전초기지' })).toBeVisible({ timeout: 8_000 });
   await page.getByRole('button', { name: '필드 이동: 황건 전초기지' }).tap();
 
