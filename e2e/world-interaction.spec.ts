@@ -47,6 +47,6 @@ test('non-field locations expose local encounter entry points while undiscovered
   await expect(shell).toHaveAttribute('data-location', 'LOC_BAISHUI_FOREST');
   await page.getByRole('button', { name: '장소 살펴보기' }).tap();
   const sheet = page.getByRole('dialog', { name: '지역 정보' });
-  await expect(sheet.getByRole('button', { name: /백수림의 매복와 전투/ })).toBeVisible();
+  await expect(sheet.getByRole('button', { name: '전투: 백수림의 매복' })).toBeVisible();
   await expect(sheet.getByRole('button', { name: '이동: 숲속 샛길' })).toHaveCount(0);
 });
