@@ -355,7 +355,7 @@ export function App() {
               <div className="location-buttons danger">
                 {currentThreats.map((encounterId) => (
                   <button type="button" key={encounterId} onClick={() => beginLocationEncounter(encounterId)}>
-                    {t(registry.encounters.get(encounterId)?.nameKey ?? encounterId)}와 전투
+                    {'전투: ' + t(registry.encounters.get(encounterId)?.nameKey ?? encounterId)}
                   </button>
                 ))}
               </div>
