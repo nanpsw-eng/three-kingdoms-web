@@ -1,14 +1,14 @@
 # DEC-003 — Fixed-Identity Level Progression
 
 ## Status
-PROPOSED / IMPLEMENTED FOR REVIEW — 2026-10-02
+APPROVED / IMPLEMENTED ON FEATURE — 2026-10-02
 
 ## Product rule
 - Maximum level: **30**.
 - Save `xp` means XP progress within the current level.
 - Level progression primarily increases maximum troops.
 - Core identity stats change only at sparse static milestones.
-- Tactics may unlock at content-defined level milestones.
+- Tactics may unlock at content-defined level milestones; generals recruited above an unlock level start with all tactics earned up to that level.
 - Active battle participants receive **100% encounter XP**.
 - Reserve generals receive **50% encounter XP**, rounded down.
 - Level-up does not fully heal. Current troops increase only by the newly added max-troop capacity.
@@ -32,5 +32,5 @@ This is intentionally separable from the product rule and may be retuned through
 ## Save compatibility
 No Save schema version change is required. Existing fields `level`, `xp`, `learnedTacticIds`, and `currentTroops` are sufficient. Static stat milestones remain content-derived and are not persisted.
 
-## Gate
-This feature implements the proposal for automated validation. Merge approval establishes it as the current integration baseline; future balance tuning remains allowed.
+## Approval / integration gate
+The product rule is approved for this project. The current feature implementation is validated; merge approval for PR #8 is still required before it becomes the `implementation/bootstrap` integration baseline. Exact XP costs and milestone placement remain balance-tunable.
