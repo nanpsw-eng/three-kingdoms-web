@@ -3,6 +3,7 @@ import { maxTroopsAt } from '../battle/fromContent';
 import { survivingTroops } from '../battle/session';
 import type { ContentRegistry } from '../content/registry';
 import type { SaveGame } from '../domain/save/index';
+import { awardGeneralXp, RESERVE_XP_RATIO } from '../progression/leveling';
 
 const DEFEAT_RECOVERY_RATIO = 0.3;
 
@@ -28,8 +29,9 @@ function recoverDefeatedParty(save: SaveGame, registry: ContentRegistry) {
  * - VICTORY: rewards (gold, xp to participants), encounter marked defeated.
  * - DEFEAT (DEC-002): return to the most recent safe checkpoint, restore the active
  *   party to 30% max troops, lose no gold/xp, and keep the encounter active.
- * - RETREAT: troops as they stand, encounter stays active.
- * Level-up thresholds remain BD-02: xp accumulates, level does not change yet.
+ * - RETREAT (BD-03 proposal): deterministic success only where encounter.canRetreat=true;
+ *   troops persist, no rewards, encounter stays active.
+ * - VICTORY XP (BD-02 proposal): participants receive 100%; reserves receive 50%.
  */
 export function applyBattleResult(save: SaveGame, session: BattleSession, registry: ContentRegistry, nowIso: string): SaveGame {
   if (session.result === 'ONGOING') throw new Error('battle not finished');
@@ -58,9 +60,21 @@ export function applyBattleResult(save: SaveGame, session: BattleSession, regist
   if (session.result === 'VICTORY') {
     const encounter = registry.encounters.get(session.encounterId);
     gold += encounter?.rewards.gold ?? 0;
-    for (const id of Object.keys(troops)) {
+    const rewardXp = encounter?.rewards.xp ?? 0;
+    const participantIds = new Set(Object.keys(troops));
+    for (const id of participantIds) {
       const progress = generals[id];
-      if (progress) generals[id] = { ...progress, xp: progress.xp + (encounter?.rewards.xp ?? 0) };
+      if (!progress) continue;
+      generals[id] = awardGeneralXp(registry, id, progress, rewardXp).progress;
+    }
+    const reserveXp = Math.floor(rewardXp * RESERVE_XP_RATIO);
+    if (reserveXp > 0) {
+      for (const id of save.party.reserveGeneralIds) {
+        if (participantIds.has(id)) continue;
+        const progress = generals[id];
+        if (!progress) continue;
+        generals[id] = awardGeneralXp(registry, id, progress, reserveXp).progress;
+      }
     }
     if (!defeated.includes(session.encounterId)) defeated = [...defeated, session.encounterId];
   }
