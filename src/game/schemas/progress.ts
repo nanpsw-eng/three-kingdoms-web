@@ -40,6 +40,7 @@ export const TriggerSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('ENTER_LOCATION'), locationId: LocationIdSchema }).strict(),
   z.object({ type: z.literal('ENCOUNTER_VICTORY'), encounterId: EncounterIdSchema }).strict(),
   z.object({ type: z.literal('TALK_NPC'), npcId: NpcIdSchema }).strict(),
+  z.object({ type: z.literal('SEARCH_LOCATION'), locationId: LocationIdSchema }).strict(),
 ]);
 
 export const GameEventSchema = z.object({
