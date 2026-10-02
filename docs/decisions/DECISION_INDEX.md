@@ -8,3 +8,5 @@
 | ADR-003 | Zod/JSON content + IndexedDB/Dexie persistence | APPROVED | `ADR-003-DATA-PERSISTENCE.md` |
 | ADR-004 | Local-first validation with scoped validation-only GitHub Actions | APPROVED WITH SCOPED OVERRIDE | `ADR-004-CI-EXECUTION-POLICY.md` |
 | DEC-002 | Defeat recovery: safe checkpoint + 30% troops, no gold/XP loss | APPROVED / IMPLEMENTED | `DEC-002-DEFEAT-RECOVERY.md` |
+| DEC-003 | Fixed-identity Lv.1–30 progression + reserve XP | PROPOSED / IMPLEMENTED FOR REVIEW | `DEC-003-LEVEL-PROGRESSION.md` |
+| DEC-004 | Deterministic retreat for allowed encounters; bosses locked | PROPOSED / IMPLEMENTED FOR REVIEW | `DEC-004-RETREAT-POLICY.md` |
