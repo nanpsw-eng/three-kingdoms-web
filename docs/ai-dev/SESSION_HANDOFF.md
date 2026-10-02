@@ -1,97 +1,86 @@
-# SESSION HANDOFF — Battle Strategy v1
+# SESSION HANDOFF — World Interaction v1
 
 ## Current State
 - Repository: `nanpsw-eng/three-kingdoms-web` (PUBLIC)
 - Default branch: `main`
-- Integration branch: `implementation/bootstrap@8dbfe6c702d0b809705fc480c9b210a4f70eeb7e`
-- Working branch: `feature/battle-strategy-v1`
-- Draft PR: **#3** → `implementation/bootstrap`
-- Verified code HEAD: `06a75b4c1df35cb14ee84ccf1f35b3b4ef50f6be`
-- Branch HEAD before final documentation sync: `f1b1980c9323d89d5c0120cc4855851eb4f0f7b4`
-- Validation run: GitHub Actions `36941533216` — SUCCESS
-- Current Gate: `BATTLE_STRATEGY_V1_GREEN / MERGE_HUMAN_GATE`
-- Detailed evidence: `docs/reports/BATTLE_STRATEGY_V1_REPORT.md`
+- Integration branch: `implementation/bootstrap@b2b8c13141f8484f923919c84a7937a6cf73d0fa`
+- Working branch: `feature/world-interaction-v1`
+- Draft PR: **#4** → `implementation/bootstrap`
+- Code HEAD before final docs: `7fa662f04c3b8d74f8090d9a9a3f94b278cc30d3`
+- Current Gate: `WORLD_INTERACTION_V1_IMPLEMENTED / PR_VALIDATION_AND_HUMAN_MERGE_GATE`
+- Detailed evidence: `docs/reports/WORLD_INTERACTION_V1_REPORT.md`
 
 ## AI-OS / execution
 - AI-OS: `v0.4.4@64b5115a698cc6a94cd8df80abb2ee7109010764`
 - Risk: `RISK_MEDIUM`
-- CI: ADR-004 scoped validation-only GitHub Actions is active; automatic runs are PR-only, with manual `workflow_dispatch` available to avoid duplicate push + PR runs.
-- No deploy/release/publish automation is authorized.
+- CI: validation-only GitHub Actions per ADR-004.
+- Production deploy/release/tag remains prohibited without Human Approval.
 
-## Integrated baseline already present
-Foundation N0–N11 from former PR #2 is integrated into `implementation/bootstrap`.
-Do not redo foundation work.
+## Integrated baseline
+- Foundation N0–N11 integrated.
+- Battle Strategy v1 integrated by PR #3 at `implementation/bootstrap@b2b8c131...`.
+- Do not redo either baseline.
 
-## Completed in this feature
-1. **DEC-002 / BD-01 implemented**
-   - defeat -> safe checkpoint;
-   - active party -> 30% max troops;
-   - no gold/XP loss;
-   - encounter remains active.
-2. **Boss Telegraph**
-   - data schema + reference validation;
-   - North Gate turn-2 warning / turn-3 declared all-enemy tactic.
-3. **Enemy tactic AI**
-   - deterministic forced telegraph, heal/support/control/damage heuristics, attack fallback.
-4. **Formation selection**
-   - unlocked formations selectable in encounter sheet;
-   - selected formation reaches BattleState.
-5. **Battle UI**
-   - accessible telegraph warning.
-6. **Balance evidence**
-   - Smart/Crane boss: 8.8 turns, 76% troop loss;
-   - Jian Yong Confuse response: 7.3 turns, 54% loss;
-   - Wedge Smart: 6.0 turns, 59% loss.
+## Completed in World Interaction v1
+1. New `src/game/world/interaction.ts` adapter.
+2. Adjacent-location travel + unlocked-region enforcement.
+3. Secret and Gate discovery visibility rules.
+4. ENTER_LOCATION progression trigger wired through travel.
+5. SAVE_POINT checkpoint update on location entry.
+6. NPC location lookup + TALK_NPC trigger.
+7. Jian Yong recruitment gated by main quest step 2.
+8. REST service wired to REST_PARTY; checkpoint refreshed at safe rest points.
+9. React Location Surface / Location Sheet for non-field locations.
+10. Local encounter entry from Forest/Outpost/Gate.
+11. Existing South Plain Phaser Tap-to-Move and Visible Encounter preserved.
+12. Existing field-oriented E2E helpers now explicitly enter South Plain before tapping the canvas.
 
 ## Verification
-PASS at code HEAD `06a75b4...`:
-- typecheck
-- content validation
-- domain smoke 4/4
-- Vitest 73/73
-- golden 7/7
-- architecture boundaries 2/2
-- build/PWA
-- Chromium E2E 18/18 at 360/390/412
+Observed full green run on earlier feature code HEAD `3507a1ea...`:
+- Actions `36958594062`: SUCCESS
+- Vitest 77/77
+- Golden 7/7
+- Architecture 2/2
+- build PASS
+- Chromium E2E 24/24 at 360/390/412
 
-NOT_RUN:
-- real Android Chrome
-- real iPhone Safari
-- installed PWA on real devices
-- representative-device FPS
-- lint not configured
-- Playwright WebKit
+Later corrections:
+- undiscovered GATE blocked;
+- natural encounter action label;
+- tests updated.
+
+**For the current PR head, PR #4 latest GitHub Actions result is the authoritative final verification. `NOT_RUN != PASS`.**
+
+## Known limitations
+- Only `LOC_SOUTH_PLAIN` is a real Phaser field.
+- Other locations use React placeholder surfaces over a paused field.
+- Secret discovery UI is not implemented, so undiscovered secret links intentionally remain hidden.
+- SHOP is placeholder only.
+- Real Android/iPhone/PWA device QA is NOT_RUN.
 
 ## Open product decisions
-- BD-02 level-up curve / XP table / tactic unlock schedule.
-- BD-03 retreat success/penalty.
-
-## Residual design note
-Universal defend and raw commander focus are currently inferior telegraph responses. Control/disruption and formation choice provide measurable value. Do not teach “always defend the telegraph” as the expected solution.
-Smart-only still wins the current 50-seed probe, so human playtest remains required.
+- BD-02: XP/level curve and tactic unlock schedule.
+- BD-03: retreat success/penalty policy.
 
 ## Next Task after merge
 Recommended:
-1. Location transition + NPC interaction UI.
-2. Rest/recovery services UI.
-3. Multi-location Vertical Slice world route.
-4. BD-02 decision + progression implementation.
-5. BD-03 decision + retreat implementation.
-6. real-device QA.
+1. secret discovery interaction;
+2. Baishui Forest / Outpost / North Gate field presentation;
+3. BD-02 decision + progression;
+4. BD-03 decision + retreat;
+5. real-device Vertical Slice QA.
 
 ## REQUIRED_CONTEXT
 - `AGENTS.md`
 - `docs/ai-dev/AI_OS_BINDING.md`
 - `docs/product/PRD.md`
 - `docs/decisions/DECISION_INDEX.md`
-- `docs/decisions/DEC-002-DEFEAT-RECOVERY.md`
-- `docs/specs/TECHNICAL_ARCHITECTURE.md`
+- `docs/specs/WORLD.md`
 - `docs/specs/COMBAT.md`
-- `docs/reports/BATTLE_STRATEGY_V1_REPORT.md`
+- `docs/reports/WORLD_INTERACTION_V1_REPORT.md`
 - this Handoff
 
 ## Human Gates
-- Merge PR #3 -> `implementation/bootstrap`: REQUIRED.
-- PR #1 `implementation/bootstrap -> main`: REQUIRED and not part of this feature.
+- Merge PR #4 → `implementation/bootstrap`: REQUIRED.
+- Merge PR #1 → `main`: REQUIRED and separate.
 - production deploy/release/tag: REQUIRED.
-- BD-02 / BD-03 product decisions: REQUIRED.
