@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { effectiveStatsAt, maxTroopsAt } from '../../src/game/battle/fromContent';
 import { validateContent } from '../../src/game/content/registry';
-import { awardGeneralXp, MAX_GENERAL_LEVEL, xpToNextLevel } from '../../src/game/progression/leveling';
+import { awardGeneralXp, learnedTacticsAtLevel, MAX_GENERAL_LEVEL, xpToNextLevel } from '../../src/game/progression/leveling';
 import { readContentFiles } from '../../scripts/contentFiles';
 
 const registry = validateContent(readContentFiles()).registry;
@@ -59,6 +59,11 @@ describe('fixed-identity level progression', () => {
       command: 87,
       speed: 72,
     });
+  });
+
+  it('includes milestone tactics when a general joins above the unlock level', () => {
+    expect(learnedTacticsAtLevel(registry, 'GEN_FOREST_RECLUSE', 3)).toEqual(['TAC_FIRE_ATTACK']);
+    expect(learnedTacticsAtLevel(registry, 'GEN_FOREST_RECLUSE', 5)).toEqual(['TAC_FIRE_ATTACK', 'TAC_CONFUSE']);
   });
 
   it('caps at level 30 and discards overflow XP', () => {
