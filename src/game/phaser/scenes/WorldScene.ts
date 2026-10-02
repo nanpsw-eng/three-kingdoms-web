@@ -11,7 +11,11 @@ import {
   type WorldState,
 } from '../../domain/world/index';
 import type { GameBridge } from '../../runtime/bridge';
-import { getFieldPresentation, type FieldPresentation } from '../../world/fieldPresentations';
+import {
+  getFieldPresentation,
+  type FieldHotspot,
+  type FieldPresentation,
+} from '../../world/fieldPresentations';
 import { PALETTE } from '../palette';
 
 const TILE_COLORS: Record<string, number> = {
@@ -39,6 +43,12 @@ interface SecretView {
   label: Phaser.GameObjects.Text;
 }
 
+interface HotspotView {
+  spec: FieldHotspot;
+  marker: Phaser.GameObjects.Arc;
+  label: Phaser.GameObjects.Text;
+}
+
 /**
  * Renders one location-driven field presentation at a time.
  * World rules remain in the pure domain; this scene owns only input + drawing.
@@ -51,8 +61,11 @@ export class WorldScene extends Phaser.Scene {
   private marker!: Phaser.GameObjects.Image;
   private enemies = new Map<string, EnemyView>();
   private secrets = new Map<string, SecretView>();
+  private hotspots = new Map<string, HotspotView>();
   private discoveredLocationIds = new Set<string>();
   private defeatedEncounterIds = new Set<string>();
+  private availableDestinationIds = new Set<string>();
+  private activeHotspotId: string | null = null;
   private direction: Vec2 | null = null;
   private keys: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
   private lastReport = 0;
@@ -84,26 +97,39 @@ export class WorldScene extends Phaser.Scene {
       this.bridge.ui.on('resume-world', ({ defeatedEnemyId }) => {
         const engaged = this.world.enemies.find((e) => e.mode === 'ENGAGED');
         if (!engaged) return;
-        this.world = resolveEncounter(this.world, engaged.id, defeatedEnemyId === engaged.id ? 'DEFEATED' : 'FLED');
+        this.world = resolveEncounter(
+          this.world,
+          engaged.id,
+          defeatedEnemyId === engaged.id ? 'DEFEATED' : 'FLED',
+        );
         this.syncEnemy(engaged.id, this.world.enemies.find((e) => e.id === engaged.id)!.mode);
       }),
       this.bridge.ui.on('sync-world', ({ defeatedEncounterIds }) => {
-        this.syncMeta([...this.discoveredLocationIds], defeatedEncounterIds);
+        this.syncMeta(
+          [...this.discoveredLocationIds],
+          defeatedEncounterIds,
+          [...this.availableDestinationIds],
+        );
       }),
-      this.bridge.ui.on('set-field-location', ({ locationId, discoveredLocationIds, defeatedEncounterIds }) => {
-        const next = getFieldPresentation(locationId);
-        if (!next) return;
-        if (next.locationId !== this.presentation.locationId) {
+      this.bridge.ui.on(
+        'set-field-location',
+        ({ locationId, discoveredLocationIds, defeatedEncounterIds, availableDestinationIds }) => {
+          const next = getFieldPresentation(locationId);
+          if (!next) return;
           this.discoveredLocationIds = new Set(discoveredLocationIds);
           this.defeatedEncounterIds = new Set(defeatedEncounterIds);
-          this.presentation = next;
-          this.renderPresentation(next);
-        } else {
-          this.syncMeta(discoveredLocationIds, defeatedEncounterIds);
-        }
-      }),
+          this.availableDestinationIds = new Set(availableDestinationIds);
+          if (next.locationId !== this.presentation.locationId) {
+            this.presentation = next;
+            this.renderPresentation(next);
+          } else {
+            this.syncMeta(discoveredLocationIds, defeatedEncounterIds, availableDestinationIds);
+          }
+        },
+      ),
       this.bridge.ui.on('set-paused', ({ paused }) => {
         this.world = { ...this.world, paused };
+        if (paused) this.setActiveHotspot(null);
       }),
     );
 
@@ -132,18 +158,26 @@ export class WorldScene extends Phaser.Scene {
       view.alert.setPosition(e.pos.x, e.pos.y - 34);
     }
 
+    this.syncHotspotProximity();
+
     const moving = p.path.length > 0 || direction !== null;
     if ((moving && time - this.lastReport > MOVE_REPORT_MS) || moving !== this.wasMoving) {
       this.lastReport = time;
       this.wasMoving = moving;
-      this.bridge.runtime.emit('player-moved', { x: Math.round(p.pos.x), y: Math.round(p.pos.y), moving });
+      this.bridge.runtime.emit('player-moved', {
+        x: Math.round(p.pos.x),
+        y: Math.round(p.pos.y),
+        moving,
+      });
     }
   }
 
   private renderPresentation(presentation: FieldPresentation): void {
+    this.setActiveHotspot(null);
     this.fieldLayer?.destroy(true);
     this.enemies.clear();
     this.secrets.clear();
+    this.hotspots.clear();
     this.direction = null;
     this.wasMoving = false;
 
@@ -201,6 +235,30 @@ export class WorldScene extends Phaser.Scene {
       this.fieldLayer.add([marker, label]);
     }
 
+    for (const hotspotSpec of presentation.hotspots ?? []) {
+      const marker = this.add.circle(
+        hotspotSpec.position.x,
+        hotspotSpec.position.y,
+        20,
+        0x6f8752,
+        0.18,
+      ).setStrokeStyle(2, 0xb9d27f, 0.75).setDepth(2);
+      const label = this.add.text(
+        hotspotSpec.position.x,
+        hotspotSpec.position.y - 30,
+        hotspotSpec.label,
+        {
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '11px',
+          color: '#e7f4c7',
+          backgroundColor: '#182016cc',
+          padding: { x: 5, y: 2 },
+        },
+      ).setOrigin(0.5).setDepth(4);
+      this.hotspots.set(hotspotSpec.id, { spec: hotspotSpec, marker, label });
+      this.fieldLayer.add([marker, label]);
+    }
+
     for (const e of this.world.enemies) {
       const ring = this.add.circle(e.pos.x, e.pos.y, e.aggroRadius, PALETTE.aggro, 0.08)
         .setStrokeStyle(2, PALETTE.aggro, 0.35)
@@ -226,18 +284,29 @@ export class WorldScene extends Phaser.Scene {
     this.cameras.main.centerOn(this.world.player.pos.x, this.world.player.pos.y);
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
 
-    this.syncMeta([...this.discoveredLocationIds], [...this.defeatedEncounterIds]);
+    this.syncMeta(
+      [...this.discoveredLocationIds],
+      [...this.defeatedEncounterIds],
+      [...this.availableDestinationIds],
+    );
   }
 
-  private syncMeta(discoveredLocationIds: readonly string[], defeatedEncounterIds: readonly string[]): void {
+  private syncMeta(
+    discoveredLocationIds: readonly string[],
+    defeatedEncounterIds: readonly string[],
+    availableDestinationIds: readonly string[],
+  ): void {
     this.discoveredLocationIds = new Set(discoveredLocationIds);
     this.defeatedEncounterIds = new Set(defeatedEncounterIds);
+    this.availableDestinationIds = new Set(availableDestinationIds);
 
     this.world = {
       ...this.world,
       enemies: this.world.enemies.map((e) => {
         if (this.defeatedEncounterIds.has(e.encounterId)) return { ...e, mode: 'DEFEATED' as const };
-        if (e.mode === 'DEFEATED') return { ...e, pos: { ...e.home }, mode: e.behavior, waypointIndex: 0 };
+        if (e.mode === 'DEFEATED') {
+          return { ...e, pos: { ...e.home }, mode: e.behavior, waypointIndex: 0 };
+        }
         return e;
       }),
     };
@@ -248,6 +317,47 @@ export class WorldScene extends Phaser.Scene {
       view.marker.setVisible(visible);
       view.label.setVisible(visible);
     }
+    for (const view of this.hotspots.values()) {
+      const visible = this.availableDestinationIds.has(view.spec.destinationLocationId);
+      view.marker.setVisible(visible);
+      view.label.setVisible(visible);
+    }
+
+    if (
+      this.activeHotspotId &&
+      !this.hotspots.get(this.activeHotspotId)?.marker.visible
+    ) {
+      this.setActiveHotspot(null);
+    }
+  }
+
+  private syncHotspotProximity(): void {
+    if (this.world.paused) {
+      this.setActiveHotspot(null);
+      return;
+    }
+    const p = this.world.player.pos;
+    const candidates = [...this.hotspots.entries()]
+      .filter(([, view]) => view.marker.visible)
+      .map(([id, view]) => ({
+        id,
+        view,
+        distance: Math.hypot(p.x - view.spec.position.x, p.y - view.spec.position.y),
+      }))
+      .filter((candidate) => candidate.distance <= candidate.view.spec.radius)
+      .sort((a, b) => a.distance - b.distance || a.id.localeCompare(b.id));
+
+    this.setActiveHotspot(candidates[0]?.id ?? null);
+  }
+
+  private setActiveHotspot(hotspotId: string | null): void {
+    if (this.activeHotspotId === hotspotId) return;
+    this.activeHotspotId = hotspotId;
+    const hotspot = hotspotId ? this.hotspots.get(hotspotId)?.spec : undefined;
+    this.bridge.runtime.emit('field-hotspot-changed', {
+      hotspotId,
+      destinationLocationId: hotspot?.destinationLocationId ?? null,
+    });
   }
 
   private keyboardDirection(): Vec2 | null {
@@ -267,8 +377,12 @@ export class WorldScene extends Phaser.Scene {
           state: event.mode === 'DEFEATED' ? 'RETURN' : event.mode,
         });
       } else if (event.type === 'ENCOUNTER') {
+        this.setActiveHotspot(null);
         this.cameras.main.shake(180, 0.006);
-        this.bridge.runtime.emit('encounter', { encounterId: event.encounterId, enemyId: event.enemyId });
+        this.bridge.runtime.emit('encounter', {
+          encounterId: event.encounterId,
+          enemyId: event.enemyId,
+        });
       }
     }
   }
@@ -284,6 +398,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private cleanup(): void {
+    this.setActiveHotspot(null);
     this.unsubscribers.forEach((off) => off());
     this.unsubscribers = [];
   }
@@ -298,6 +413,13 @@ export class WorldScene extends Phaser.Scene {
         secretMarkers: [...scene.secrets].map(([locationId, view]) => ({
           locationId,
           visible: view.marker.visible,
+        })),
+        hotspots: [...scene.hotspots].map(([id, view]) => ({
+          id,
+          destinationLocationId: view.spec.destinationLocationId,
+          position: view.spec.position,
+          visible: view.marker.visible,
+          active: id === scene.activeHotspotId,
         })),
       }),
       worldToClient(p: Vec2) {
