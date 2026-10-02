@@ -288,6 +288,7 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
       case 'ENTER_LOCATION': return ref(fromId, 'trigger.locationId', t.locationId, registry.locations.has(t.locationId));
       case 'ENCOUNTER_VICTORY': return ref(fromId, 'trigger.encounterId', t.encounterId, registry.encounters.has(t.encounterId));
       case 'TALK_NPC': return ref(fromId, 'trigger.npcId', t.npcId, registry.npcs.has(t.npcId));
+      case 'SEARCH_LOCATION': return ref(fromId, 'trigger.locationId', t.locationId, registry.locations.has(t.locationId));
       case 'GAME_START': return;
     }
   };

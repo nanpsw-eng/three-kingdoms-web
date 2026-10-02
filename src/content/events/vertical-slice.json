@@ -78,6 +78,31 @@
     "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
   },
   {
+    "id": "EVT_29_SEARCH_FOREST_SIDE_PATH",
+    "trigger": {
+      "type": "SEARCH_LOCATION",
+      "locationId": "LOC_BAISHUI_FOREST"
+    },
+    "conditions": [
+      {
+        "type": "FLAG_EQUALS",
+        "flag": "FLAG_VISITED_BAISHUI",
+        "value": true
+      },
+      {
+        "type": "HAS_GENERAL",
+        "generalId": "GEN_JIAN_YONG"
+      }
+    ],
+    "effects": [
+      {
+        "type": "DISCOVER_LOCATION",
+        "locationId": "LOC_FOREST_SIDE_PATH"
+      }
+    ],
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  },
+  {
     "id": "EVT_30_FIND_SIDE_PATH",
     "trigger": {
       "type": "ENTER_LOCATION",

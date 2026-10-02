@@ -8,10 +8,12 @@ import { applyBattleResult } from '../game/save/applyBattle';
 import {
   activeLocationEncounterIds,
   availableConnections,
+  canSearchCurrentLocation,
   effectiveLocationServices,
   enterLocation,
   npcsAtCurrentLocation,
   restAtCurrentLocation,
+  searchCurrentLocation,
   talkToNpc,
 } from '../game/world/interaction';
 import { BattleScreen, nameOf } from './components/BattleScreen';
@@ -167,6 +169,20 @@ export function App() {
     }
   };
 
+  const searchArea = () => {
+    if (!save) return;
+    try {
+      const result = searchCurrentLocation(save, registry);
+      game.commit(() => result.save);
+      setInteractionError(null);
+      setInteractionNotice(
+        result.discoveredLocationIds.length > 0 ? t('world.search.found') : t('world.search.none'),
+      );
+    } catch (error) {
+      setInteractionError(String(error));
+    }
+  };
+
   const mode = battle ? 'battle' : 'world';
   const availableFormations = (save?.unlockedFormationIds ?? [])
     .map((id) => registry.formations.get(id))
@@ -185,6 +201,7 @@ export function App() {
   const currentThreats = save && currentLocation && currentLocation.id !== FIELD_LOCATION_ID
     ? activeLocationEncounterIds(save, registry)
     : [];
+  const canSearch = save ? canSearchCurrentLocation(save, registry) : false;
   const dialogNpc = dialogNpcId ? registry.npcs.get(dialogNpcId) : undefined;
 
   return (
@@ -358,6 +375,15 @@ export function App() {
                     {'전투: ' + t(registry.encounters.get(encounterId)?.nameKey ?? encounterId)}
                   </button>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {canSearch && (
+            <div className="location-group">
+              <span>탐색</span>
+              <div className="location-buttons explore">
+                <button type="button" onClick={searchArea}>{t('world.search.action')}</button>
               </div>
             </div>
           )}

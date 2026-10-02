@@ -6,9 +6,11 @@ import { createNewGame } from '../../src/game/save/newGame';
 import {
   activeLocationEncounterIds,
   availableConnections,
+  canSearchCurrentLocation,
   effectiveLocationServices,
   enterLocation,
   restAtCurrentLocation,
+  searchCurrentLocation,
   talkToNpc,
 } from '../../src/game/world/interaction';
 import { readContentFiles } from '../../scripts/contentFiles';
@@ -73,6 +75,41 @@ describe('world interaction adapter', () => {
     const rested = restAtCurrentLocation(save, registry).save;
     expect(rested.generals.GEN_GUAN_YU!.currentTroops).toBe(1200);
     expect(rested.world.checkpointId).toBe('LOC_BAISHUI_VILLAGE');
+  });
+
+
+  it('discovers the forest secret only after Jian Yong joins, then recruits the optional general', () => {
+    let save = started();
+    save = enterLocation(save, registry, 'LOC_SOUTH_PLAIN').save;
+    save = {
+      ...save,
+      defeatedEncounterIds: [...save.defeatedEncounterIds, 'ENC_SOUTH_PLAIN_SCOUTS'],
+    };
+    save = dispatchTrigger(save, ctx, { type: 'ENCOUNTER_VICTORY', encounterId: 'ENC_SOUTH_PLAIN_SCOUTS' }).save;
+    save = enterLocation(save, registry, 'LOC_BAISHUI_VILLAGE').save;
+    save = enterLocation(save, registry, 'LOC_BAISHUI_FOREST').save;
+
+    expect(canSearchCurrentLocation(save, registry)).toBe(false);
+    expect(availableConnections(save, registry).map((l) => l.id)).not.toContain('LOC_FOREST_SIDE_PATH');
+
+    save = enterLocation(save, registry, 'LOC_BAISHUI_VILLAGE').save;
+    save = talkToNpc(save, registry, 'NPC_JIAN_YONG').save;
+    expect(save.generals.GEN_JIAN_YONG).toBeDefined();
+    save = enterLocation(save, registry, 'LOC_BAISHUI_FOREST').save;
+
+    expect(canSearchCurrentLocation(save, registry)).toBe(true);
+    const searched = searchCurrentLocation(save, registry);
+    save = searched.save;
+    expect(searched.discoveredLocationIds).toEqual(['LOC_FOREST_SIDE_PATH']);
+    expect(save.discoveredLocationIds).toContain('LOC_FOREST_SIDE_PATH');
+    expect(canSearchCurrentLocation(save, registry)).toBe(false);
+    expect(availableConnections(save, registry).map((l) => l.id)).toContain('LOC_FOREST_SIDE_PATH');
+
+    save = enterLocation(save, registry, 'LOC_FOREST_SIDE_PATH').save;
+    expect(save.flags.FLAG_FOREST_SIDE_PATH_FOUND).toBe(true);
+    save = talkToNpc(save, registry, 'NPC_FOREST_RECLUSE').save;
+    expect(save.generals.GEN_FOREST_RECLUSE).toBeDefined();
+    expect(save.party.activeGeneralIds).toContain('GEN_FOREST_RECLUSE');
   });
 
   it('hides undiscovered secret links and locked regions while exposing active local encounters', () => {
