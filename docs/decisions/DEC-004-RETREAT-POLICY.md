@@ -1,7 +1,7 @@
 # DEC-004 — Retreat Policy
 
 ## Status
-PROPOSED / IMPLEMENTED FOR REVIEW — 2026-10-02
+APPROVED / IMPLEMENTED ON FEATURE — 2026-10-02
 
 ## Rule
 - If an encounter has `canRetreat=true`, retreat succeeds **100% deterministically**.
@@ -20,5 +20,5 @@ Random retreat failure adds repeated-input friction without adding meaningful st
 - Encounter schema now rejects bosses with `canRetreat=true`.
 - Save folding preserves troops and gives no rewards on retreat.
 
-## Gate
-Implemented for feature validation. Merge approval establishes the policy as the current integration baseline.
+## Approval / integration gate
+The retreat policy is approved for this project and implemented on the feature branch. Merge approval for PR #8 is still required before it becomes the `implementation/bootstrap` integration baseline.
