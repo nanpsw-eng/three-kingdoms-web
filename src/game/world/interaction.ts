@@ -3,6 +3,7 @@ import {
   activeEncounterIds,
   applyEffect,
   dispatchTrigger,
+  evaluateCondition,
   locationOwner,
   type ProgressLogEntry,
 } from '../domain/progress/index';
@@ -142,4 +143,32 @@ export function npcsAtCurrentLocation(save: SaveGame, registry: ContentRegistry)
   const locationId = save.world.locationId;
   if (!locationId) return [];
   return [...registry.npcs.values()].filter((npc) => npc.locationId === locationId);
+}
+
+
+export function canSearchCurrentLocation(save: SaveGame, registry: ContentRegistry): boolean {
+  const locationId = save.world.locationId;
+  if (!locationId) return false;
+  const ctx = buildProgressContext(registry);
+  return [...registry.events.values()].some((event) => {
+    if (event.trigger.type !== 'SEARCH_LOCATION' || event.trigger.locationId !== locationId) return false;
+    if (event.once && save.completedEventIds.includes(event.id)) return false;
+    return event.conditions.every((condition) => evaluateCondition(save, ctx, condition));
+  });
+}
+
+export function searchCurrentLocation(
+  save: SaveGame,
+  registry: ContentRegistry,
+): InteractionResult & { discoveredLocationIds: string[] } {
+  const locationId = save.world.locationId;
+  if (!locationId) throw new Error('current location is not set');
+
+  const before = new Set(save.discoveredLocationIds);
+  const result = dispatchTrigger(save, buildProgressContext(registry), {
+    type: 'SEARCH_LOCATION',
+    locationId,
+  });
+  const discoveredLocationIds = result.save.discoveredLocationIds.filter((id) => !before.has(id));
+  return { ...result, discoveredLocationIds };
 }
