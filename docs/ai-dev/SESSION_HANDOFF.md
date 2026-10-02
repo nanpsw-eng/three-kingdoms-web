@@ -34,6 +34,7 @@
 13. Boss encounters cannot allow retreat.
 14. Retreat persists troops, gives no rewards and leaves encounter active.
 15. World notice surfaces level/tactic unlock feedback.
+16. Recruits starting above a tactic milestone receive all tactics earned up to their recruitment level.
 
 ## Verification
 Actions `36994297632`:
@@ -47,9 +48,9 @@ Actions `36994297632`:
 - Chromium E2E **30/30**
 
 ## Decision state
-- DEC-003: PROPOSED / IMPLEMENTED FOR REVIEW.
-- DEC-004: PROPOSED / IMPLEMENTED FOR REVIEW.
-- Merge approval for PR #8 establishes both as the integration baseline.
+- DEC-003: **APPROVED / IMPLEMENTED ON FEATURE**.
+- DEC-004: **APPROVED / IMPLEMENTED ON FEATURE**.
+- Merge approval for PR #8 remains required to establish both as the `implementation/bootstrap` integration baseline.
 
 ## Pacing
 Main-route starter ends near Lv5; with optional South Plain Riders near Lv6. This is a first balance baseline, not final playtest validation.
@@ -62,7 +63,7 @@ Main-route starter ends near Lv5; with optional South Plain Riders near Lv6. Thi
 - SHOP/equipment loop remains unimplemented.
 
 ## Next Task after merge
-1. update DEC-003/004 to APPROVED / IMPLEMENTED.
+1. merge PR #8 after Human Gate approval.
 2. consolidated Vertical Slice E2E through North Gate capture.
 3. validate resulting level/tactic progression.
 4. real-device QA.
