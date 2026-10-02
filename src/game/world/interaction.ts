@@ -58,7 +58,8 @@ export function availableConnections(
     .map((id) => registry.locations.get(id))
     .filter((location): location is LocationDefinition => Boolean(location))
     .filter((location) => regionIsAccessible(save, registry, location.regionId))
-    .filter((location) => location.type !== 'SECRET' || save.discoveredLocationIds.includes(location.id));
+    .filter((location) => location.type !== 'SECRET' || save.discoveredLocationIds.includes(location.id))
+    .filter((location) => location.type !== 'GATE' || save.discoveredLocationIds.includes(location.id));
 }
 
 export function enterLocation(
