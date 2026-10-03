@@ -6,8 +6,8 @@
 - Integration branch: `implementation/bootstrap@8a22e7dc6ef53aae6fd3770e27553349500ad3ac`
 - Working branch: `feature/vertical-slice-e2e`
 - Draft PR: **#9** → `implementation/bootstrap`
-- Verified code HEAD: `e19fab1d2fc17eefea422dbf330325755403cd61`
-- Verification: Actions `37117075808` — **SUCCESS**
+- Verified implementation HEAD: `19fceaefcba3703dabb3bc5509b704123ed6122c`
+- Verification: Actions `37126288354` — **SUCCESS**
 - Current Gate: `VERTICAL_SLICE_E2E_GREEN / MERGE_HUMAN_GATE`
 - Detailed evidence: `docs/reports/VERTICAL_SLICE_E2E_REPORT.md`
 
@@ -35,7 +35,7 @@
 12. Boss BattleScreen retreat lock is browser-verified: North Gate exposes no in-battle **후퇴** button.
 
 ## Verification
-Actions `37117075808`:
+Actions `37126288354`:
 - typecheck PASS
 - content validation PASS
 - domain smoke 4/4
@@ -88,3 +88,8 @@ Critical Journey:
 - Merge PR #9 → `implementation/bootstrap`: REQUIRED.
 - Merge PR #1 → `main`: REQUIRED and separate.
 - production deploy/release/tag: REQUIRED.
+
+
+## Documentation-only finalization
+- Runtime/E2E implementation was verified at `19fceaefcba3703dabb3bc5509b704123ed6122c` by Actions `37126288354`.
+- Any later commit in this PR that changes only documentation does not change the validated runtime behavior; the latest PR check remains the merge authority.
