@@ -3,11 +3,57 @@
   "nameKey": "general.jian_yong.name",
   "courtesyNameKey": "general.jian_yong.courtesy_name",
   "role": "TACTIC",
-  "baseStats": { "strength": 50, "intelligence": 79, "command": 65, "speed": 74 },
-  "troopGrowth": { "baseTroop": 900, "perLevel": 62, "category": "LOW" },
+  "baseStats": {
+    "strength": 50,
+    "intelligence": 79,
+    "command": 65,
+    "speed": 74
+  },
+  "troopGrowth": {
+    "baseTroop": 900,
+    "perLevel": 62,
+    "category": "LOW"
+  },
   "unitType": "ARCHER",
-  "weaponAptitudes": { "SWORD": "B", "BOW": "A" },
-  "traitIds": ["TRT_JIAN_YONG_ELOQUENCE"],
-  "initialTacticIds": ["TAC_HEAL_MINOR", "TAC_CONFUSE"],
-  "tags": ["SHU", "RECRUITABLE", "TACTIC"]
+  "weaponAptitudes": {
+    "SWORD": "B",
+    "BOW": "A"
+  },
+  "traitIds": [
+    "TRT_JIAN_YONG_ELOQUENCE"
+  ],
+  "initialTacticIds": [
+    "TAC_HEAL_MINOR",
+    "TAC_CONFUSE"
+  ],
+  "tags": [
+    "SHU",
+    "RECRUITABLE",
+    "TACTIC"
+  ],
+  "levelMilestones": [
+    {
+      "level": 10,
+      "statBonuses": {
+        "intelligence": 1,
+        "speed": 1
+      },
+      "tacticIds": []
+    },
+    {
+      "level": 20,
+      "statBonuses": {
+        "intelligence": 1,
+        "command": 1
+      },
+      "tacticIds": []
+    },
+    {
+      "level": 30,
+      "statBonuses": {
+        "intelligence": 1
+      },
+      "tacticIds": []
+    }
+  ]
 }

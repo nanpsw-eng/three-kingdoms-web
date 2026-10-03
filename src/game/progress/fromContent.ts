@@ -1,4 +1,5 @@
 import { maxTroopsAt } from '../battle/fromContent';
+import { learnedTacticsAtLevel } from '../progression/leveling';
 import type { ContentRegistry } from '../content/registry';
 import type { ProgressContext } from '../domain/progress/index';
 
@@ -12,7 +13,7 @@ export function buildProgressContext(registry: ContentRegistry): ProgressContext
     newGeneralProgress: (id, level) => {
       const g = registry.generals.get(id);
       if (!g) throw new Error(`unknown general ${id}`);
-      return { level, xp: 0, currentTroops: maxTroopsAt(registry, id, level), learnedTacticIds: [...g.initialTacticIds], equipment: {} };
+      return { level, xp: 0, currentTroops: maxTroopsAt(registry, id, level), learnedTacticIds: learnedTacticsAtLevel(registry, id, level), equipment: {} };
     },
   };
 }

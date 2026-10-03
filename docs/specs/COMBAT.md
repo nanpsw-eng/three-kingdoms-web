@@ -58,6 +58,17 @@ Approved by DEC-002 and implemented:
 - no XP loss;
 - the encounter remains active unless story/event logic explicitly changes it.
 
-## Open product decisions
-- BD-02: level-up curve / XP thresholds / tactic unlock schedule.
-- BD-03: final retreat rule and penalties.
+## Progression and retreat
+Approved BD-02 implementation:
+- fixed-identity Lv.1–30 progression;
+- XP costs and milestone rewards are documented in DEC-003;
+- battle participants earn 100% encounter XP; reserves earn 50%.
+
+Approved BD-03 implementation:
+- retreat is deterministic when `canRetreat=true`;
+- current troops persist;
+- no gold/XP gain or loss;
+- encounter remains active;
+- bosses cannot allow retreat; story encounters may explicitly disable it.
+
+See DEC-003 and DEC-004. Both product policies are approved and implemented on the feature branch; PR #8 merge remains the Human Gate for integration into `implementation/bootstrap`.

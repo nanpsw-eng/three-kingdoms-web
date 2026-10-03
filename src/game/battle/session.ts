@@ -215,7 +215,7 @@ export function executeTurn(session: BattleSession, nextPlan: 'SMART' | 'REPEAT'
   return { session: resetPlan(next, nextPlan), turn };
 }
 
-/** Retreat (non-boss only). Neutral prototype rule: always succeeds; see report BLOCKED_DECISION BD-03. */
+/** BD-03: retreat is deterministic. Allowed encounters succeed immediately; locked encounters remain ongoing. */
 export function retreat(session: BattleSession): BattleSession {
   if (!session.canRetreat || session.result !== 'ONGOING') return session;
   return { ...session, result: 'RETREAT' };

@@ -29,6 +29,41 @@ describe('applyBattleResult', () => {
     expect(() => encodeSave(next)).not.toThrow();
   });
 
+
+  it('levels participants at 100% XP and gives reserves 50% XP', () => {
+    const base = createNewGame(registry, NOW);
+    const jian = registry.generals.get('GEN_JIAN_YONG')!;
+    const save = {
+      ...base,
+      generals: {
+        ...base.generals,
+        GEN_LIU_BEI: { ...base.generals.GEN_LIU_BEI!, xp: 30 },
+        GEN_GUAN_YU: { ...base.generals.GEN_GUAN_YU!, xp: 30 },
+        GEN_ZHANG_FEI: { ...base.generals.GEN_ZHANG_FEI!, xp: 30 },
+        GEN_JIAN_YONG: {
+          level: 2,
+          xp: 0,
+          currentTroops: maxTroopsAt(registry, 'GEN_JIAN_YONG', 2),
+          learnedTacticIds: [...jian.initialTacticIds],
+          equipment: {},
+        },
+      },
+      party: {
+        ...base.party,
+        reserveGeneralIds: ['GEN_JIAN_YONG'],
+      },
+    };
+
+    let session = createSession(registry, 'ENC_SOUTH_PLAIN_SCOUTS', partyOf(save), 19);
+    while (session.result === 'ONGOING') session = executeTurn(session).session;
+    const next = applyBattleResult(save, session, registry, '2026-10-01T15:05:00.000Z');
+
+    expect(next.generals.GEN_LIU_BEI).toMatchObject({ level: 2, xp: 10 });
+    expect(next.generals.GEN_GUAN_YU).toMatchObject({ level: 2, xp: 10 });
+    expect(next.generals.GEN_ZHANG_FEI).toMatchObject({ level: 2, xp: 10 });
+    expect(next.generals.GEN_JIAN_YONG).toMatchObject({ level: 2, xp: 20 });
+  });
+
   it('defeat applies DEC-002 recovery without gold/xp loss or clearing the encounter', () => {
     const base = createNewGame(registry, NOW);
     const save = {

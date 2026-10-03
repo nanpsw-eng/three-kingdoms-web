@@ -49,6 +49,15 @@ describe('battle session', () => {
   });
 
 
+
+  it('boss retreat is locked and leaves the session ongoing', () => {
+    const boss = createSession(registry, 'ENC_NORTH_GATE_BOSS', party, 1);
+    expect(boss.canRetreat).toBe(false);
+    const after = retreat(boss);
+    expect(after).toBe(boss);
+    expect(after.result).toBe('ONGOING');
+  });
+
   it('boss telegraph announces before a forced all-enemy tactic', () => {
     const base = createSession(registry, 'ENC_NORTH_GATE_BOSS', party, 123);
     const announced = { ...base, state: { ...base.state, turn: 2 } };

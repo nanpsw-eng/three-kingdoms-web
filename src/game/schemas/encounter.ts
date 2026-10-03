@@ -36,7 +36,11 @@ export const EncounterSchema = z.object({
   telegraphs: z.array(EncounterTelegraphSchema).default([]),
   rewards: z.object({ xp: z.number().int().min(0), gold: z.number().int().min(0) }).strict(),
   contentStatus: z.enum(['APPROVED', 'PROVISIONAL_CONTENT_REVIEW_REQUIRED']).optional(),
-}).strict();
+}).strict().superRefine((encounter, ctx) => {
+  if (encounter.isBoss && encounter.canRetreat) {
+    ctx.addIssue({ code: 'custom', path: ['canRetreat'], message: 'boss encounters cannot allow retreat' });
+  }
+});
 
 export type EncounterDefinition = z.infer<typeof EncounterSchema>;
 export type EncounterTelegraphDefinition = z.infer<typeof EncounterTelegraphSchema>;

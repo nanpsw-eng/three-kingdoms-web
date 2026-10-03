@@ -10,8 +10,20 @@ A general's value is the combination of stats, troops, unit type, weapon aptitud
 - speed: action order
 
 ## Growth
-Approved: fixed-identity growth. Core stats change only slightly through milestones. Level primarily increases troop capacity, unlocks tactics and may improve traits at sparse milestones.
-Reserve generals receive partial XP to reduce switching cost.
+Approved direction: fixed-identity growth. Core stats change only slightly through milestones. Level primarily increases troop capacity and unlocks tactics.
+
+Approved BD-02 implementation:
+- Lv.1–30;
+- Save XP is current-level progress;
+- next-level cost = `40 + 20 × currentLevel`;
+- battle participants receive 100% encounter XP;
+- reserve generals receive 50% XP;
+- troop capacity follows each general's existing `baseTroop + perLevel` data;
+- level-up adds only the newly gained troop-capacity delta to current troops, not a full heal;
+- sparse stat/tactic milestones are static content and are derived from level;
+- Lv.30 discards further XP.
+
+The fixed-identity model and Lv.30 cap are approved product rules. Exact XP costs and milestone placements remain `BALANCE_PROPOSED` and may be retuned after playtest.
 
 ## Units
 Vertical Slice uses spear/cavalry/archer.
