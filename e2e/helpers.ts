@@ -81,13 +81,22 @@ export async function walkIntoEncounter(
   await expect(shell).toHaveAttribute('data-encounter', encounterId, { timeout: 10_000 });
 }
 
-export async function autoWinEncounter(page: Page, expectedName?: RegExp | string) {
+export async function autoWinEncounter(
+  page: Page,
+  expectedName?: RegExp | string,
+  options?: { canRetreat?: boolean },
+) {
   const encounter = page.getByRole('dialog', { name: '적과 조우' });
   if (expectedName) await expect(encounter).toContainText(expectedName);
   await encounter.getByRole('button', { name: '전투' }).tap();
 
   const panel = page.getByRole('region', { name: '전투 명령' });
   await expect(panel).toBeVisible();
+  if (options?.canRetreat === false) {
+    await expect(panel.getByRole('button', { name: '후퇴' })).toHaveCount(0);
+  } else if (options?.canRetreat === true) {
+    await expect(panel.getByRole('button', { name: '후퇴' })).toBeVisible();
+  }
   const speed = panel.getByRole('button', { name: /전투 속도 x/ });
   for (let i = 0; i < 2; i++) await speed.tap();
   await panel.getByRole('button', { name: '자동', exact: true }).tap();
