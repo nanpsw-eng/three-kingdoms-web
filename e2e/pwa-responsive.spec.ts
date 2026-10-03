@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openWorld, walkIntoScout } from './helpers';
+import { openWorld, readAutoSave, walkIntoScout } from './helpers';
 
 test('manifest, app-shell service worker, and save stays in IndexedDB (not Cache Storage)', async ({ page }) => {
   await openWorld(page);
@@ -54,4 +54,40 @@ test('portrait layout: field fills space, nothing overflows, primary controls re
   const box = (await start.boundingBox())!;
   expect(box.y + box.height).toBeLessThanOrEqual(vw.height);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(vw.width);
+});
+
+
+test('offline PWA reload keeps the app shell and IndexedDB save available', async ({ page, context, browserName }) => {
+  test.skip(browserName !== 'chromium', 'offline PWA evidence is Chromium-only; WebKit remains supplemental browser compatibility');
+
+  await page.goto('/');
+  const shell = page.locator('main.app-shell');
+  await expect(shell).toHaveAttribute('data-scene', 'World', { timeout: 15_000 });
+  await expect(shell).toHaveAttribute('data-save', 'ready', { timeout: 15_000 });
+
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page.reload();
+  await expect.poll(async () => page.evaluate(() => Boolean(navigator.serviceWorker.controller)), { timeout: 10_000 }).toBe(true);
+
+  const before = await readAutoSave(page);
+  await context.setOffline(true);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+
+  await expect(shell).toHaveAttribute('data-scene', 'World', { timeout: 15_000 });
+  await expect(shell).toHaveAttribute('data-save', 'ready', { timeout: 15_000 });
+  const after = await readAutoSave(page);
+  expect(after).toEqual(before);
+
+  const offlineState = await page.evaluate(async () => ({
+    online: navigator.onLine,
+    controller: Boolean(navigator.serviceWorker.controller),
+    caches: await caches.keys(),
+    databases: (await indexedDB.databases()).map((db) => db.name),
+  }));
+  expect(offlineState.online).toBe(false);
+  expect(offlineState.controller).toBe(true);
+  expect(offlineState.caches.some((name) => name.startsWith('workbox-precache'))).toBe(true);
+  expect(offlineState.databases).toContain('three-kingdoms-web');
 });
