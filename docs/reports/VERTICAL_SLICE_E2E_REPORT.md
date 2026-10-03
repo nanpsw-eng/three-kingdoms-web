@@ -124,3 +124,7 @@ After PR #9 integration:
 - Real-device acceptance: **NOT_RUN**
 - Human playtest: **NOT_RUN**
 - Merge PR #9 → `implementation/bootstrap`: **HUMAN APPROVAL REQUIRED**
+
+
+## Field encounter wording
+The pre-battle encounter overlay now labels disengagement as **피하기**. This is intentionally distinct from BD-03 **후퇴**, which only applies after a BattleSession has started. The distinction prevents the North Gate pre-battle overlay from appearing to violate the boss retreat lock.
