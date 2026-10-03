@@ -72,3 +72,9 @@ Approved BD-03 implementation:
 - bosses cannot allow retreat; story encounters may explicitly disable it.
 
 See DEC-003 and DEC-004. Both product policies are approved and implemented on the feature branch; PR #8 merge remains the Human Gate for integration into `implementation/bootstrap`.
+
+
+## Encounter avoidance wording
+- The pre-battle field encounter overlay uses **피하기** for cancelling/disengaging from a field encounter before battle starts.
+- **후퇴** is reserved for the in-battle BD-03 retreat action.
+- Boss/story battles may disallow in-battle retreat even though the player can still back away from the field encounter before committing to battle.
