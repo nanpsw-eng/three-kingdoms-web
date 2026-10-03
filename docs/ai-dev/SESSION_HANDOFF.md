@@ -32,6 +32,7 @@
 9. Journey validates final levels/tactic unlocks/gold/flags/ownership/region unlock.
 10. Journey reloads and verifies persistence.
 11. Pre-battle field disengage is labeled **피하기**; **후퇴** is reserved for BD-03 in-battle retreat.
+12. Boss BattleScreen retreat lock is browser-verified: North Gate exposes no in-battle **후퇴** button.
 
 ## Verification
 Actions `37117075808`:
