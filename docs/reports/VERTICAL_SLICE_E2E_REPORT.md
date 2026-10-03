@@ -7,9 +7,9 @@
 | Repository | `nanpsw-eng/three-kingdoms-web` |
 | Integration base | `implementation/bootstrap@8a22e7dc6ef53aae6fd3770e27553349500ad3ac` |
 | Feature branch | `feature/vertical-slice-e2e` |
-| Verified code HEAD | `e19fab1d2fc17eefea422dbf330325755403cd61` |
+| Verified implementation HEAD | `19fceaefcba3703dabb3bc5509b704123ed6122c` |
 | Draft PR | #9 → `implementation/bootstrap` |
-| GitHub Actions | `37117075808` — **SUCCESS** |
+| GitHub Actions | `37126288354` — **SUCCESS** |
 | Merge | **NOT_PERFORMED — Human Gate** |
 
 This PR adds a consolidated browser Critical Journey that keeps one real autosaved game from the prologue through North Gate capture.
@@ -68,7 +68,7 @@ This verifies the full journey across a real persistence boundary.
 
 ## 4. Verification
 
-GitHub Actions `37117075808` on code HEAD `e19fab1d2fc17eefea422dbf330325755403cd61`:
+GitHub Actions `37126288354` on implementation HEAD `19fceaefcba3703dabb3bc5509b704123ed6122c`:
 
 - typecheck: PASS
 - content validation: PASS
@@ -129,3 +129,9 @@ After PR #9 integration:
 
 ## Field encounter wording
 The pre-battle encounter overlay now labels disengagement as **피하기**. This is intentionally distinct from BD-03 **후퇴**, which only applies after a BattleSession has started. The distinction prevents the North Gate pre-battle overlay from appearing to violate the boss retreat lock.
+
+
+### Encounter avoidance vs retreat
+- Pre-battle field disengagement is labeled **피하기**.
+- **후퇴** is reserved for the BD-03 in-battle action.
+- The North Gate Critical Journey verifies that the boss BattleScreen has no in-battle **후퇴** button.
