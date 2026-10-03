@@ -91,7 +91,7 @@ test('complete Vertical Slice: start -> recruits -> Outpost -> North Gate captur
   ]);
   const bossDialog = page.getByRole('dialog', { name: '적과 조우' });
   await expect(bossDialog.getByRole('button', { name: '피하기' })).toBeVisible();
-  await autoWinEncounter(page);
+  await autoWinEncounter(page, undefined, { canRetreat: false });
 
   await expect(page.getByTestId('quest-objective')).toContainText('다음 지역 준비 중');
   await expect(page.locator('.interaction-notice')).toContainText('레벨 상승');
