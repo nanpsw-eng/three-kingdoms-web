@@ -89,6 +89,7 @@ Automation duration is **not** evidence for the PRD's 20–30 minute human playt
 ## 5. What this gate establishes
 
 Engineering evidence now supports:
+- Boss retreat lock is also browser-verified: pre-battle field disengage is `피하기`, while the North Gate BattleScreen exposes no `후퇴` action;
 - one continuous Vertical Slice can be completed end to end;
 - world, battle, recruitment, secret discovery, conquest, XP/level progression and persistence interoperate;
 - BD-02 level progression behaves as intended on the main route;
