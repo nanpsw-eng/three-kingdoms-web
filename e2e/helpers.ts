@@ -61,3 +61,89 @@ export async function walkIntoScout(page: Page) {
   await expect(page.locator('main.app-shell')).toHaveAttribute('data-encounter', 'ENC_SOUTH_PLAIN_SCOUTS', { timeout: 8_000 });
   void dbg;
 }
+
+
+export async function walkIntoEncounter(
+  page: Page,
+  encounterId: string,
+  waypoints: readonly Vec[],
+) {
+  const shell = page.locator('main.app-shell');
+  for (const point of waypoints) {
+    if ((await shell.getAttribute('data-encounter')) === encounterId) break;
+    await tapWorld(page, point);
+    await expect.poll(async () => {
+      const state = await worldState(page);
+      return state.paused || state.player.path.length === 0 ||
+        (await shell.getAttribute('data-encounter')) === encounterId;
+    }, { timeout: 10_000 }).toBe(true);
+  }
+  await expect(shell).toHaveAttribute('data-encounter', encounterId, { timeout: 10_000 });
+}
+
+export async function autoWinEncounter(
+  page: Page,
+  expectedName?: RegExp | string,
+  options?: { canRetreat?: boolean },
+) {
+  const encounter = page.getByRole('dialog', { name: '적과 조우' });
+  if (expectedName) await expect(encounter).toContainText(expectedName);
+  await encounter.getByRole('button', { name: '전투' }).tap();
+
+  const panel = page.getByRole('region', { name: '전투 명령' });
+  await expect(panel).toBeVisible();
+  if (options?.canRetreat === false) {
+    await expect(panel.getByRole('button', { name: '후퇴' })).toHaveCount(0);
+  } else if (options?.canRetreat === true) {
+    await expect(panel.getByRole('button', { name: '후퇴' })).toBeVisible();
+  }
+  const speed = panel.getByRole('button', { name: /전투 속도 x/ });
+  for (let i = 0; i < 2; i++) await speed.tap();
+  await panel.getByRole('button', { name: '자동', exact: true }).tap();
+
+  const result = page.getByRole('dialog', { name: '전투 결과' });
+  await expect(result).toContainText('승리', { timeout: 35_000 });
+  await result.getByRole('button', { name: '계속' }).tap();
+  await expect(page.locator('main.app-shell')).toHaveAttribute('data-scene', 'World', { timeout: 10_000 });
+  await expect(page.locator('main.app-shell')).toHaveAttribute('data-save', 'ready', { timeout: 10_000 });
+}
+
+export interface PersistedSaveSnapshot {
+  gold: number;
+  generals: Record<string, {
+    level: number;
+    xp: number;
+    currentTroops: number;
+    learnedTacticIds: string[];
+  }>;
+  party: { activeGeneralIds: string[]; reserveGeneralIds: string[] };
+  flags: Record<string, boolean | number | string>;
+  locationOwnership: Record<string, string>;
+  defeatedEncounterIds: string[];
+  unlockedRegionIds: string[];
+  quests: Record<string, { status: string; stepIndex: number }>;
+  world: { locationId: string | null; checkpointId: string };
+}
+
+export async function readAutoSave(page: Page): Promise<PersistedSaveSnapshot> {
+  return page.evaluate(async () => {
+    const request = indexedDB.open('three-kingdoms-web');
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    try {
+      const tx = db.transaction('saves', 'readonly');
+      const store = tx.objectStore('saves');
+      const row = await new Promise<{ data?: unknown } | undefined>((resolve, reject) => {
+        const get = store.get('auto');
+        get.onsuccess = () => resolve(get.result as { data?: unknown } | undefined);
+        get.onerror = () => reject(get.error);
+      });
+      if (!row?.data) throw new Error('auto save row missing');
+      return row.data as PersistedSaveSnapshot;
+    } finally {
+      db.close();
+    }
+  });
+}

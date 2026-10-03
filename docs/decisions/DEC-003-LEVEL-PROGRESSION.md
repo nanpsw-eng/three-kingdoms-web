@@ -1,7 +1,7 @@
 # DEC-003 — Fixed-Identity Level Progression
 
 ## Status
-APPROVED / IMPLEMENTED ON FEATURE — 2026-10-02
+APPROVED / IMPLEMENTED — 2026-10-02
 
 ## Product rule
 - Maximum level: **30**.
@@ -33,4 +33,4 @@ This is intentionally separable from the product rule and may be retuned through
 No Save schema version change is required. Existing fields `level`, `xp`, `learnedTacticIds`, and `currentTroops` are sufficient. Static stat milestones remain content-derived and are not persisted.
 
 ## Approval / integration gate
-The product rule is approved for this project. The current feature implementation is validated; merge approval for PR #8 is still required before it becomes the `implementation/bootstrap` integration baseline. Exact XP costs and milestone placement remain balance-tunable.
+The product rule is approved and integrated into `implementation/bootstrap` by PR #8. Exact XP costs and milestone placement remain balance-tunable.

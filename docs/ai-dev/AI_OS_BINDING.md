@@ -19,14 +19,15 @@
 - Visibility: `PUBLIC`
 - Default branch: `main`
 - Integration branch: `implementation/bootstrap`
-- Active feature branch: `feature/progression-retreat-v1`
-- Active feature PR: Draft PR #8 → `implementation/bootstrap`
+- Active feature branch: `feature/vertical-slice-e2e`
+- Active feature PR: Draft PR #9 → `implementation/bootstrap`
 - Foundation PR #2: MERGED into `implementation/bootstrap`
 - Battle Strategy PR #3: MERGED
 - World Interaction PR #4: MERGED
 - Secret Area PR #5: MERGED
 - Field Presentation PR #6: MERGED
 - Field Presentation v2 PR #7: MERGED
+- Progression & Retreat PR #8: MERGED
 
 ## Loading Rule
 AI-OS가 필요한 작업에서만 위 exact commit 기준으로 필요한 Core Policy와 Domain Pack을 선택적으로 읽는다. 승인된 결정을 우선 재사용하고 현재 변경 위험을 통제하는 최소 Context·Agent·Test·Cost를 사용한다.

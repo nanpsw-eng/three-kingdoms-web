@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { openWorld, tapWorld, walkIntoScout, worldState } from './helpers';
 
-test('tap-to-move moves, retargets mid-move, chasing scout triggers encounter, retreat resumes', async ({ page }) => {
+test('tap-to-move moves, retargets mid-move, chasing scout triggers encounter, avoiding resumes', async ({ page }) => {
   await openWorld(page);
   const start = (await worldState(page)).player.pos;
 
@@ -25,9 +25,9 @@ test('tap-to-move moves, retargets mid-move, chasing scout triggers encounter, r
   const dialog = page.getByRole('dialog', { name: '적과 조우' });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole('button', { name: '전투' })).toBeEnabled();
-  const retreat = dialog.getByRole('button', { name: '후퇴' });
-  expect((await retreat.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-  await retreat.tap();
+  const avoid = dialog.getByRole('button', { name: '피하기' });
+  expect((await avoid.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await avoid.tap();
   await expect(dialog).toBeHidden();
   await expect.poll(async () => (await worldState(page)).paused).toBe(false);
 });

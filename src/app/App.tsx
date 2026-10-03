@@ -342,7 +342,7 @@ export function App() {
                 )}
                 <div className="encounter-actions">
                   <button type="button" className="primary" onClick={startBattle} disabled={!save}>전투</button>
-                  <button type="button" onClick={retreatFromField}>후퇴</button>
+                  <button type="button" onClick={retreatFromField}>피하기</button>
                 </div>
               </div>
             )}
