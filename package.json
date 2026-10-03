@@ -13,7 +13,8 @@
     "check": "node scripts/verify-foundation.mjs --skip-e2e",
     "validate:content": "tsx scripts/validate-content.ts",
     "sim:encounters": "tsx scripts/simulate-encounters.ts",
-    "verify:foundation": "node scripts/verify-foundation.mjs"
+    "verify:foundation": "node scripts/verify-foundation.mjs",
+    "test:e2e:webkit": "playwright test --config=playwright.webkit.config.ts"
   },
   "dependencies": {
     "dexie": "4.4.6",

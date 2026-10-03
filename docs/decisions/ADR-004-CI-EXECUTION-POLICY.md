@@ -16,12 +16,12 @@ Keep **local-first repository scripts** as the portable validation contract, but
 Allowed workflow scope:
 - pull requests targeting `implementation/bootstrap`, plus explicit `workflow_dispatch` when pre-PR/manual validation is needed;
 - standard public GitHub-hosted runner only;
-- `npm ci`, typecheck/content/unit/golden/build checks, and Chromium E2E;
+- `npm ci`, typecheck/content/unit/golden/build checks, Chromium E2E, and targeted Playwright WebKit supplemental compatibility;
 - read-only repository permissions;
 - no repository secrets;
 - no deploy, release, tag, publish, external write, scheduled polling, paid runner, or self-hosted runner.
 
-The workflow is validation evidence only. It does not authorize merge or release. Automatic feature-branch `push` triggering is intentionally disabled to avoid duplicate push + pull-request runs for the same SHA.
+The workflow is validation evidence only. It does not authorize merge or release. WebKit results are supplemental browser-engine compatibility evidence only and must not be represented as physical iPhone Safari validation. Automatic feature-branch `push` triggering is intentionally disabled to avoid duplicate push + pull-request runs for the same SHA.
 
 ## Repository validation contract
 Repository scripts remain authoritative and runnable outside Actions:
