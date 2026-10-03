@@ -19,8 +19,8 @@
 - Visibility: `PUBLIC`
 - Default branch: `main`
 - Integration branch: `implementation/bootstrap`
-- Active feature branch: `feature/vertical-slice-e2e`
-- Active feature PR: Draft PR #9 → `implementation/bootstrap`
+- Active feature branch: `feature/release-candidate-qa-v1`
+- Active feature PR: Draft PR #10 (stacked on PR #9) → `implementation/bootstrap`
 - Foundation PR #2: MERGED into `implementation/bootstrap`
 - Battle Strategy PR #3: MERGED
 - World Interaction PR #4: MERGED
