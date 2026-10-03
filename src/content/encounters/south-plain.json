@@ -1,0 +1,15 @@
+[
+  {
+    "id": "ENC_SOUTH_PLAIN_SCOUTS",
+    "nameKey": "encounter.south_plain_scouts.name",
+    "enemies": [
+      { "generalId": "GEN_YT_SCOUT_LEADER", "level": 2, "slot": 0, "weaponAttack": 6, "armorDefense": 4 },
+      { "generalId": "GEN_YT_SPEARMEN", "level": 2, "slot": 1, "weaponAttack": 4, "armorDefense": 4 },
+      { "generalId": "GEN_YT_ARCHERS", "level": 2, "slot": 2, "weaponAttack": 4, "armorDefense": 2 }
+    ],
+    "enemyFormationId": null,
+    "isBoss": false,
+    "canRetreat": true,
+    "rewards": { "xp": 40, "gold": 30 }
+  }
+]
