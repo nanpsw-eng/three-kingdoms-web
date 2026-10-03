@@ -3,71 +3,70 @@
 ## Current State
 - Repository: `nanpsw-eng/three-kingdoms-web` (PUBLIC)
 - Default branch: `main`
-- Integration branch: `implementation/bootstrap@8a22e7dc6ef53aae6fd3770e27553349500ad3ac`
-- Vertical Slice branch: `feature/vertical-slice-e2e@0ebae484a3de7168febb329e1fb44d6796995879`
-- Vertical Slice PR: **#9 Draft → implementation/bootstrap**
-- RC QA branch: `feature/release-candidate-qa-v1`
-- RC QA PR: **#10 Draft → implementation/bootstrap**
-- Verified RC code HEAD before docs: `b3c2108e831051af093ff5eb982be557600715a7`
+- Integration branch: `implementation/bootstrap@4f91d3899b45ebeb20cc744027a4bc017208371b`
+- Working branch: `feature/release-candidate-qa-v1`
+- Draft PR: **#10** → `implementation/bootstrap`
+- Verified RC implementation HEAD: `b3c2108e831051af093ff5eb982be557600715a7`
 - RC validation: Actions `37131349009` — **SUCCESS**
-- Current Gate: `PR9_DRAFT_BLOCK / RC_QA_GREEN_STACKED`
+- Current Gate: `RC_QA_V1_GREEN / MERGE_HUMAN_GATE`
 - Detailed evidence: `docs/reports/RELEASE_CANDIDATE_QA_V1_REPORT.md`
 
 ## Integrated baseline
-PRs #2 through #8 are integrated into `implementation/bootstrap`.
-DEC-002 / DEC-003 / DEC-004 are approved and implemented.
+- PRs #2–#9 are integrated into `implementation/bootstrap`.
+- Full Vertical Slice Critical Journey is integrated by PR #9.
+- DEC-002 / DEC-003 / DEC-004 are approved and implemented.
 
-## PR #9 — Vertical Slice E2E
-Validated final head `0ebae484...`:
-- typecheck/content/domain/build PASS
-- Vitest 90/90
-- battle golden 7/7
-- architecture 2/2
-- Chromium E2E 33/33
-- Critical Journey PASS at 360/390/412
-- final Save/reload/progression PASS
+## Completed in RC QA v1
+1. Chromium offline PWA reload test at 360/390/412.
+2. Service Worker control and Workbox precache verified.
+3. IndexedDB auto-save equality verified before/after offline reload.
+4. Playwright WebKit 390 supplemental configuration added.
+5. WebKit shell/PWA/responsive checks pass.
+6. Full Vertical Slice Critical Journey passes under WebKit.
+7. Validation workflow installs Chromium + WebKit.
+8. WebKit is explicitly supplemental, not physical iPhone Safari evidence.
 
-PR #9 is still Draft. The connected GitHub app cannot clear Draft state for this PR.
-User must press **Ready for review** on PR #9 before automated merge can proceed.
-
-## PR #10 — RC QA stacked on PR #9
-Validated head `b3c2108e...`:
-- foundation gate PASS
+## Verification
+Actions `37131349009`:
+- typecheck PASS
+- content validation PASS
+- domain smoke 4/4
+- Vitest **90/90**
+- golden **7/7**
+- architecture **2/2**
+- build/PWA PASS
 - Chromium E2E **36/36**
-- WebKit targeted compatibility **4/4**
-- offline PWA reload + IndexedDB persistence PASS at Chromium 360/390/412
-- full Critical Journey PASS under WebKit 390
+- WebKit targeted **4 PASS**
 
-WebKit is supplemental and must not be described as real iPhone Safari evidence.
+Offline Chromium reload:
+- 360 PASS
+- 390 PASS
+- 412 PASS
 
-## Required merge order
-1. User clears Draft on PR #9.
-2. Merge PR #9 → `implementation/bootstrap`.
-3. Re-evaluate PR #10 against updated base.
-4. Run/confirm final PR #10 validation on the effective post-PR9 diff.
-5. Human approval before PR #10 merge.
-6. PR #1 → main remains a separate later Human Gate.
-
-## NOT_RUN / remaining
+## Still NOT_RUN
 - real Android Chrome
 - real iPhone Safari
 - installed PWA on physical device
+- OS background/kill/resume
 - representative-device FPS/memory/thermal
-- human playtime/comprehension/fun
-- assistive technology
-- SHOP/equipment
+- human playtest / pacing / fun
+- assistive-tech accessibility
+
+## Next Task after merge
+1. physical-device QA where device/browser execution is available;
+2. human Vertical Slice playtest;
+3. reassess long-lived PR #1 `implementation/bootstrap → main`.
 
 ## REQUIRED_CONTEXT
 - `AGENTS.md`
 - `docs/ai-dev/AI_OS_BINDING.md`
 - `docs/product/PRD.md`
+- `docs/decisions/ADR-004-CI-EXECUTION-POLICY.md`
 - `docs/reports/VERTICAL_SLICE_E2E_REPORT.md`
 - `docs/reports/RELEASE_CANDIDATE_QA_V1_REPORT.md`
 - this Handoff
 
-## Human / UI Gate
-- **PR #9 Ready for review:** user action required.
-- PR #9 merge: approved by current continuation instruction once Draft is cleared.
-- PR #10 merge: separate Human Gate after stack normalization.
-- PR #1 → main: separate Human Gate.
-- production deploy/release/tag: separate Human Gate.
+## Human Gates
+- Merge PR #10 → `implementation/bootstrap`: REQUIRED.
+- Merge PR #1 → `main`: REQUIRED and separate.
+- production deploy/release/tag: REQUIRED.
