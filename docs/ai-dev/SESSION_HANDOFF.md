@@ -31,6 +31,7 @@
 8. Journey captures Outpost and North Gate.
 9. Journey validates final levels/tactic unlocks/gold/flags/ownership/region unlock.
 10. Journey reloads and verifies persistence.
+11. Pre-battle field disengage is labeled **피하기**; **후퇴** is reserved for BD-03 in-battle retreat.
 
 ## Verification
 Actions `37117075808`:
