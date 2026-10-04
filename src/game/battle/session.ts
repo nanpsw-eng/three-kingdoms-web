@@ -23,6 +23,8 @@ export interface PartyMemberInput {
   level: number;
   troops: number;
   tacticIds: string[];
+  /** Equipped item ids; omitted = unequipped. */
+  equipment?: { weapon?: string; armor?: string; accessory?: string };
 }
 
 export interface BattleTelegraph {
@@ -63,7 +65,7 @@ export function createSession(
   const encounter = registry.encounters.get(encounterId);
   if (!encounter) throw new Error(`unknown encounter ${encounterId}`);
   const players: Combatant[] = party.slice(0, 5).map((m, slot) =>
-    combatantFromGeneral(registry, m.generalId, { side: 'PLAYER', slot, level: m.level, troops: m.troops, tacticIds: m.tacticIds }),
+    combatantFromGeneral(registry, m.generalId, { side: 'PLAYER', slot, level: m.level, troops: m.troops, tacticIds: m.tacticIds, ...(m.equipment ? { equipment: m.equipment } : {}) }),
   );
   const enemies: Combatant[] = encounter.enemies.map((e) =>
     combatantFromGeneral(registry, e.generalId, {
