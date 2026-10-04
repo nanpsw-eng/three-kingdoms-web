@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { maxTroopsAt } from '../game/battle/fromContent';
 import { createSession, type BattleSession } from '../game/battle/session';
 import { dispatchTrigger } from '../game/domain/progress/index';
+import { buyItem, equipItem, shopAtCurrentLocation, unequipSlot } from '../game/equipment/inventory';
+import type { EquipmentSlot } from '../game/schemas';
 import type { AggroState, GameBridge, SceneKey } from '../game/runtime/bridge';
 import { buildProgressContext } from '../game/progress/fromContent';
 import { applyBattleResult } from '../game/save/applyBattle';
@@ -19,6 +21,8 @@ import {
 } from '../game/world/interaction';
 import { BattleScreen, nameOf } from './components/BattleScreen';
 import { GameCanvas } from './components/GameCanvas';
+import { PartySheet } from './components/PartySheet';
+import { ShopSheet } from './components/ShopSheet';
 import { VirtualDpad } from './components/VirtualDpad';
 import { useGame } from './game/useGame';
 
@@ -72,6 +76,8 @@ export function App() {
   const [fieldDestinationId, setFieldDestinationId] = useState<string | null>(null);
   const [dpad, setDpad] = useState(false);
   const [locationSheet, setLocationSheet] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
+  const [partyOpen, setPartyOpen] = useState(false);
   const [dialogNpcId, setDialogNpcId] = useState<string | null>(null);
   const [interactionNotice, setInteractionNotice] = useState<string | null>(null);
   const [interactionError, setInteractionError] = useState<string | null>(null);
@@ -111,9 +117,9 @@ export function App() {
   useEffect(() => {
     if (!bridge || scene !== 'World' || battle) return;
     bridge.ui.emit('set-paused', {
-      paused: !isFieldLocation || Boolean(encounter) || locationSheet || Boolean(dialogNpcId),
+      paused: !isFieldLocation || Boolean(encounter) || locationSheet || shopOpen || partyOpen || Boolean(dialogNpcId),
     });
-  }, [bridge, scene, battle, encounter, isFieldLocation, locationSheet, dialogNpcId]);
+  }, [bridge, scene, battle, encounter, isFieldLocation, locationSheet, shopOpen, partyOpen, dialogNpcId]);
 
   const selectFormation = (formationId: string) => {
     game.commit((s) => ({ ...s, party: { ...s.party, formationId } }));
@@ -136,6 +142,7 @@ export function App() {
       level: save.generals[id]!.level,
       troops: save.generals[id]!.currentTroops,
       tacticIds: save.generals[id]!.learnedTacticIds,
+      equipment: save.generals[id]!.equipment,
     }));
     const session = createSession(registry, encounter.encounterId, party, randomSeed(), save.party.formationId);
     setBattle(session);
@@ -177,6 +184,7 @@ export function App() {
       game.commit(() => result.save);
       const destination = registry.locations.get(destinationId);
       setLocationSheet(false);
+      setShopOpen(false);
       setDialogNpcId(null);
       setEncounter(null);
       setAlert(null);
@@ -228,6 +236,38 @@ export function App() {
     }
   };
 
+  const buy = (itemId: string) => {
+    if (!save) return;
+    try {
+      game.commit((s) => buyItem(s, registry, itemId));
+      setInteractionError(null);
+      setInteractionNotice('구매 완료: ' + t(registry.equipment.get(itemId)?.nameKey ?? itemId) + ' · 부대 메뉴에서 장착하세요.');
+    } catch (error) {
+      setInteractionError(String(error));
+    }
+  };
+
+  const equip = (generalId: string, itemId: string) => {
+    if (!save) return;
+    try {
+      game.commit((s) => equipItem(s, registry, generalId, itemId));
+      setInteractionError(null);
+      setInteractionNotice(nameOf(registry, t, generalId) + ' 장착: ' + t(registry.equipment.get(itemId)?.nameKey ?? itemId));
+    } catch (error) {
+      setInteractionError(String(error));
+    }
+  };
+
+  const unequip = (generalId: string, slot: EquipmentSlot) => {
+    if (!save) return;
+    try {
+      game.commit((s) => unequipSlot(s, generalId, slot));
+      setInteractionError(null);
+    } catch (error) {
+      setInteractionError(String(error));
+    }
+  };
+
   const mode = battle ? 'battle' : 'world';
   const availableFormations = (save?.unlockedFormationIds ?? [])
     .map((id) => registry.formations.get(id))
@@ -247,6 +287,7 @@ export function App() {
     ? activeLocationEncounterIds(save, registry)
     : [];
   const canSearch = save ? canSearchCurrentLocation(save, registry) : false;
+  const currentShop = save ? shopAtCurrentLocation(save, registry) : null;
   const dialogNpc = dialogNpcId ? registry.npcs.get(dialogNpcId) : undefined;
 
   return (
@@ -264,6 +305,7 @@ export function App() {
             <p className="eyebrow">황건적의 난</p>
             <h1>{currentLocation ? t(currentLocation.nameKey) : '탁군'}</h1>
           </div>
+          {save && <span className="gold-badge" data-testid="gold" aria-label={'보유 금 ' + save.gold}>금 {save.gold.toLocaleString('ko-KR')}</span>}
           <button className="icon-button" type="button" aria-label="설정">☰</button>
         </header>
       )}
@@ -381,9 +423,20 @@ export function App() {
           {(game.error || interactionError) && <p className="save-error" role="alert">{interactionError ?? game.error}</p>}
 
           <nav className="bottom-nav" aria-label="주요 메뉴">
-            <button type="button">부대</button>
-            <button type="button" className="primary" onClick={() => !isFieldLocation && setLocationSheet(true)}>탐험</button>
-            <button type="button" onClick={() => setLocationSheet(true)}>지도</button>
+            <button
+              type="button"
+              aria-pressed={partyOpen}
+              disabled={!save || Boolean(encounter)}
+              onClick={() => {
+                setLocationSheet(false);
+                setShopOpen(false);
+                setPartyOpen((open) => !open);
+              }}
+            >
+              부대
+            </button>
+            <button type="button" className="primary" onClick={() => { if (!isFieldLocation) { setPartyOpen(false); setLocationSheet(true); } }}>탐험</button>
+            <button type="button" onClick={() => { setPartyOpen(false); setShopOpen(false); setLocationSheet(true); }}>지도</button>
           </nav>
         </>
       )}
@@ -417,7 +470,11 @@ export function App() {
               <div className="location-buttons">
                 {currentServices.includes('REST') && <button type="button" onClick={restParty}>휴식 · 병력 정비</button>}
                 {currentServices.includes('SAVE_POINT') && <button type="button" disabled>안전 거점 · 자동저장</button>}
-                {currentServices.includes('SHOP') && <button type="button" disabled>상점 · 준비 중</button>}
+                {currentShop && (
+                  <button type="button" onClick={() => { setLocationSheet(false); setShopOpen(true); }}>
+                    {'상점 · ' + t(currentShop.nameKey)}
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -461,6 +518,14 @@ export function App() {
             </div>
           </div>
         </section>
+      )}
+
+      {shopOpen && save && currentShop && !battle && !encounter && (
+        <ShopSheet save={save} registry={registry} shop={currentShop} t={t} onBuy={buy} onClose={() => setShopOpen(false)} />
+      )}
+
+      {partyOpen && save && !battle && !encounter && (
+        <PartySheet save={save} registry={registry} t={t} onEquip={equip} onUnequip={unequip} onClose={() => setPartyOpen(false)} />
       )}
 
       {dialogNpc && (

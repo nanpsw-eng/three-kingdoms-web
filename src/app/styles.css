@@ -284,3 +284,55 @@ h1 { margin: 0; font-size: 26px; }
   font-weight: 700;
 }
 
+
+/* Equipment / Shop v1 */
+.gold-badge {
+  margin-left: auto;
+  margin-right: 10px;
+  padding: 6px 10px;
+  border: 1px solid #5d563f;
+  border-radius: 999px;
+  background: #23261d;
+  color: #e9d39a;
+  font-size: 13px;
+  font-weight: 700;
+}
+.gold-line { margin: 8px 0 0; color: #e9d39a; font-size: 13px; }
+.item-list { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #353629;
+  border-radius: 12px;
+  background: #1a1d15;
+}
+.item-text { display: grid; gap: 2px; flex: 1 1 auto; min-width: 0; }
+.item-text span { color: #d8cdb5; font-size: 13px; }
+.item-text small { color: #a49d8b; font-size: 12px; line-height: 1.4; }
+.item-row button {
+  flex: 0 0 auto;
+  min-width: 76px;
+  min-height: 48px;
+  padding: 7px 10px;
+  border: 1px solid #a48750;
+  border-radius: 12px;
+  background: #3a3020;
+  color: #f3ead8;
+  font-weight: 700;
+}
+.item-row button:disabled { opacity: .55; border-color: #454538; background: #20231b; }
+.member-tabs button[aria-pressed="true"] { border-color: #a48750; background: #3a3020; font-weight: 700; }
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 12px 0 0;
+}
+.stat-grid div { padding: 6px 4px; border-radius: 10px; background: #1a1d15; text-align: center; }
+.stat-grid div:nth-child(n+5) { grid-column: span 2; }
+.stat-grid div:nth-child(5) { grid-column: span 4; }
+.stat-grid dt { color: #bfa97d; font-size: 11px; }
+.stat-grid dd { margin: 2px 0 0; font-size: 15px; font-weight: 700; }
+.equip-slot small { grid-column: span 2; color: #a49d8b; font-size: 12px; }

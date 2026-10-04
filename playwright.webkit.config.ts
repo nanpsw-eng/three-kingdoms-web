@@ -8,6 +8,7 @@ export default defineConfig({
     'shell.spec.ts',
     'pwa-responsive.spec.ts',
     'vertical-slice.spec.ts',
+    'equipment-shop.spec.ts',
   ],
   timeout: 120_000,
   retries: 0,
