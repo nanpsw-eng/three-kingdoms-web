@@ -9,7 +9,7 @@ TypeScript/Zod schemas + JSON content.
 - Persistent Save State: player progress across sessions
 
 ## Stable IDs
-Prefixes: `GEN_`, `UNIT_`, `TRT_`, `TAC_`, `FORM_`, `WPN_`, `ARM_`, `ACC_`, `REG_`, `LOC_`, `ENC_`, `QST_`, `EVT_`, `FLAG_`, `NPC_`, `ITEM_`.
+Prefixes: `GEN_`, `UNIT_`, `TRT_`, `TAC_`, `FORM_`, `WPN_`, `ARM_`, `ACC_`, `REG_`, `LOC_`, `ENC_`, `QST_`, `EVT_`, `FLAG_`, `NPC_`, `ITEM_`, `SHOP_`.
 
 ## Core entities
 General, UnitType, Trait, Tactic, StatusEffect, Formation, Equipment, Region, Location, Encounter, EnemyArchetype, Quest, Event, StoryFlag, Faction, SaveGame.
@@ -25,3 +25,9 @@ Persist changing state only: level/xp, current troops, equipment, learned tactic
 
 ## Versions
 Maintain separate schema version, content version and save version. Save migration must be explicit and testable.
+
+## Equipment / Shop (DEC-005)
+- `src/content/equipment/`: `slot` discriminates WEAPON (`weaponType`, `attack`), ARMOR (`defense`), ACCESSORY (`statBonuses`); all have `price`.
+- `src/content/shops/`: `locationId` + ordered `itemIds`.
+- General `weaponAptitudes` keys are the shared weapon family enum: SWORD / DAO / SPEAR / BOW / AXE.
+- Save: `inventory` counts unequipped items; `generals[id].equipment` holds prefixed equipped ids.

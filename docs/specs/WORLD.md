@@ -48,7 +48,7 @@ Secret discovery status:
 
 Deferred:
 - dedicated maps for Baishui Forest / side path / Outpost / North Gate;
-- shop flow.
+- shop flow (implemented later by Equipment/Shop v1; see DEC-005).
 
 
 
@@ -89,7 +89,7 @@ Field presentation definitions remain outside Phaser and contain no React depend
 Deferred:
 - Outpost / North Gate / Side Path dedicated field presentations;
 - in-field exit/interact hotspots;
-- shop flow.
+- shop flow (implemented later by Equipment/Shop v1; see DEC-005).
 
 ## Field Presentation v2
 
@@ -117,3 +117,8 @@ Deferred:
 - direct canvas hotspot activation;
 - Town/Village/Side Path/North Road dedicated field presentation.
 
+## Shops (Equipment/Shop v1)
+- Shops are data in `src/content/shops/`, one per location offering `SHOP` (validated both ways).
+- Vertical Slice shops: Zhuo Town (`SHOP_ZHUO_TOWN`) and Baishui Village (`SHOP_BAISHUI_VILLAGE`).
+- The location sheet exposes `상점 · <name>` only while the SHOP service is effective.
+- Purchase rules and stock: `docs/decisions/DEC-005-EQUIPMENT-SHOP.md`.

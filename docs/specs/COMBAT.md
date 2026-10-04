@@ -78,3 +78,9 @@ See DEC-003 and DEC-004. Both product policies are approved and implemented on t
 - The pre-battle field encounter overlay uses **피하기** for cancelling/disengaging from a field encounter before battle starts.
 - **후퇴** is reserved for the in-battle BD-03 retreat action.
 - Boss/story battles may disallow in-battle retreat even though the player can still back away from the field encounter before committing to battle.
+
+## Equipment (DEC-005, PROPOSED)
+- Player combatants derive `weaponAttack` / `armorDefense` / accessory stat bonuses from equipped content items on every battle start; nothing derived is persisted.
+- Weapon attack is scaled by the wielder's aptitude grade (S 1.2 / A 1.1 / B 1.0 / C 0.8); weapons require a listed aptitude.
+- Enemy encounter `weaponAttack` / `armorDefense` numbers are unchanged and still authored per encounter.
+- The physical damage formula and golden tests are unchanged.

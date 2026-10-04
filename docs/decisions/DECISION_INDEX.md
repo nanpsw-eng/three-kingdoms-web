@@ -10,3 +10,4 @@
 | DEC-002 | Defeat recovery: safe checkpoint + 30% troops, no gold/XP loss | APPROVED / IMPLEMENTED | `DEC-002-DEFEAT-RECOVERY.md` |
 | DEC-003 | Fixed-identity Lv.1–30 progression + reserve XP | APPROVED / IMPLEMENTED | `DEC-003-LEVEL-PROGRESSION.md` |
 | DEC-004 | Deterministic retreat for allowed encounters; bosses locked | APPROVED / IMPLEMENTED | `DEC-004-RETREAT-POLICY.md` |
+| DEC-005 | Equipment slots, aptitude-gated weapons, location shops (v1) | PROPOSED / IMPLEMENTED ON FEATURE BRANCH | `DEC-005-EQUIPMENT-SHOP.md` |

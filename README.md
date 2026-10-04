@@ -27,11 +27,10 @@
 - Current execution state: `docs/ai-dev/SESSION_HANDOFF.md`
 
 ## Current state
-Foundation implemented on `implementation/foundation-nightly` (Draft PR #2 → `implementation/bootstrap`):
-content validation, deterministic battle core v0.2, SaveGame v1 + IndexedDB, React↔Phaser bridge,
-Tap-to-Move world prototype, Smart Command battle UI, Vertical Slice data skeleton, PWA shell.
-Local foundation gate (`npm run verify:foundation`) is green; real-device validation is `NOT_RUN`.
-See `docs/reports/OVERNIGHT_FOUNDATION_REPORT.md` and `docs/ai-dev/SESSION_HANDOFF.md`.
+`implementation/bootstrap` holds the integrated Vertical Slice (PRs #2–#10): content validation, deterministic battle core,
+SaveGame v1 + IndexedDB, world/secret/field presentation, progression and retreat, full Critical Journey E2E, RC QA (WebKit + offline PWA).
+Equipment / Shop v1 (FR-008, DEC-005 PROPOSED) is in progress on a feature branch.
+Real-device validation and human playtest are `NOT_RUN`. See `docs/ai-dev/SESSION_HANDOFF.md`.
 
 ## Commands
 - `npm ci` — install
