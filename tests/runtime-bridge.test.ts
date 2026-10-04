@@ -21,7 +21,9 @@ describe('GameBridge', () => {
     expect(bridge.ui.listenerCount() + bridge.runtime.listenerCount()).toBe(0);
   });
 
-  it('controller destroyed before mount resolves never creates a game', async () => {
+  // The lazy Phaser import is transformed cold on the first run (>5s on slow runners); the
+  // assertion is about cancellation, not import speed, so allow a generous timeout.
+  it('controller destroyed before mount resolves never creates a game', { timeout: 30_000 }, async () => {
     const controller = new GameController();
     const parent = {} as HTMLElement;
     const pending = controller.mount(parent).catch(() => undefined);
