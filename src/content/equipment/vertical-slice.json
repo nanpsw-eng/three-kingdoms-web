@@ -1,0 +1,101 @@
+[
+  {
+    "id": "WPN_IRON_SWORD",
+    "slot": "WEAPON",
+    "weaponType": "SWORD",
+    "attack": 6,
+    "nameKey": "equipment.iron_sword.name",
+    "descriptionKey": "equipment.iron_sword.desc",
+    "price": 60
+  },
+  {
+    "id": "WPN_IRON_DAO",
+    "slot": "WEAPON",
+    "weaponType": "DAO",
+    "attack": 6,
+    "nameKey": "equipment.iron_dao.name",
+    "descriptionKey": "equipment.iron_dao.desc",
+    "price": 60
+  },
+  {
+    "id": "WPN_IRON_SPEAR",
+    "slot": "WEAPON",
+    "weaponType": "SPEAR",
+    "attack": 6,
+    "nameKey": "equipment.iron_spear.name",
+    "descriptionKey": "equipment.iron_spear.desc",
+    "price": 60
+  },
+  {
+    "id": "WPN_HUNTING_BOW",
+    "slot": "WEAPON",
+    "weaponType": "BOW",
+    "attack": 5,
+    "nameKey": "equipment.hunting_bow.name",
+    "descriptionKey": "equipment.hunting_bow.desc",
+    "price": 50
+  },
+  {
+    "id": "WPN_STEEL_DAO",
+    "slot": "WEAPON",
+    "weaponType": "DAO",
+    "attack": 10,
+    "nameKey": "equipment.steel_dao.name",
+    "descriptionKey": "equipment.steel_dao.desc",
+    "price": 150
+  },
+  {
+    "id": "WPN_STEEL_SPEAR",
+    "slot": "WEAPON",
+    "weaponType": "SPEAR",
+    "attack": 10,
+    "nameKey": "equipment.steel_spear.name",
+    "descriptionKey": "equipment.steel_spear.desc",
+    "price": 150
+  },
+  {
+    "id": "WPN_HORN_BOW",
+    "slot": "WEAPON",
+    "weaponType": "BOW",
+    "attack": 9,
+    "nameKey": "equipment.horn_bow.name",
+    "descriptionKey": "equipment.horn_bow.desc",
+    "price": 130
+  },
+  {
+    "id": "ARM_LEATHER",
+    "slot": "ARMOR",
+    "defense": 4,
+    "nameKey": "equipment.leather_armor.name",
+    "descriptionKey": "equipment.leather_armor.desc",
+    "price": 50
+  },
+  {
+    "id": "ARM_LAMELLAR",
+    "slot": "ARMOR",
+    "defense": 8,
+    "nameKey": "equipment.lamellar_armor.name",
+    "descriptionKey": "equipment.lamellar_armor.desc",
+    "price": 120
+  },
+  {
+    "id": "ACC_BRONZE_TALLY",
+    "slot": "ACCESSORY",
+    "statBonuses": {
+      "command": 2
+    },
+    "nameKey": "equipment.bronze_tally.name",
+    "descriptionKey": "equipment.bronze_tally.desc",
+    "price": 70
+  },
+  {
+    "id": "ACC_JADE_PENDANT",
+    "slot": "ACCESSORY",
+    "statBonuses": {
+      "intelligence": 2
+    },
+    "nameKey": "equipment.jade_pendant.name",
+    "descriptionKey": "equipment.jade_pendant.desc",
+    "price": 70
+  }
+]

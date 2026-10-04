@@ -12,7 +12,7 @@
   {
     "id": "LOC_BAISHUI_VILLAGE", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.baishui_village.name", "type": "VILLAGE",
     "initialOwner": "HAN", "connections": ["LOC_SOUTH_PLAIN", "LOC_BAISHUI_FOREST"], "encounters": [],
-    "services": ["REST", "SAVE_POINT"]
+    "services": ["REST", "SHOP", "SAVE_POINT"]
   },
   {
     "id": "LOC_BAISHUI_FOREST", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.baishui_forest.name", "type": "FOREST",

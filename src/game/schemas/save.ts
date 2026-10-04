@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { SaveGameV1 } from '../domain/save/index';
-import { EncounterIdSchema, EventIdSchema, FlagIdSchema, FormationIdSchema, GeneralIdSchema, LocationIdSchema, QuestIdSchema, RegionIdSchema, TacticIdSchema } from './ids';
+import { AccessoryIdSchema, ArmorIdSchema, EncounterIdSchema, EventIdSchema, FlagIdSchema, FormationIdSchema, GeneralIdSchema, LocationIdSchema, QuestIdSchema, RegionIdSchema, TacticIdSchema, WeaponIdSchema } from './ids';
 
 const StatusSchema = z.object({ code: z.enum(['CONFUSED', 'INSPIRED', 'TAUNTING']), remainingTurns: z.number().int().min(1) }).strict();
 
@@ -25,7 +25,7 @@ export const GeneralProgressSchema = z.object({
   xp: z.number().int().min(0),
   currentTroops: z.number().int().min(0),
   learnedTacticIds: z.array(TacticIdSchema),
-  equipment: z.object({ weapon: z.string().optional(), armor: z.string().optional(), accessory: z.string().optional() }).strict(),
+  equipment: z.object({ weapon: WeaponIdSchema.optional(), armor: ArmorIdSchema.optional(), accessory: AccessoryIdSchema.optional() }).strict(),
 }).strict();
 
 export const SaveGameV1Schema = z.object({

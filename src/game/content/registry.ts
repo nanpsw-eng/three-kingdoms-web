@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 import {
   EncounterSchema,
+  EquipmentSchema,
   FlagSchema,
   FormationSchema,
   GameEventSchema,
@@ -10,12 +11,14 @@ import {
   NpcSchema,
   QuestSchema,
   RegionSchema,
+  ShopSchema,
   TacticSchema,
   TraitSchema,
   UnitTypeSchema,
   type Condition,
   type Effect,
   type EncounterDefinition,
+  type EquipmentDefinition,
   type FlagDefinition,
   type FormationDefinition,
   type GameEventDefinition,
@@ -25,6 +28,7 @@ import {
   type NpcDefinition,
   type QuestDefinition,
   type RegionDefinition,
+  type ShopDefinition,
   type TacticDefinition,
   type TraitDefinition,
   type Trigger,
@@ -63,6 +67,8 @@ export interface ContentRegistry {
   flags: ReadonlyMap<string, FlagDefinition>;
   quests: ReadonlyMap<string, QuestDefinition>;
   events: ReadonlyMap<string, GameEventDefinition>;
+  equipment: ReadonlyMap<string, EquipmentDefinition>;
+  shops: ReadonlyMap<string, ShopDefinition>;
   locales: Readonly<Record<string, LocaleTable>>;
 }
 
@@ -84,6 +90,8 @@ export const COLLECTION_DIRS = {
   flags: 'flags',
   quests: 'quests',
   events: 'events',
+  equipment: 'equipment',
+  shops: 'shops',
   locales: 'locales',
 } as const;
 
@@ -103,6 +111,8 @@ const RECORD_SCHEMAS: { [K in RecordCollection]: z.ZodType<RecordOf<K>> } = {
   flags: FlagSchema,
   quests: QuestSchema,
   events: GameEventSchema,
+  equipment: EquipmentSchema,
+  shops: ShopSchema,
 };
 
 const RECORD_COLLECTIONS = Object.keys(RECORD_SCHEMAS) as RecordCollection[];
@@ -260,6 +270,24 @@ function validateReferences(registry: ContentRegistry, paths: ReadonlyMap<string
       ref(loc.id, 'encounters.encounterId', e.encounterId, registry.encounters.has(e.encounterId));
       flag(loc.id, 'encounters.activeUnlessFlag', e.activeUnlessFlag);
     }
+  }
+
+  const shopLocations = new Map<string, string>();
+  for (const shop of registry.shops.values()) {
+    const location = registry.locations.get(shop.locationId);
+    ref(shop.id, 'locationId', shop.locationId, Boolean(location));
+    if (location && !location.services.includes('SHOP') && !location.servicesWhenOwned.includes('SHOP')) {
+      invariant(shop.id, `location ${shop.locationId} does not offer a SHOP service`);
+    }
+    const prior = shopLocations.get(shop.locationId);
+    if (prior) invariant(shop.id, `location ${shop.locationId} already has shop ${prior}`);
+    shopLocations.set(shop.locationId, shop.id);
+    if (new Set(shop.itemIds).size !== shop.itemIds.length) invariant(shop.id, 'itemIds contains duplicates');
+    for (const id of shop.itemIds) ref(shop.id, 'itemIds', id, registry.equipment.has(id));
+  }
+  for (const loc of registry.locations.values()) {
+    const offersShop = loc.services.includes('SHOP') || loc.servicesWhenOwned.includes('SHOP');
+    if (offersShop && !shopLocations.has(loc.id)) invariant(loc.id, 'offers a SHOP service but no shop is defined for it');
   }
 
   for (const npc of registry.npcs.values()) ref(npc.id, 'locationId', npc.locationId, registry.locations.has(npc.locationId));

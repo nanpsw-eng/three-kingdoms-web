@@ -8,3 +8,4 @@ export * from './localization';
 export * from './encounter';
 export * from './world';
 export * from './progress';
+export * from './equipment';

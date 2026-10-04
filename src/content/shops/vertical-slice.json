@@ -1,0 +1,27 @@
+[
+  {
+    "id": "SHOP_ZHUO_TOWN",
+    "locationId": "LOC_ZHUO_TOWN",
+    "nameKey": "shop.zhuo_town.name",
+    "itemIds": [
+      "WPN_IRON_SWORD",
+      "WPN_IRON_DAO",
+      "WPN_IRON_SPEAR",
+      "WPN_HUNTING_BOW",
+      "ARM_LEATHER",
+      "ACC_BRONZE_TALLY"
+    ]
+  },
+  {
+    "id": "SHOP_BAISHUI_VILLAGE",
+    "locationId": "LOC_BAISHUI_VILLAGE",
+    "nameKey": "shop.baishui_village.name",
+    "itemIds": [
+      "WPN_STEEL_DAO",
+      "WPN_STEEL_SPEAR",
+      "WPN_HORN_BOW",
+      "ARM_LAMELLAR",
+      "ACC_JADE_PENDANT"
+    ]
+  }
+]

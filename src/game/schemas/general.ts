@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { GeneralIdSchema, LocalizationKeySchema, TacticIdSchema, TraitIdSchema, UnitTypeCodeSchema } from './ids';
+import { GeneralIdSchema, LocalizationKeySchema, TacticIdSchema, TraitIdSchema, UnitTypeCodeSchema, WeaponAptitudeSchema, WeaponTypeSchema } from './ids';
 
 export const CoreStatsSchema = z.object({
   strength: z.number().int().min(1).max(100),
@@ -34,7 +34,8 @@ export const GeneralSchema = z.object({
   }),
   /** References a UnitType record by its `code`. */
   unitType: UnitTypeCodeSchema,
-  weaponAptitudes: z.record(z.string(), z.enum(['S', 'A', 'B', 'C'])),
+  /** Listed weapon families are equippable; the grade scales weapon attack (DEC-005). */
+  weaponAptitudes: z.partialRecord(WeaponTypeSchema, WeaponAptitudeSchema),
   traitIds: z.array(TraitIdSchema),
   initialTacticIds: z.array(TacticIdSchema),
   /** Sparse, identity-preserving level rewards. Stats remain derived from content + level. */
