@@ -139,3 +139,22 @@ console.log(
 for (const formation of ['FORM_WEDGE', 'FORM_CIRCLE', 'FORM_CRANE']) {
   print(`BOSS_FORMATION_${formation.replace('FORM_', '')}`, measure('ENC_NORTH_GATE_BOSS', full, formation, 'SMART'));
 }
+
+// Equipment v1 (DEC-005) — informational. Main-route budget before the boss is ~210 gold
+// (start 100 + Scout 30 + Outpost 80), enough for three iron weapons (180).
+const equip = (party: PartyMemberInput[], loadout: Record<string, PartyMemberInput['equipment']>) =>
+  party.map((m) => (loadout[m.generalId] ? { ...m, equipment: loadout[m.generalId] } : m));
+const ironBudget = equip(full, {
+  GEN_LIU_BEI: { weapon: 'WPN_IRON_SWORD' },
+  GEN_GUAN_YU: { weapon: 'WPN_IRON_DAO' },
+  GEN_ZHANG_FEI: { weapon: 'WPN_IRON_SPEAR' },
+});
+const upperBound = equip(full, {
+  GEN_LIU_BEI: { weapon: 'WPN_IRON_SWORD', armor: 'ARM_LAMELLAR', accessory: 'ACC_BRONZE_TALLY' },
+  GEN_GUAN_YU: { weapon: 'WPN_STEEL_DAO', armor: 'ARM_LAMELLAR' },
+  GEN_ZHANG_FEI: { weapon: 'WPN_STEEL_SPEAR', armor: 'ARM_LAMELLAR' },
+  GEN_JIAN_YONG: { weapon: 'WPN_HORN_BOW', armor: 'ARM_LEATHER', accessory: 'ACC_JADE_PENDANT' },
+  GEN_FOREST_RECLUSE: { weapon: 'WPN_HORN_BOW', armor: 'ARM_LEATHER' },
+});
+print('BOSS_EQUIP_IRON_BUDGET', measure('ENC_NORTH_GATE_BOSS', ironBudget, 'FORM_CRANE', 'SMART'));
+print('BOSS_EQUIP_UPPER_BOUND', measure('ENC_NORTH_GATE_BOSS', upperBound, 'FORM_CRANE', 'SMART'));
