@@ -1,0 +1,8 @@
+[
+  { "id": "FLAG_PROLOGUE_DONE", "description": "Opening briefing in Zhuo finished" },
+  { "id": "FLAG_VISITED_BAISHUI", "description": "Party has entered Baishui village" },
+  { "id": "FLAG_FOREST_SIDE_PATH_FOUND", "description": "Hidden forest side path discovered" },
+  { "id": "FLAG_OPTIONAL_RECRUIT_JOINED", "description": "Optional forest recluse joined (provisional content)" },
+  { "id": "FLAG_OUTPOST_CAPTURED", "description": "Yellow Turban outpost captured; nearby patrols thin out" },
+  { "id": "FLAG_NORTH_GATE_CAPTURED", "description": "North gate captured; northern region revealed" }
+]

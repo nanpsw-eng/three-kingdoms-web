@@ -1,0 +1,44 @@
+[
+  {
+    "id": "LOC_ZHUO_TOWN", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.zhuo_town.name", "type": "CITY",
+    "initialOwner": "HAN", "connections": ["LOC_SOUTH_PLAIN"], "encounters": [],
+    "services": ["REST", "SHOP", "SAVE_POINT"]
+  },
+  {
+    "id": "LOC_SOUTH_PLAIN", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.south_plain.name", "type": "FIELD",
+    "initialOwner": "NEUTRAL", "connections": ["LOC_ZHUO_TOWN", "LOC_BAISHUI_VILLAGE"],
+    "encounters": [{ "encounterId": "ENC_SOUTH_PLAIN_SCOUTS" }, { "encounterId": "ENC_SOUTH_PLAIN_RIDERS", "activeUnlessFlag": "FLAG_OUTPOST_CAPTURED" }]
+  },
+  {
+    "id": "LOC_BAISHUI_VILLAGE", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.baishui_village.name", "type": "VILLAGE",
+    "initialOwner": "HAN", "connections": ["LOC_SOUTH_PLAIN", "LOC_BAISHUI_FOREST"], "encounters": [],
+    "services": ["REST", "SAVE_POINT"]
+  },
+  {
+    "id": "LOC_BAISHUI_FOREST", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.baishui_forest.name", "type": "FOREST",
+    "initialOwner": "NEUTRAL", "connections": ["LOC_BAISHUI_VILLAGE", "LOC_FOREST_SIDE_PATH", "LOC_YT_OUTPOST"],
+    "encounters": [{ "encounterId": "ENC_BAISHUI_FOREST_AMBUSH" }]
+  },
+  {
+    "id": "LOC_FOREST_SIDE_PATH", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.forest_side_path.name", "type": "SECRET",
+    "initialOwner": "NEUTRAL", "connections": ["LOC_BAISHUI_FOREST"], "encounters": [],
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  },
+  {
+    "id": "LOC_YT_OUTPOST", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.yt_outpost.name", "type": "FORT",
+    "initialOwner": "YELLOW_TURBAN", "connections": ["LOC_BAISHUI_FOREST", "LOC_NORTH_GATE"],
+    "encounters": [{ "encounterId": "ENC_YT_OUTPOST_GARRISON" }],
+    "servicesWhenOwned": ["REST", "SAVE_POINT"]
+  },
+  {
+    "id": "LOC_NORTH_GATE", "regionId": "REG_ZHUO_SOUTH", "nameKey": "location.north_gate.name", "type": "GATE",
+    "initialOwner": "YELLOW_TURBAN", "connections": ["LOC_YT_OUTPOST", "LOC_NORTH_ROAD"],
+    "encounters": [{ "encounterId": "ENC_NORTH_GATE_BOSS" }],
+    "servicesWhenOwned": ["SAVE_POINT"]
+  },
+  {
+    "id": "LOC_NORTH_ROAD", "regionId": "REG_ZHUO_NORTH", "nameKey": "location.north_road.name", "type": "FIELD",
+    "initialOwner": "NEUTRAL", "connections": ["LOC_NORTH_GATE"], "encounters": [],
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  }
+]

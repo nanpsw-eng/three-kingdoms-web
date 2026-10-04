@@ -1,0 +1,64 @@
+[
+  {
+    "id": "GEN_YT_GATE_COMMANDER",
+    "nameKey": "general.yt_gate_commander.name",
+    "role": "COMMANDER",
+    "baseStats": {
+      "strength": 70,
+      "intelligence": 62,
+      "command": 74,
+      "speed": 60
+    },
+    "troopGrowth": {
+      "baseTroop": 900,
+      "perLevel": 70,
+      "category": "HIGH"
+    },
+    "unitType": "SPEAR",
+    "weaponAptitudes": {
+      "DAO": "A"
+    },
+    "traitIds": [],
+    "initialTacticIds": [
+      "TAC_FIRE_ATTACK",
+      "TAC_INSPIRE",
+      "TAC_FIRESTORM"
+    ],
+    "tags": [
+      "YELLOW_TURBAN",
+      "ENEMY",
+      "BOSS",
+      "GENERIC"
+    ],
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  },
+  {
+    "id": "GEN_YT_GATE_CHAMPION",
+    "nameKey": "general.yt_gate_champion.name",
+    "role": "HEAVY_PHYSICAL",
+    "baseStats": {
+      "strength": 82,
+      "intelligence": 28,
+      "command": 66,
+      "speed": 55
+    },
+    "troopGrowth": {
+      "baseTroop": 850,
+      "perLevel": 65,
+      "category": "HIGH"
+    },
+    "unitType": "CAVALRY",
+    "weaponAptitudes": {
+      "AXE": "A"
+    },
+    "traitIds": [],
+    "initialTacticIds": [],
+    "tags": [
+      "YELLOW_TURBAN",
+      "ENEMY",
+      "BOSS",
+      "GENERIC"
+    ],
+    "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED"
+  }
+]

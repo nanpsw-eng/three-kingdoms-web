@@ -27,4 +27,14 @@
 - Current execution state: `docs/ai-dev/SESSION_HANDOFF.md`
 
 ## Current state
-Repository bootstrap in progress. Application implementation and tests are `NOT_STARTED / NOT_RUN`.
+Foundation implemented on `implementation/foundation-nightly` (Draft PR #2 → `implementation/bootstrap`):
+content validation, deterministic battle core v0.2, SaveGame v1 + IndexedDB, React↔Phaser bridge,
+Tap-to-Move world prototype, Smart Command battle UI, Vertical Slice data skeleton, PWA shell.
+Local foundation gate (`npm run verify:foundation`) is green; real-device validation is `NOT_RUN`.
+See `docs/reports/OVERNIGHT_FOUNDATION_REPORT.md` and `docs/ai-dev/SESSION_HANDOFF.md`.
+
+## Commands
+- `npm ci` — install
+- `npm run dev` — local dev server
+- `npm run verify:foundation` — full local gate (typecheck, content, unit, golden, build, Chromium E2E)
+- `npm run check` — gate without E2E

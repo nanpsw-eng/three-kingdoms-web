@@ -1,0 +1,6 @@
+[
+  { "id": "NPC_ZHUO_MILITIA_OFFICER", "nameKey": "npc.zhuo_militia_officer.name", "locationId": "LOC_ZHUO_TOWN", "lineKey": "npc.zhuo_militia_officer.line" },
+  { "id": "NPC_BAISHUI_HEADMAN", "nameKey": "npc.baishui_headman.name", "locationId": "LOC_BAISHUI_VILLAGE", "lineKey": "npc.baishui_headman.line" },
+  { "id": "NPC_JIAN_YONG", "nameKey": "general.jian_yong.name", "locationId": "LOC_BAISHUI_VILLAGE", "lineKey": "npc.jian_yong.line", "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED" },
+  { "id": "NPC_FOREST_RECLUSE", "nameKey": "general.forest_recluse.name", "locationId": "LOC_FOREST_SIDE_PATH", "lineKey": "npc.forest_recluse.line", "contentStatus": "PROVISIONAL_CONTENT_REVIEW_REQUIRED" }
+]

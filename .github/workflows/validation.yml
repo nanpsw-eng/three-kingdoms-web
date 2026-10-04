@@ -1,0 +1,48 @@
+name: validation
+
+on:
+  pull_request:
+    branches:
+      - 'implementation/bootstrap'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    name: Foundation validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Type, content, unit, golden and build checks
+        run: npm run check
+
+      - name: Balance probe (informational)
+        run: npm run sim:encounters
+
+      - name: Chromium responsive E2E
+        run: npm run test:e2e
+
+      - name: WebKit supplemental compatibility
+        run: npm run test:e2e:webkit
