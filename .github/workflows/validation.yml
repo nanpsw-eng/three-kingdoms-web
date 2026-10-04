@@ -32,8 +32,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Type, content, unit, golden and build checks
         run: npm run check
@@ -43,3 +43,6 @@ jobs:
 
       - name: Chromium responsive E2E
         run: npm run test:e2e
+
+      - name: WebKit supplemental compatibility
+        run: npm run test:e2e:webkit
